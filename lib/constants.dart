@@ -10,26 +10,6 @@ class Constants{
   static Color semiGrey = const Color(0xff949BA7);
   static Color lightGrey = const Color(0xff737D8F);
   static Color primaryWhite = const Color(0xffFFFFFF);
-
-  static Widget secondaryButton(String title){
-    return Container(
-      height: 50,
-      width: 150,
-      decoration: BoxDecoration(
-        color: secondaryAppColor,
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Center(
-        child: Text(
-          title,
-          style: GoogleFonts.poppins(
-            color: darkGrey,
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-      ),
-    );
-  }
+  static Color lightOrange = const Color(0xffFF7070);
 
 }

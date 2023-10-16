@@ -2,11 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
+import 'package:happy_caretakers_client/views/product_details_view.dart';
 import 'package:happy_caretakers_client/widgets/custom_profile_card.dart';
-import 'package:happy_caretakers_client/widgets/custom_textfiled.dart';
-import 'package:happy_caretakers_client/widgets/primary_button.dart';
-import 'package:happy_caretakers_client/widgets/secondary_button.dart';
-
 import '../widgets/appbar_search.dart';
 
 class HomeView extends StatefulWidget {
@@ -19,10 +16,12 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       backgroundColor: Constants.appBackgroundolor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        elevation: 0,
+        backgroundColor: Constants.appBackgroundolor,
         leadingWidth: 53,
         leading: Row(
           children: [
@@ -39,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
           IconButton(
             onPressed: () {},
             icon: const Icon(
-                Icons.menu,
+              Icons.menu,
               color: Colors.black,
             ),
           )
@@ -59,18 +58,16 @@ class _HomeViewState extends State<HomeView> {
                     Text(
                       'Hello',
                       style: GoogleFonts.poppins(
-                        fontSize: 23,
-                        color: Constants.darkGrey,
-                        fontWeight: FontWeight.w600
-                      ),
+                          fontSize: 23,
+                          color: Constants.darkGrey,
+                          fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'Veronica John',
                       style: GoogleFonts.poppins(
                           fontSize: 18,
                           color: Constants.darkGrey,
-                          fontWeight: FontWeight.w600
-                      ),
+                          fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
@@ -88,28 +85,29 @@ class _HomeViewState extends State<HomeView> {
                 style: GoogleFonts.poppins(
                     fontSize: 18,
                     color: Constants.darkGrey,
-                    fontWeight: FontWeight.w600
-                ),
+                    fontWeight: FontWeight.w600),
               ),
             ),
             const SizedBox(height: 10),
-            const CustomProfileCard(),
-            const SizedBox(height: 10),
-            CustomTextField(
-              hint: 'Connect to view location',
-              icon: Icons.location_pin,
-              passType: false,
-              controller: TextEditingController(),
-              validator: (val) {},
-              onSubmitted: (text) {},
-            ),
-            const SizedBox(height: 10),
-            SecondaryButton(
-              title: 'Action',
-              onTap: () {
-                print("Action");
-              },
-            ),
+            Expanded(
+              child: SizedBox(
+                width: size.width,
+                child: ListView.builder(
+                  itemCount: 6,
+                  itemBuilder: (ctx, i) {
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15),
+                      child: InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const ProductDetailsView()));
+                        }, 
+                          child: const CustomProfileCard()
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
           ],
         ),
       ),
