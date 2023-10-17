@@ -25,8 +25,8 @@ class _AppBarSearchWidgetState extends State<AppBarSearchWidget> {
             border: InputBorder.none,
             suffixIcon: IconButton(
               icon: Icon(
-                  Icons.visibility_off,
-                  color: const Color(0xff757879)
+                  Icons.search,
+                  color: Constants.lightGrey,
               ),
               onPressed: () {},
             ),

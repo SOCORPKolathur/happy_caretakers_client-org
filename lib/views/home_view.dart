@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
-import 'package:happy_caretakers_client/views/product_details_view.dart';
+import 'package:happy_caretakers_client/views/profile_details_view.dart';
 import 'package:happy_caretakers_client/widgets/custom_profile_card.dart';
 import '../widgets/appbar_search.dart';
 
@@ -45,7 +45,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(17.0),
+        padding: const EdgeInsets.only(top: 17,left: 17,right: 17),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -97,11 +97,14 @@ class _HomeViewState extends State<HomeView> {
                   itemBuilder: (ctx, i) {
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: InkWell(
-                        onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const ProductDetailsView()));
-                        }, 
-                          child: const CustomProfileCard()
+                      child: CustomProfileCard(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      const ProfileDetailsView()));
+                        },
                       ),
                     );
                   },

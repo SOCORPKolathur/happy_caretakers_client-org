@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 
-class ProductDetailsView extends StatefulWidget {
-  const ProductDetailsView({super.key});
+class ProfileDetailsView extends StatefulWidget {
+  const ProfileDetailsView({super.key});
 
   @override
-  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+  State<ProfileDetailsView> createState() => _ProfileDetailsViewState();
 }
 
-class _ProductDetailsViewState extends State<ProductDetailsView> {
-  double pi = 3.14;
+class _ProfileDetailsViewState extends State<ProfileDetailsView> {
 
+  double pi = 3.14;
   bool slidefinish = false;
 
   @override
@@ -36,16 +36,23 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                //mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Container(
                     height: 80,
                     width: 80,
                     decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(100)),
+                        color: Constants.primaryAppColor,
+                        image: DecorationImage(
+                          fit: BoxFit.fill,
+                          image: NetworkImage(
+                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTSAvhi0UxIvUoeY1ZBoYaV4q7adi8eK8Urg&usqp=CAU"
+                          )
+                        ),
+                        borderRadius: BorderRadius.circular(100),
+                    ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -171,10 +178,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         decoration: BoxDecoration(
                             color: Constants.primaryWhite,
                             borderRadius: BorderRadius.circular(15)),
-                        padding: EdgeInsets.all(16),
-                        child: Image.asset(
-                          "assets/icons8-bookmark-144 1.png",
-                        )),
+                        padding: const EdgeInsets.all(16),
+                        child: Icon(
+                          Icons.bookmark_border,
+                          color: Constants.primaryAppColor,
+                          size: 40,
+                        )
+                    ),
                   ),
                 ],
               ),

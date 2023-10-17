@@ -51,6 +51,7 @@ class _MainViewState extends State<MainView> {
         items: items,
         backgroundColor: Constants.primaryWhite,
         color: Constants.darkGrey,
+        iconSize: 27,
         colorSelected: Constants.primaryAppColor,
         indexSelected: bottomIndex,
         onTap: (int index) => setState(() {
