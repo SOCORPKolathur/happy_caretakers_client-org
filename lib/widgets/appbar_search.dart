@@ -3,7 +3,10 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants.dart';
 
 class AppBarSearchWidget extends StatefulWidget {
-  const AppBarSearchWidget({super.key});
+  AppBarSearchWidget({super.key, required this.controller, required this.onTap,required this.onSubmitted});
+  TextEditingController controller;
+  Function onTap;
+  Function onSubmitted;
 
   @override
   State<AppBarSearchWidget> createState() => _AppBarSearchWidgetState();
@@ -20,6 +23,10 @@ class _AppBarSearchWidgetState extends State<AppBarSearchWidget> {
       ),
       child: Center(
         child: TextFormField(
+          onFieldSubmitted: (val){
+            widget.onSubmitted();
+          },
+          controller: widget.controller,
           decoration: InputDecoration(
             contentPadding: const EdgeInsets.symmetric(vertical: 6,horizontal: 5),
             border: InputBorder.none,
@@ -28,7 +35,9 @@ class _AppBarSearchWidgetState extends State<AppBarSearchWidget> {
                   Icons.search,
                   color: Constants.lightGrey,
               ),
-              onPressed: () {},
+              onPressed: () {
+                widget.onTap();
+              },
             ),
             hintText: 'Search any type professionals',
             hintStyle: GoogleFonts.poppins(

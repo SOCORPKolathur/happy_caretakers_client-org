@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
+import 'package:happy_caretakers_client/models/care_takers_model.dart';
+import 'package:happy_caretakers_client/services/care_takers_firecrud.dart';
 import 'package:happy_caretakers_client/views/profile_details_view.dart';
 import 'package:happy_caretakers_client/widgets/custom_profile_card.dart';
+import 'package:lottie/lottie.dart';
 import '../widgets/appbar_search.dart';
 
 class HomeView extends StatefulWidget {
@@ -14,26 +16,42 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  TextEditingController searchProfessionalsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double height = size.height;
+    double width = size.width;
     return Scaffold(
       backgroundColor: Constants.appBackgroundolor,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Constants.appBackgroundolor,
-        leadingWidth: 53,
+        leadingWidth: width/6.792452830188679,
         leading: Row(
           children: [
-            SizedBox(width: 8),
+            SizedBox(width: width/45),
             CircleAvatar(
-              radius: 22,
+              radius: height/34.36363636363636,
               backgroundImage: NetworkImage(
                   "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTSAvhi0UxIvUoeY1ZBoYaV4q7adi8eK8Urg&usqp=CAU"),
             ),
           ],
         ),
-        title: const AppBarSearchWidget(),
+        title: AppBarSearchWidget(
+          controller: searchProfessionalsController,
+          onTap:(){
+            setState(() {
+
+            });
+          },
+          onSubmitted:(){
+            setState(() {
+
+            });
+          },
+        ),
         actions: [
           IconButton(
             onPressed: () {},
@@ -45,7 +63,7 @@ class _HomeViewState extends State<HomeView> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.only(top: 17,left: 17,right: 17),
+        padding: EdgeInsets.only(top: height/44.47058823529412,left: width/36,right: width/36),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -58,55 +76,75 @@ class _HomeViewState extends State<HomeView> {
                     Text(
                       'Hello',
                       style: GoogleFonts.poppins(
-                          fontSize: 23,
+                          fontSize: width/15.65217391304348,
                           color: Constants.darkGrey,
                           fontWeight: FontWeight.w600),
                     ),
                     Text(
                       'Veronica John',
                       style: GoogleFonts.poppins(
-                          fontSize: 18,
+                          fontSize: width/20,
                           color: Constants.darkGrey,
                           fontWeight: FontWeight.w600),
                     ),
                   ],
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: width/36),
                 SizedBox(
-                  height: 40,
-                  width: 60,
+                  height: height/18.9,
+                  width: width/9,
+                  child: Lottie.asset('assets/hii_hand.json'),
                 )
               ],
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height/75.6),
             Center(
               child: Text(
                 'Professionals for you',
                 style: GoogleFonts.poppins(
-                    fontSize: 18,
+                    fontSize: width/20,
                     color: Constants.darkGrey,
                     fontWeight: FontWeight.w600),
               ),
             ),
-            const SizedBox(height: 10),
+            SizedBox(height: height/75.6),
             Expanded(
               child: SizedBox(
                 width: size.width,
-                child: ListView.builder(
-                  itemCount: 6,
-                  itemBuilder: (ctx, i) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 15),
-                      child: CustomProfileCard(
-                        onTap: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (ctx) =>
-                                      const ProfileDetailsView()));
+                child: StreamBuilder(
+                  stream: CareTakersFireCrud.fetchCareTakers(),
+                  builder: (ctx, snap){
+                    if(snap.hasData){
+                      List<CareTakersModel> careTakers1 = snap.data!;
+                      List<CareTakersModel> careTakers = [];
+                      if(searchProfessionalsController.text != ""){
+                        careTakers1.forEach((element) {
+                          if(element.position.toLowerCase().startsWith(searchProfessionalsController.text.toLowerCase())){
+                              careTakers.add(element);
+                          }
+                        });
+                      }else{
+                          careTakers = careTakers1;
+                      }
+                      return ListView.builder(
+                        itemCount: careTakers.length,
+                        itemBuilder: (ctx, i) {
+                          return Padding(
+                            padding: EdgeInsets.symmetric(vertical: height/50.4),
+                            child: CustomProfileCard(
+                              careTaker: careTakers[i],
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                                    ));
+                              },
+                            ),
+                          );
                         },
-                      ),
-                    );
+                      );
+                    }return Container();
                   },
                 ),
               ),
