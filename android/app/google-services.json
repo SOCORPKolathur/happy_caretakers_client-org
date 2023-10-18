@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "796639206941",
+    "project_id": "happy-caretakers",
+    "storage_bucket": "happy-caretakers.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:796639206941:android:8d199a7a2bd9f640ebf0f4",
+        "android_client_info": {
+          "package_name": "com.example.happy_caretakers_client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPZ-u2l6vjPTe5bQvRE7aX3kBrZ4swrm8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

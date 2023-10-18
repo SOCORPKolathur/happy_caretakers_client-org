@@ -113,7 +113,7 @@ class _ProductsViewState extends State<ProductsView> {
                       price: (i + 1) * 100.0,
                     );
                   },
-                ),
+                ), 
               ),
             )
           ],
