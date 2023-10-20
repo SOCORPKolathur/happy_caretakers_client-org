@@ -227,7 +227,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                                 Container(
                                                   height: size.height/5.421428571428571,
                                                   decoration: BoxDecoration(
-                                                    color: Colors.white,
+                                                    color: Colors.white,//
                                                     borderRadius: BorderRadius.circular(10),
                                                     image: DecorationImage(
                                                       fit: BoxFit.contain,
