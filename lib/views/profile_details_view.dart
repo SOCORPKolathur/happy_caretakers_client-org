@@ -1,10 +1,9 @@
+import 'package:action_slider/action_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
-import 'package:happy_caretakers_client/widgets/primary_button.dart';
-import 'package:happy_caretakers_client/widgets/secondary_button.dart';
 
 class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key, required this.id});
@@ -361,192 +360,163 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                         ],
                       ),
                     ),
-                    SizedBox(height: 20),
-                    Center(
-                      child: InkWell(
-                        onTap: () {
-                          showModalBottomSheet(
-                              context: context,
-                              isScrollControlled: true,
-                              transitionAnimationController: animationController,
-                              builder: (builder) {
-                                return Container(
-                                  height: 490,
-                                  decoration: BoxDecoration(
-                                      color: Constants.primaryWhite,
-                                      borderRadius: const BorderRadius.only(
-                                        topRight: Radius.circular(20),
-                                        topLeft: Radius.circular(20),
-                                      )
-                                  ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 15),
-                                  child: Column(
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.only(top: 10),
-                                        child: Center(
-                                          child: Text(
-                                            "Contact Details",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 20,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Name :",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            "${careTaker.firstName} ${careTaker.lastName}",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Divider(thickness: 1,)
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Phone No :",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            careTaker.phone,
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Divider(thickness: 1,)
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Location :",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            careTaker.address,
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Divider(thickness: 1,)
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                      Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            "Mail ID :",
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 18,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 10),
-                                          Text(
-                                            careTaker.email,
-                                            style: GoogleFonts.poppins(
-                                              color: Constants.darkGrey,
-                                              fontWeight: FontWeight.w600,
-                                              fontSize: 14,
-                                            ),
-                                          ),
-                                          Divider(thickness: 1,)
-                                        ],
-                                      ),
-                                      const SizedBox(height: 20),
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                                        children: [
-                                          SecondaryButton(
-                                              title: 'Cancel',
-                                              onTap: (){
-                                                Navigator.pop(context);
-                                              }
-                                          ),
-                                          PrimaryButton(
-                                              title: 'Call Now',
-                                              onTap: (){
-                                                Navigator.pop(context);
-                                              }
-                                          ),
-                                        ],
-                                      ),
-                                      const SizedBox(height: 10),
-                                    ],
-                                  ),
-                                );
-                              });
-                        },
-                        child: Container(
-                          height: 50,
-                          width: size.width * 0.9,
-                          decoration: BoxDecoration(
-                              color: Constants.primaryAppColor,
-                              borderRadius: BorderRadius.circular(30)),
-                          child: Row(
-                            children: [
-                              const SizedBox(width: 10),
-                              Material(
-                                borderRadius: BorderRadius.circular(30),
-                                color: Constants.primaryWhite,
-                                child: Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Image.asset(
-                                      "assets/fast-forward.png",
-                                      height: 18,
-                                      width: 18,
-                                    )),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
+                    const SizedBox(height: 20),
+              //       showModalBottomSheet(
+              // context: context,
+              // isScrollControlled: true,
+              // transitionAnimationController: animationController,
+              // builder: (builder) {
+              // return Container(
+              // height: 490,
+              // decoration: BoxDecoration(
+              // color: Constants.primaryWhite,
+              // borderRadius: const BorderRadius.only(
+              // topRight: Radius.circular(20),
+              // topLeft: Radius.circular(20),
+              // )
+              // ),
+              // padding: const EdgeInsets.symmetric(horizontal: 15),
+              // child: Column(
+              // children: [
+              // Padding(
+              // padding: const EdgeInsets.only(top: 10),
+              // child: Center(
+              // child: Text(
+              // "Contact Details",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 20,
+              // ),
+              // ),
+              // ),
+              // ),
+              // const SizedBox(height: 10),
+              // Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              // children: [
+              // Text(
+              // "Name :",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 18,
+              // ),
+              // ),
+              // const SizedBox(height: 10),
+              // Text(
+              // "${careTaker.firstName} ${careTaker.lastName}",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 14,
+              // ),
+              // ),
+              // Divider(thickness: 1,)
+              // ],
+              // ),
+              // const SizedBox(height: 10),
+              // Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              // children: [
+              // Text(
+              // "Phone No :",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 18,
+              // ),
+              // ),
+              // const SizedBox(height: 10),
+              // Text(
+              // careTaker.phone,
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 14,
+              // ),
+              // ),
+              // Divider(thickness: 1,)
+              // ],
+              // ),
+              // const SizedBox(height: 10),
+              // Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              // children: [
+              // Text(
+              // "Location :",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 18,
+              // ),
+              // ),
+              // const SizedBox(height: 10),
+              // Text(
+              // careTaker.address,
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 14,
+              // ),
+              // ),
+              // Divider(thickness: 1,)
+              // ],
+              // ),
+              // const SizedBox(height: 10),
+              // Column(
+              // crossAxisAlignment: CrossAxisAlignment.start,
+              // children: [
+              // Text(
+              // "Mail ID :",
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 18,
+              // ),
+              // ),
+              // const SizedBox(height: 10),
+              // Text(
+              // careTaker.email,
+              // style: GoogleFonts.poppins(
+              // color: Constants.darkGrey,
+              // fontWeight: FontWeight.w600,
+              // fontSize: 14,
+              // ),
+              // ),
+              // Divider(thickness: 1,)
+              // ],
+              // ),
+              // const SizedBox(height: 20),
+              // Row(
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              // children: [
+              // SecondaryButton(
+              // title: 'Cancel',
+              // onTap: (){
+              // Navigator.pop(context);
+              // }
+              // ),
+              // PrimaryButton(
+              // title: 'Call Now',
+              // onTap: (){
+              // Navigator.pop(context);
+              // }
+              // ),
+              // ],
+              // ),
+              // const SizedBox(height: 10),
+              // ],
+              // ),
+              // );
+              // });
+
                     // ActionSlider.dual(
                     //   backgroundBorderRadius: BorderRadius.circular(100),
                     //   foregroundBorderRadius: BorderRadius.circular(100),
                     //   width: 330.0,
                     //   backgroundColor: const Color(0xff2663FF),
                     //   toggleColor: Colors.white,
-                    //   startChild: const Text('Start'),
                     //   onTap: (ActionSlidercontroller, value) {
                     //
                     //   },
@@ -565,24 +535,26 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                     //           width: 18,
                     //         )),
                     //   ),
-                    //   startAction: (controller) async {
-                    //     controller.loading(); //starts loading animation
-                    //     await Future.delayed(const Duration(seconds: 3));
-                    //     controller.success(); //starts success animation
-                    //     await Future.delayed(const Duration(seconds: 1));
-                    //     controller.reset(); //resets the slider
-                    //   },
+                    //   // startAction: (controller) async {
+                    //   //   controller.loading(); //starts loading animation
+                    //   //   await Future.delayed(const Duration(seconds: 3));
+                    //   //   controller.success(); //starts success animation
+                    //   //   await Future.delayed(const Duration(seconds: 1));
+                    //   //   controller.reset(); //resets the slider
+                    //   // },
                     //   endAction: (controller) async {
                     //     //controller.loading(); //starts loading animation
-                    //     await Future.delayed(const Duration(seconds: 3));
-                    //     controller.success(); //starts success animation
-                    //     await Future.delayed(const Duration(seconds: 1));
+                    //     // await Future.delayed(const Duration(seconds: 3));
+                    //     // controller.success(); //starts success animation
+                    //     // await Future.delayed(const Duration(seconds: 1));
+                    //
                     //     setState(() {
                     //       slidefinish=true;
                     //     });
                     //     controller.reset(); //resets the slider
                     //   },
                     // ),
+
                   ],
                 );
               }return Container();

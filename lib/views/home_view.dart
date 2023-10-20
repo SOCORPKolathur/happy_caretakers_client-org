@@ -46,6 +46,11 @@ class _HomeViewState extends State<HomeView> {
 
             });
           },
+          onChanged: (){
+            setState(() {
+
+            });
+          },
           onSubmitted:(){
             setState(() {
 

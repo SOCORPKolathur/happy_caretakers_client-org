@@ -39,20 +39,28 @@ class _ProductCardState extends State<ProductCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Text(
-                          widget.title,
-                          style: GoogleFonts.poppins(
-                            fontSize: 17,
-                            color: Colors.black,
-                            fontWeight: FontWeight.w700,
+                        Container(
+                          height: 20,
+                          width: 120,
+                          child: Text(
+                            widget.title,
+                            style: GoogleFonts.poppins(
+                              fontSize: 17,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                         ),
-                        Text(
-                          "₹ ${widget.price}",
-                          style: GoogleFonts.poppins(
-                            fontSize: 14,
-                            color: Colors.black,
-                            fontWeight: FontWeight.normal,
+                        Container(
+                          height: 20,
+                          width: 60,
+                          child: Text(
+                            "₹ ${widget.price}",
+                            style: GoogleFonts.poppins(
+                              fontSize: 14,
+                              color: Colors.black,
+                              fontWeight: FontWeight.normal,
+                            ),
                           ),
                         ),
                         Row(
@@ -93,7 +101,7 @@ class _ProductCardState extends State<ProductCard> {
                     color: Constants.primaryWhite,
                     border: Border.all(color: Constants.primaryAppColor),
                   image: DecorationImage(
-                    fit: BoxFit.fill,
+                    fit: BoxFit.contain,
                     image: NetworkImage(widget.imgUrl),
                   )
                 ),

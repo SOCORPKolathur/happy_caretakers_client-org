@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/models/product_model.dart';
+import 'package:happy_caretakers_client/views/product_details_view.dart';
 import 'package:happy_caretakers_client/widgets/product_card.dart';
 import 'package:lottie/lottie.dart';
 
@@ -15,6 +18,9 @@ class ProductsView extends StatefulWidget {
 }
 
 class _ProductsViewState extends State<ProductsView> {
+
+  TextEditingController searchProductController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -37,12 +43,15 @@ class _ProductsViewState extends State<ProductsView> {
           ],
         ),
         title: AppBarSearchWidget(
-          controller: TextEditingController(),
+          controller: searchProductController,
           onTap: (){
 
           },
+          onChanged: (){
+            setState(() {});
+          },
           onSubmitted: (){
-
+            setState(() {});
           },
         ),
         actions: [
@@ -55,70 +64,91 @@ class _ProductsViewState extends State<ProductsView> {
           )
         ],
       ),
-      body: Padding(
-        padding: EdgeInsets.only(top: height/44.47058823529412,left: width/24,right: width/24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Buy your neccesary thinks here,',
-              maxLines: 2,
-              style: GoogleFonts.poppins(
-                  fontSize: width/15.65217391304348,
-                  color: Constants.darkGrey,
-                  fontWeight: FontWeight.w600
-              ),
-            ),
-            SizedBox(height: height/75.6),
-            Container(
-              height: height/7.56,
-              width: size.width,
-              child: ListView.builder(
-                itemCount: 4,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (ctx,i){
-                  return Padding(
-                    padding: EdgeInsets.only(right: width/36),
-                    child: CategoryCardProduct(
-                      name: 'Senior Citizen',
-                      icon: Icons.child_care_rounded,
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('Eccomerce').snapshots(),
+        builder: (ctx, snap){
+          if(snap.hasData){
+            List<ProductModel> products = [];
+            snap.data!.docs.forEach((element) { 
+              products.add(
+                ProductModel.fromJson(element.data())
+              );
+            });
+            return Padding(
+              padding: EdgeInsets.only(top: height/44.47058823529412,left: width/24,right: width/24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Buy your neccesary thinks here,',
+                    maxLines: 2,
+                    style: GoogleFonts.poppins(
+                        fontSize: width/15.65217391304348,
+                        color: Constants.darkGrey,
+                        fontWeight: FontWeight.w600
                     ),
-                  );
-                },
-              ),
-            ),
-            SizedBox(height: height/151.2),
-            Text(
-              'Specials',
-              style: GoogleFonts.poppins(
-                  fontSize: width/18,
-                  color: Colors.black,
-                  fontWeight: FontWeight.w600
-              ),
-            ),
-            SizedBox(height: height/75.6),
-            Expanded(
-              child: SizedBox(
-                width: size.width,
-                child: GridView.builder(
-                  itemCount: 8,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    childAspectRatio: 16/21
                   ),
-                  itemBuilder: (ctx,i){
-                    return ProductCard(
-                      title: 'Prouct $i',
-                      imgUrl: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTSAvhi0UxIvUoeY1ZBoYaV4q7adi8eK8Urg&usqp=CAU',
-                      price: (i + 1) * 100.0,
-                    );
-                  },
-                ), 
+                  SizedBox(height: height/75.6),
+                  Container(
+                    height: height/7.56,
+                    width: size.width,
+                    child: ListView.builder(
+                      itemCount: 4,
+                      scrollDirection: Axis.horizontal,
+                      itemBuilder: (ctx,i){
+                        return Padding(
+                          padding: EdgeInsets.only(right: width/36),
+                          child: CategoryCardProduct(
+                            name: 'Senior Citizen',
+                            icon: Icons.child_care_rounded,
+                          ),
+                        );
+                      },
+                    ),
+                  ),
+                  SizedBox(height: height/151.2),
+                  Text(
+                    'Specials',
+                    style: GoogleFonts.poppins(
+                        fontSize: width/18,
+                        color: Colors.black,
+                        fontWeight: FontWeight.w600
+                    ),
+                  ),
+                  SizedBox(height: height/75.6),
+                  Expanded(
+                    child: SizedBox(
+                      width: size.width,
+                      child: GridView.builder(
+                        itemCount: products.length,
+                        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 16/21
+                        ),
+                        itemBuilder: (ctx,i){
+                          ProductModel product = products[i];
+                          return InkWell(
+                            onTap: (){
+                              Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: '')));
+                            },
+                            child: ProductCard(
+                              title: product.productname!,
+                              imgUrl: product.img!,
+                              price: product.price!,
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ),
-      ),
+            );
+          }return Center(
+            child: CircularProgressIndicator(),
+          );
+        },
+      )
     );
   }
 }

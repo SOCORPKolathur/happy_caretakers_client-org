@@ -36,9 +36,9 @@ class _MainViewState extends State<MainView> {
 
   List<Widget> pages = [
     HomeView(),
+    Container(),
+    Container(),
     ProductsView(),
-    Container(),
-    Container(),
     MessagesView(),
   ];
 

@@ -3,10 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants.dart';
 
 class AppBarSearchWidget extends StatefulWidget {
-  AppBarSearchWidget({super.key, required this.controller, required this.onTap,required this.onSubmitted});
+  AppBarSearchWidget({super.key, required this.controller, required this.onTap,required this.onSubmitted,required this.onChanged});
   TextEditingController controller;
   Function onTap;
   Function onSubmitted;
+  Function onChanged;
 
   @override
   State<AppBarSearchWidget> createState() => _AppBarSearchWidgetState();
@@ -25,6 +26,9 @@ class _AppBarSearchWidgetState extends State<AppBarSearchWidget> {
         child: TextFormField(
           onFieldSubmitted: (val){
             widget.onSubmitted();
+          },
+          onChanged: (val){
+            widget.onChanged();
           },
           controller: widget.controller,
           decoration: InputDecoration(
