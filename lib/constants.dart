@@ -11,5 +11,6 @@ class Constants{
   static Color lightGrey = const Color(0xff737D8F);
   static Color primaryWhite = const Color(0xffFFFFFF);
   static Color lightOrange = const Color(0xffFF7070);
+  static Color darkBlue = const Color(0xff316BFF);
 
 }

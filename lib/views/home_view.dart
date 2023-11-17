@@ -42,19 +42,13 @@ class _HomeViewState extends State<HomeView> {
         title: AppBarSearchWidget(
           controller: searchProfessionalsController,
           onTap:(){
-            setState(() {
-
-            });
+            setState(() {});
           },
           onChanged: (){
-            setState(() {
-
-            });
+            setState(() {});
           },
           onSubmitted:(){
-            setState(() {
-
-            });
+            setState(() {});
           },
         ),
         actions: [

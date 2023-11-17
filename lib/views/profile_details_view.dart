@@ -5,6 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 
+import '../widgets/primary_button.dart';
+import '../widgets/secondary_button.dart';
+
 class ProfileDetailsView extends StatefulWidget {
   const ProfileDetailsView({super.key, required this.id});
 
@@ -361,155 +364,198 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                       ),
                     ),
                     const SizedBox(height: 20),
-              //       showModalBottomSheet(
-              // context: context,
-              // isScrollControlled: true,
-              // transitionAnimationController: animationController,
-              // builder: (builder) {
-              // return Container(
-              // height: 490,
-              // decoration: BoxDecoration(
-              // color: Constants.primaryWhite,
-              // borderRadius: const BorderRadius.only(
-              // topRight: Radius.circular(20),
-              // topLeft: Radius.circular(20),
-              // )
-              // ),
-              // padding: const EdgeInsets.symmetric(horizontal: 15),
-              // child: Column(
-              // children: [
-              // Padding(
-              // padding: const EdgeInsets.only(top: 10),
-              // child: Center(
-              // child: Text(
-              // "Contact Details",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 20,
-              // ),
-              // ),
-              // ),
-              // ),
-              // const SizedBox(height: 10),
-              // Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // children: [
-              // Text(
-              // "Name :",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 18,
-              // ),
-              // ),
-              // const SizedBox(height: 10),
-              // Text(
-              // "${careTaker.firstName} ${careTaker.lastName}",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 14,
-              // ),
-              // ),
-              // Divider(thickness: 1,)
-              // ],
-              // ),
-              // const SizedBox(height: 10),
-              // Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // children: [
-              // Text(
-              // "Phone No :",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 18,
-              // ),
-              // ),
-              // const SizedBox(height: 10),
-              // Text(
-              // careTaker.phone,
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 14,
-              // ),
-              // ),
-              // Divider(thickness: 1,)
-              // ],
-              // ),
-              // const SizedBox(height: 10),
-              // Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // children: [
-              // Text(
-              // "Location :",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 18,
-              // ),
-              // ),
-              // const SizedBox(height: 10),
-              // Text(
-              // careTaker.address,
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 14,
-              // ),
-              // ),
-              // Divider(thickness: 1,)
-              // ],
-              // ),
-              // const SizedBox(height: 10),
-              // Column(
-              // crossAxisAlignment: CrossAxisAlignment.start,
-              // children: [
-              // Text(
-              // "Mail ID :",
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 18,
-              // ),
-              // ),
-              // const SizedBox(height: 10),
-              // Text(
-              // careTaker.email,
-              // style: GoogleFonts.poppins(
-              // color: Constants.darkGrey,
-              // fontWeight: FontWeight.w600,
-              // fontSize: 14,
-              // ),
-              // ),
-              // Divider(thickness: 1,)
-              // ],
-              // ),
-              // const SizedBox(height: 20),
-              // Row(
-              // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              // children: [
-              // SecondaryButton(
-              // title: 'Cancel',
-              // onTap: (){
-              // Navigator.pop(context);
-              // }
-              // ),
-              // PrimaryButton(
-              // title: 'Call Now',
-              // onTap: (){
-              // Navigator.pop(context);
-              // }
-              // ),
-              // ],
-              // ),
-              // const SizedBox(height: 10),
-              // ],
-              // ),
-              // );
-              // });
+                    InkWell(
+                      onTap: (){
+                        showModalBottomSheet(
+                            context: context,
+                            isScrollControlled: true,
+                            transitionAnimationController: animationController,
+                            builder: (builder) {
+                              return Container(
+                                height: 490,
+                                decoration: BoxDecoration(
+                                    color: Constants.primaryWhite,
+                                    borderRadius: const BorderRadius.only(
+                                      topRight: Radius.circular(20),
+                                      topLeft: Radius.circular(20),
+                                    )
+                                ),
+                                padding: const EdgeInsets.symmetric(horizontal: 15),
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.only(top: 10),
+                                      child: Center(
+                                        child: Text(
+                                          "Contact Details",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 20,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Name :",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          "${careTaker.firstName} ${careTaker.lastName}",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Divider(thickness: 1,)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Phone No :",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          careTaker.phone,
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Divider(thickness: 1,)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Location :",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          careTaker.address,
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Divider(thickness: 1,)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                    Column(
+                                      crossAxisAlignment: CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Mail ID :",
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 18,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 10),
+                                        Text(
+                                          careTaker.email,
+                                          style: GoogleFonts.poppins(
+                                            color: Constants.darkGrey,
+                                            fontWeight: FontWeight.w600,
+                                            fontSize: 14,
+                                          ),
+                                        ),
+                                        Divider(thickness: 1,)
+                                      ],
+                                    ),
+                                    const SizedBox(height: 20),
+                                    Row(
+                                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                                      children: [
+                                        SecondaryButton(
+                                            title: 'Cancel',
+                                            onTap: (){
+                                              Navigator.pop(context);
+                                            }
+                                        ),
+                                        PrimaryButton(
+                                            title: 'Call Now',
+                                            onTap: (){
+                                              Navigator.pop(context);
+                                            }
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 10),
+                                  ],
+                                ),
+                              );
+                            });
+                      },
+                      child: Container(
+                        height: 60,
+                        width: size.width*0.9,
+                        decoration: BoxDecoration(
+                          color: Constants.primaryAppColor,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: CircleAvatar(
+                              child: Center(
+                                child: Transform.rotate(
+                                  angle: -0.05,
+                                  child: Image.asset(
+                                    "assets/fast-forward.png",
+                                    height: 18,
+                                    width: 18,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                                'Connect Now',
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w600,
+                                  fontSize: 20
+                                ),
+                              ),
+                          ),
+                          ],
+                        ),
+                      ),
+                    )
 
                     // ActionSlider.dual(
                     //   backgroundBorderRadius: BorderRadius.circular(100),
@@ -518,7 +564,155 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                     //   backgroundColor: const Color(0xff2663FF),
                     //   toggleColor: Colors.white,
                     //   onTap: (ActionSlidercontroller, value) {
-                    //
+                    //     showModalBottomSheet(
+                    //         context: context,
+                    //         isScrollControlled: true,
+                    //         transitionAnimationController: animationController,
+                    //         builder: (builder) {
+                    //           return Container(
+                    //             height: 490,
+                    //             decoration: BoxDecoration(
+                    //                 color: Constants.primaryWhite,
+                    //                 borderRadius: const BorderRadius.only(
+                    //                   topRight: Radius.circular(20),
+                    //                   topLeft: Radius.circular(20),
+                    //                 )
+                    //             ),
+                    //             padding: const EdgeInsets.symmetric(horizontal: 15),
+                    //             child: Column(
+                    //               children: [
+                    //                 Padding(
+                    //                   padding: const EdgeInsets.only(top: 10),
+                    //                   child: Center(
+                    //                     child: Text(
+                    //                       "Contact Details",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 20,
+                    //                       ),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //                 const SizedBox(height: 10),
+                    //                 Column(
+                    //                   crossAxisAlignment: CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       "Name :",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 18,
+                    //                       ),
+                    //                     ),
+                    //                     const SizedBox(height: 10),
+                    //                     Text(
+                    //                       "${careTaker.firstName} ${careTaker.lastName}",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 14,
+                    //                       ),
+                    //                     ),
+                    //                     Divider(thickness: 1,)
+                    //                   ],
+                    //                 ),
+                    //                 const SizedBox(height: 10),
+                    //                 Column(
+                    //                   crossAxisAlignment: CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       "Phone No :",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 18,
+                    //                       ),
+                    //                     ),
+                    //                     const SizedBox(height: 10),
+                    //                     Text(
+                    //                       careTaker.phone,
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 14,
+                    //                       ),
+                    //                     ),
+                    //                     Divider(thickness: 1,)
+                    //                   ],
+                    //                 ),
+                    //                 const SizedBox(height: 10),
+                    //                 Column(
+                    //                   crossAxisAlignment: CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       "Location :",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 18,
+                    //                       ),
+                    //                     ),
+                    //                     const SizedBox(height: 10),
+                    //                     Text(
+                    //                       careTaker.address,
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 14,
+                    //                       ),
+                    //                     ),
+                    //                     Divider(thickness: 1,)
+                    //                   ],
+                    //                 ),
+                    //                 const SizedBox(height: 10),
+                    //                 Column(
+                    //                   crossAxisAlignment: CrossAxisAlignment.start,
+                    //                   children: [
+                    //                     Text(
+                    //                       "Mail ID :",
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 18,
+                    //                       ),
+                    //                     ),
+                    //                     const SizedBox(height: 10),
+                    //                     Text(
+                    //                       careTaker.email,
+                    //                       style: GoogleFonts.poppins(
+                    //                         color: Constants.darkGrey,
+                    //                         fontWeight: FontWeight.w600,
+                    //                         fontSize: 14,
+                    //                       ),
+                    //                     ),
+                    //                     Divider(thickness: 1,)
+                    //                   ],
+                    //                 ),
+                    //                 const SizedBox(height: 20),
+                    //                 Row(
+                    //                   mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    //                   children: [
+                    //                     SecondaryButton(
+                    //                         title: 'Cancel',
+                    //                         onTap: (){
+                    //                           Navigator.pop(context);
+                    //                         }
+                    //                     ),
+                    //                     PrimaryButton(
+                    //                         title: 'Call Now',
+                    //                         onTap: (){
+                    //                           Navigator.pop(context);
+                    //                         }
+                    //                     ),
+                    //                   ],
+                    //                 ),
+                    //                 const SizedBox(height: 10),
+                    //               ],
+                    //             ),
+                    //           );
+                    //         });
                     //   },
                     //   endChild: Text(
                     //     'Connect Now',
@@ -557,7 +751,11 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
 
                   ],
                 );
-              }return Container();
+              }return Container(
+                child: Center(
+                  child: CircularProgressIndicator(),
+                ),
+              );
             },
           ),
         ),

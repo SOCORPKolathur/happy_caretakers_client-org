@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:photo_view/photo_view.dart';
-import '../Widgets/kText.dart';
 import '../constants.dart';
 import '../models/product_model.dart';
 
@@ -293,12 +292,13 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
               );
             }return Container(
               child: Center(
-                child: Lottie.asset(
-                  'assets/churchLoading.json',
-                  fit: BoxFit.contain,
-                  height: size.height * 0.4,
-                  width: size.width * 0.7,
-                ),
+                child: CircularProgressIndicator(),
+                // child: Lottie.asset(
+                //   'assets/churchLoading.json',
+                //   fit: BoxFit.contain,
+                //   height: size.height * 0.4,
+                //   width: size.width * 0.7,
+                // ),
               ),
             );
           },
