@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
-import 'package:happy_caretakers_client/views/chat_view.dart';
+import 'package:happy_caretakers_client/views/languages_view.dart';
+
+import '../Widgets/kText.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({super.key});
@@ -47,8 +49,8 @@ class _ProfileViewState extends State<ProfileView> {
                     ),
                   ),
                   SizedBox(height: 10),
-                  Text(
-                    'Veronica John',
+                  KText(
+                    text: 'Veronica John',
                     style: GoogleFonts.poppins(
                         fontSize: 22,
                         color: Constants.primaryWhite,
@@ -70,18 +72,29 @@ class _ProfileViewState extends State<ProfileView> {
               child: Container(
                 height: height * 0.65,
                 width: width,
-                child: Column(
-                  children: [
-                    CardWidget('Edit Profile',Icons.person,Colors.red),
-                    SizedBox(height: 15),
-                    CardWidget('App Languages',Icons.translate,Colors.green),
-                    SizedBox(height: 15),
-                    CardWidget('Your Orders',Icons.shopping_basket,Colors.pink),
-                    SizedBox(height: 15),
-                    CardWidget('Contact Support',Icons.headphones,Colors.lightBlue),
-                    SizedBox(height: 15),
-                    CardWidget('About Happy Caretakers',Icons.info,Colors.blueGrey),
-                  ],
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      CardWidget('Edit Profile',Icons.person,Colors.red),
+                      SizedBox(height: 15),
+                      InkWell(
+                        onTap: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> LanguagesView()));
+                        },
+                        child: CardWidget(
+                          'App Languages',
+                          Icons.translate,
+                          Colors.green,
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      CardWidget('Your Orders',Icons.shopping_basket,Colors.pink),
+                      SizedBox(height: 15),
+                      CardWidget('Contact Support',Icons.headphones,Colors.lightBlue),
+                      SizedBox(height: 15),
+                      CardWidget('About Happy Caretakers',Icons.info,Colors.blueGrey),
+                    ],
+                  ),
                 ),
               ),
             )
@@ -110,8 +123,8 @@ class _ProfileViewState extends State<ProfileView> {
           children: [
             SizedBox(
               width: 250,
-              child: Text(
-                title,
+              child: KText(
+                text: title,
                 style: GoogleFonts.montserrat(
                   fontWeight: FontWeight.w500,
                   fontSize: 19

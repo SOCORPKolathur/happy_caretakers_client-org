@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 
+import 'kText.dart';
+
 class ProductCard extends StatefulWidget {
   const ProductCard({super.key, required this.title, required this.price, required this.imgUrl});
 
@@ -42,8 +44,8 @@ class _ProductCardState extends State<ProductCard> {
                         Container(
                           height: 20,
                           width: 120,
-                          child: Text(
-                            widget.title,
+                          child: KText(
+                            text: widget.title,
                             style: GoogleFonts.poppins(
                               fontSize: 17,
                               color: Colors.black,
@@ -66,8 +68,8 @@ class _ProductCardState extends State<ProductCard> {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(
-                              'See Details',
+                            KText(
+                              text:'See Details',
                               style: GoogleFonts.poppins(
                                 fontSize: 12,
                                 color: Colors.black,

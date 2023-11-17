@@ -6,6 +6,7 @@ import 'package:happy_caretakers_client/services/care_takers_firecrud.dart';
 import 'package:happy_caretakers_client/views/profile_details_view.dart';
 import 'package:happy_caretakers_client/widgets/custom_profile_card.dart';
 import 'package:lottie/lottie.dart';
+import '../Widgets/kText.dart';
 import '../widgets/appbar_search.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,9 +16,17 @@ class HomeView extends StatefulWidget {
   State<HomeView> createState() => _HomeViewState();
 }
 
-class _HomeViewState extends State<HomeView> {
+class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin {
 
   TextEditingController searchProfessionalsController = TextEditingController();
+  TabController? tabController;
+
+  @override
+  void initState() {
+    tabController = TabController(length: 4, vsync: this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -72,15 +81,15 @@ class _HomeViewState extends State<HomeView> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'Hello',
+                    KText(
+                      text: 'Hello',
                       style: GoogleFonts.poppins(
                           fontSize: width/15.65217391304348,
                           color: Constants.darkGrey,
                           fontWeight: FontWeight.w600),
                     ),
-                    Text(
-                      'Veronica John',
+                    KText(
+                      text: 'Veronica John',
                       style: GoogleFonts.poppins(
                           fontSize: width/20,
                           color: Constants.darkGrey,
@@ -98,8 +107,8 @@ class _HomeViewState extends State<HomeView> {
             ),
             SizedBox(height: height/75.6),
             Center(
-              child: Text(
-                'Professionals for you',
+              child: KText(
+                text: 'Professionals for you',
                 style: GoogleFonts.poppins(
                     fontSize: width/20,
                     color: Constants.darkGrey,
@@ -107,6 +116,43 @@ class _HomeViewState extends State<HomeView> {
               ),
             ),
             SizedBox(height: height/75.6),
+            Container(
+              height: 50,
+              width: width,
+              decoration: BoxDecoration(
+                color: Constants.primaryWhite,
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(15),
+                  topLeft: Radius.circular(15),
+                ),
+              ),
+              child: TabBar(
+                splashFactory: null,
+                isScrollable: true,
+                controller: tabController,
+                onTap: (index){},
+                unselectedLabelColor: Constants.lightGrey,
+                labelColor: Constants.primaryAppColor,
+                labelStyle: GoogleFonts.poppins(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+                tabs: [
+                  Tab(
+                    text: 'Doctors',
+                  ),
+                  Tab(
+                    text: 'Nurses',
+                  ),
+                  Tab(
+                    text: 'Caretakers',
+                  ),
+                  Tab(
+                    text: 'Physiotherapist',
+                  ),
+                ],
+              ),
+            ),
             Expanded(
               child: SizedBox(
                 width: size.width,

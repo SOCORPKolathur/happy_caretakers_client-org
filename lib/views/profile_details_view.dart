@@ -2,6 +2,7 @@ import 'package:action_slider/action_slider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/Widgets/kText.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 
@@ -41,8 +42,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
       backgroundColor: Constants.appBackgroundolor,
       appBar: AppBar(
         backgroundColor: Constants.appBackgroundolor,
-        title: Text(
-          "Profile Details",
+        title: KText(
+          text: "Profile Details",
           style: GoogleFonts.poppins(
             color: Constants.darkGrey,
           ),
@@ -84,15 +85,15 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${careTaker.firstName} ${careTaker.lastName}",
+                            KText(
+                              text: "${careTaker.firstName} ${careTaker.lastName}",
                               style: GoogleFonts.poppins(
                                   color: Constants.darkGrey,
                                   fontSize: 23,
                                   fontWeight: FontWeight.w700),
                             ),
-                            Text(
-                              "${careTaker.position} at ${careTaker.workingAt}",
+                            KText(
+                              text: "${careTaker.position} at ${careTaker.workingAt}",
                               style: GoogleFonts.poppins(
                                   color: Constants.darkGrey,
                                   fontSize: 12,
@@ -126,15 +127,15 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Rating",
+                                      KText(
+                                        text: "Rating",
                                         style: GoogleFonts.poppins(
                                             color: Constants.semiGrey,
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      Text(
-                                        (rating/careTaker.rating.length).toString(),
+                                      KText(
+                                        text: (rating/careTaker.rating.length).toString(),
                                         style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontSize: 11,
@@ -151,15 +152,15 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [
-                                    Text(
-                                      "Experience",
+                                    KText(
+                                      text: "Experience",
                                       style: GoogleFonts.poppins(
                                           color: Constants.semiGrey,
                                           fontSize: 15,
                                           fontWeight: FontWeight.w500),
                                     ),
-                                    Text(
-                                      "${careTaker.yearsOfExperience} yrs+",
+                                    KText(
+                                      text: "${careTaker.yearsOfExperience} yrs+",
                                       style: GoogleFonts.poppins(
                                           color: Constants.darkGrey,
                                           fontSize: 11,
@@ -176,15 +177,15 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Text(
-                                        "Work on",
+                                      KText(
+                                        text: "Work on",
                                         style: GoogleFonts.poppins(
                                             color: Constants.semiGrey,
                                             fontSize: 15,
                                             fontWeight: FontWeight.w500),
                                       ),
-                                      Text(
-                                        "${careTaker.totalWorks}+",
+                                      KText(
+                                        text: "${careTaker.totalWorks}+",
                                         style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontSize: 11,
@@ -218,8 +219,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                       ],
                     ),
                     SizedBox(height: 20),
-                    Text(
-                      "Experience",
+                    KText(
+                      text: "Experience",
                       style: GoogleFonts.poppins(
                           color: Constants.darkGrey,
                           fontSize: 20,
@@ -228,8 +229,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                     SizedBox(height: 20),
                     SizedBox(
                       width: size.width,
-                      child: Text(
-                        careTaker.workExperience,
+                      child: KText(
+                        text: careTaker.workExperience,
                         style: GoogleFonts.poppins(
                           color: Constants.lightGrey,
                           fontSize: 15,
@@ -239,8 +240,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                     SizedBox(height: 20),
                     Divider(thickness: 2),
                     SizedBox(height: 20),
-                    Text(
-                      "Contact Details",
+                    KText(
+                      text: "Contact Details",
                       style: GoogleFonts.poppins(
                           color: Constants.darkGrey,
                           fontSize: 20,
@@ -277,8 +278,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(
-                                    "+91 82XXX XXXX",
+                                  KText(
+                                    text: "+91 82XXX XXXX",
                                     style: GoogleFonts.poppins(
                                         color: Constants.lightGrey,
                                         fontSize: 15,
@@ -313,8 +314,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(
-                                    "shirXXXX@XXX.com",
+                                  KText(
+                                    text: "shirXXXX@XXX.com",
                                     style: GoogleFonts.poppins(
                                         color: Constants.lightGrey,
                                         fontSize: 15,
@@ -349,8 +350,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  Text(
-                                    "Connect to View location",
+                                  KText(
+                                    text: "Connect to View location",
                                     style: GoogleFonts.poppins(
                                         color: Constants.lightGrey,
                                         fontSize: 15,
@@ -386,8 +387,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     Padding(
                                       padding: const EdgeInsets.only(top: 10),
                                       child: Center(
-                                        child: Text(
-                                          "Contact Details",
+                                        child: KText(
+                                          text: "Contact Details",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -400,8 +401,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Name :",
+                                        KText(
+                                          text: "Name :",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -409,8 +410,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        Text(
-                                          "${careTaker.firstName} ${careTaker.lastName}",
+                                        KText(
+                                          text: "${careTaker.firstName} ${careTaker.lastName}",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -424,8 +425,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Phone No :",
+                                        KText(
+                                          text: "Phone No :",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -433,8 +434,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        Text(
-                                          careTaker.phone,
+                                        KText(
+                                          text: careTaker.phone,
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -448,8 +449,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Location :",
+                                        KText(
+                                          text: "Location :",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -457,8 +458,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        Text(
-                                          careTaker.address,
+                                        KText(
+                                          text: careTaker.address,
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -472,8 +473,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text(
-                                          "Mail ID :",
+                                        KText(
+                                          text: "Mail ID :",
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -481,8 +482,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                           ),
                                         ),
                                         const SizedBox(height: 10),
-                                        Text(
-                                          careTaker.email,
+                                        KText(
+                                          text: careTaker.email,
                                           style: GoogleFonts.poppins(
                                             color: Constants.darkGrey,
                                             fontWeight: FontWeight.w600,
@@ -517,11 +518,11 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                             });
                       },
                       child: Container(
-                        height: 60,
+                        height: 50,
                         width: size.width*0.9,
                         decoration: BoxDecoration(
                           color: Constants.primaryAppColor,
-                          borderRadius: BorderRadius.circular(10),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -529,6 +530,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                           Padding(
                             padding: const EdgeInsets.symmetric(horizontal: 10),
                             child: CircleAvatar(
+                              backgroundColor: Constants.primaryWhite,
                               child: Center(
                                 child: Transform.rotate(
                                   angle: -0.05,
@@ -542,7 +544,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                             ),
                           ),
                           Padding(
-                            padding: const EdgeInsets.all(8.0),
+                            padding: const EdgeInsets.symmetric(horizontal: 20),
                             child: Text(
                                 'Connect Now',
                                 style: GoogleFonts.poppins(

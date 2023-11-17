@@ -1,5 +1,6 @@
-import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/home_view.dart';
 import 'package:happy_caretakers_client/views/messages_view.dart';
@@ -16,184 +17,186 @@ class MainView extends StatefulWidget {
 
 class _MainViewState extends State<MainView> {
 
-  late PageController _pageController;
-  bool _animatingPage = false;
   int _selectedIndex = 0;
-  int _previousIndex = 0;
-
-  //int bottomIndex = 0;
-
-  // List<TabItem> items = [
-  //   TabItem(
-  //     icon: Icons.account_circle_outlined,
-  //   ),
-  //   TabItem(
-  //     icon: Icons.calendar_today_rounded,
-  //   ),
-  //   TabItem(
-  //     icon: Icons.add,
-  //   ),
-  //   TabItem(
-  //     icon: Icons.cases_outlined,
-  //   ),
-  //   TabItem(
-  //     icon: Icons.message,
-  //   ),
-  // ];
 
   List<Widget> pages = [
     HomeView(),
-    Container(),
-    Container(),
-    ProductsView(),
     MessagesView(),
+    ProductsView(),
+    ProfileView(),
   ];
 
-  @override
-  void initState() {
-    super.initState();
-    _pageController = PageController();
-  }
 
-  @override
-  void dispose() {
-    _pageController.dispose();
-    super.dispose();
-  }
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _animatingPage = true;
-      _previousIndex = _selectedIndex;
-      _selectedIndex = index;
-      _pageController
-          .animateToPage(
-        index,
-        duration: const Duration(milliseconds: 500),
-        curve: Curves.easeOut,
-      )
-          .then((value) {
-        _animatingPage = false;
-        _previousIndex = _selectedIndex;
-      });
-    });
-  }
-
+  int animatesetvalue = 0;
 
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
+    double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      //body: pages[bottomIndex],
-      // bottomNavigationBar:  BottomBarCreative(
-      //   items: items,
-      //   backgroundColor: Constants.primaryWhite,
-      //   color: Constants.darkGrey,
-      //   iconSize: width/13.33333333333333,
-      //   colorSelected: Constants.primaryAppColor,
-      //   indexSelected: bottomIndex,
-      //   onTap: (int index) => setState(() {
-      //     bottomIndex = index;
-      //   }),
-      // ),
-      body: SizedBox.expand(
-        child: PageView(
-          controller: _pageController,
-          onPageChanged: (index) {
-            if (!_animatingPage) {
-              setState(() {
-                _previousIndex = _selectedIndex;
-                _selectedIndex = index;
-              });
-            }
-          },
-          children: <Widget>[
-            HomeView(),
-            MessagesView(),
-            ProductsView(),
-            ProfileView(),
-          ],
-        ),
-      ),
-      bottomNavigationBar: InkblobNavigationBar(
-        selectedIndex: _selectedIndex,
-        previousIndex: _previousIndex,
-        onItemSelected: _onItemTapped,
-        containerHeight: 60,
-        showElevation: false,
-        //curve: Curves.bounceOut,
-        animationDuration: const Duration(milliseconds: 500),
-        items: <InkblobBarItem>[
-          InkblobBarItem(
-            title: Text(
-              'Home',
-              style: TextStyle(fontWeight: FontWeight.w500, color: Constants.lightGrey,),
+      body: pages[_selectedIndex],
+        bottomNavigationBar: Container(
+          color: Constants.appBackgroundolor,
+          child: Material(
+            color: const Color(0xffFFFFFF),
+            shadowColor: Colors.black38,
+            elevation: 0,
+            borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(25), topRight: Radius.circular(25)),
+            child: AnimatedContainer(
+              height: height / 14.82,
+              duration: const Duration(seconds: 1),
+              decoration: const BoxDecoration(
+                //color: Color(0xffFFFFFF),
+                  borderRadius:
+                  BorderRadius.vertical(bottom: Radius.elliptical(150, 60))
+                // borderRadius: BorderRadius.only(topLeft: Radius.circular(25),topRight: Radius.circular(25))
+              ),
+              child: Stack(
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(top: height / 94.5),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 0;
+                              animatesetvalue = 0;
+                            });
+                            setState(() {});
+                          },
+                          child: Column(
+                            children: [
+                              Image.asset(
+                                "assets/home_icon.png", height: height / 30.24,
+                                width: width / 14.4,
+                               color: animatesetvalue == 0
+                                  ? Constants.primaryAppColor
+                                  : Constants.lightGrey,
+                                // color: animatesetvalue==0?Color(0xff00194A):
+                                // Color(0xffA0A0A0)
+                              ),
+                              Text(
+                                "Home",
+                                style: GoogleFonts.poppins(
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width / 30,
+                                  color: animatesetvalue == 0
+                                      ? Constants.primaryAppColor
+                                      : Constants.lightGrey,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 1;
+                              animatesetvalue = 1;
+                            });
+                            setState(() {});
+                          },
+                          child: Column(
+                            children: [
+                              Image.asset("assets/message_icon.png",
+                                  height: height / 30.24, width: width / 14.4,
+                                color: animatesetvalue == 1
+                                    ? Constants.primaryAppColor
+                                    : Constants.lightGrey,
+                              ),
+                              Text("Messages",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: width / 30,
+                                    color: animatesetvalue == 1
+                                        ? Constants.primaryAppColor
+                                        : Constants.lightGrey,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 2;
+                              animatesetvalue = 2;
+                            });
+                            setState(() {});
+                          },
+                          child: Column(
+                            children: [
+                              Image.asset("assets/cart_icon.png",
+                                  height: height / 30.24, width: width / 14.4,
+                                color: animatesetvalue == 2
+                                    ? Constants.primaryAppColor
+                                    : Constants.lightGrey,
+                              ),
+                              Text("Products",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: width / 30,
+                                    color: animatesetvalue == 2
+                                        ? Constants.primaryAppColor
+                                        : Constants.lightGrey,
+                                  ))
+                            ],
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _selectedIndex = 3;
+                              animatesetvalue = 3;
+                            });
+                            setState(() {});
+                          },
+                          child: Column(
+                            children: [
+                              Image.asset("assets/profile_icon.png",
+                                  height: height / 30.24, width: width / 14.4,
+                                color: animatesetvalue == 3
+                                    ? Constants.primaryAppColor
+                                    : Constants.lightGrey,
+                              ),
+                              Text("Profile",
+                                  style: GoogleFonts.poppins(
+                                      fontWeight: FontWeight.w500,
+                                      fontSize: width / 30,
+                                    color: animatesetvalue == 3
+                                        ? Constants.primaryAppColor
+                                        : Constants.lightGrey,
+                                  ))
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  // AnimatedContainer(
+                  //   duration: const Duration(milliseconds: 600),
+                  //   curve: Curves.fastEaseInToSlowEaseOut,
+                  //   height: height / 252,
+                  //   width: width / 8,
+                  //   margin: EdgeInsets.only(
+                  //       left: animatesetvalue == 0
+                  //           ? width / 18
+                  //           : animatesetvalue == 1
+                  //           ? width / 3.272
+                  //           : animatesetvalue == 2
+                  //           ? width / 1.756
+                  //           : animatesetvalue == 3
+                  //           ? width / 1.241
+                  //           : 0),
+                  //   color: const Color(0xff245BCA),
+                  // )
+                ],
+              ),
             ),
-            filledIcon: Icon(
-              Icons.home,
-              size: 35,
-              color: Constants.primaryAppColor,
-            ),
-            emptyIcon: Icon(
-              Icons.home_outlined,
-              size: 30,
-              color: Constants.lightGrey,
-            ),
-            color: Constants.primaryAppColor,
           ),
-          InkblobBarItem(
-            title: Text(
-              'Messages',
-              style: TextStyle(fontWeight: FontWeight.w500, color: Constants.lightGrey,),
-            ),
-            filledIcon: Icon(
-              Icons.message,
-              size: 35,
-              color: Constants.primaryAppColor,
-            ),
-            emptyIcon: Icon(
-              Icons.message_outlined,
-              size: 30,
-              color: Constants.lightGrey,
-            ),
-            color: Constants.primaryAppColor,
-          ),
-          InkblobBarItem(
-            title: Text(
-              'Products',
-              style: TextStyle(fontWeight: FontWeight.w500, color: Constants.lightGrey,),
-            ),
-            filledIcon: Icon(
-              Icons.shopping_cart_rounded,
-              size: 35,
-              color: Constants.primaryAppColor,
-            ),
-            emptyIcon: Icon(
-                Icons.shopping_cart_outlined,
-              size: 30,
-              color: Constants.lightGrey,
-            ),
-            color: Constants.primaryAppColor,
-          ),
-          InkblobBarItem(
-            title: Text(
-              'Profile',
-              style: TextStyle(fontWeight: FontWeight.w500, color: Constants.lightGrey,),
-            ),
-            filledIcon: Icon(
-              Icons.person,
-              size: 35,
-              color: Constants.primaryAppColor,
-            ),
-            emptyIcon: Icon(
-              Icons.person_outline_sharp,
-              size: 30,
-              color: Constants.lightGrey,
-            ),
-            color: Constants.primaryAppColor,
-          ),
-        ],
-      ),
+        )
     );
   }
 }

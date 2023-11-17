@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 
+import 'kText.dart';
+
 class CategoryCardProduct extends StatefulWidget {
   const CategoryCardProduct({super.key, required this.name, required this.icon});
 
@@ -37,8 +39,8 @@ class _CategoryCardProductState extends State<CategoryCardProduct> {
               ),
             ),
           ),
-          Text(
-              widget.name,
+          KText(
+            text: widget.name,
             style: GoogleFonts.poppins(
               color: Colors.black,
               fontWeight: FontWeight.normal,

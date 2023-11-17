@@ -5,6 +5,7 @@ import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:readmore/readmore.dart';
 import 'custom_paint_profile_card.dart';
+import 'kText.dart';
 
 class CustomProfileCard extends StatefulWidget {
   const CustomProfileCard({super.key, required this.onTap, required this.careTaker});
@@ -56,16 +57,16 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "${widget.careTaker.firstName} ${widget.careTaker.lastName}",
+                            KText(
+                              text: "${widget.careTaker.firstName} ${widget.careTaker.lastName}",
                               style: GoogleFonts.poppins(
                                 fontSize: 17,
                                 fontWeight: FontWeight.w600,
                                 color: Constants.darkGrey,
                               ),
                             ),
-                            Text(
-                              widget.careTaker.position,
+                            KText(
+                              text: widget.careTaker.position,
                               style: GoogleFonts.poppins(
                                 fontSize: 13,
                                 fontWeight: FontWeight.normal,
@@ -170,8 +171,8 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                     children: [
                                       Icon(Icons.location_on,color: Constants.primaryAppColor,),
                                       SizedBox(width: 5),
-                                      Text(
-                                        widget.careTaker.city,
+                                      KText(
+                                        text:widget.careTaker.city,
                                         style: GoogleFonts.poppins(
                                           color: Constants.semiGrey,
                                         ),
@@ -193,8 +194,8 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                     children: [
                                       Icon(Icons.school,color: Constants.primaryAppColor,),
                                       SizedBox(width: 5),
-                                      Text(
-                                        "${widget.careTaker.yearsOfExperience} years",
+                                      KText(
+                                        text: "${widget.careTaker.yearsOfExperience} years",
                                         style: GoogleFonts.poppins(
                                           color: Constants.semiGrey,
                                         ),
@@ -216,8 +217,8 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                     children: [
                                       Icon(Icons.lock_clock,color: Constants.primaryAppColor,),
                                       SizedBox(width: 5),
-                                      Text(
-                                        widget.careTaker.workPreparence,
+                                      KText(
+                                        text: widget.careTaker.workPreparence,
                                         style: GoogleFonts.poppins(
                                           color: Constants.semiGrey,
                                         ),
@@ -251,8 +252,8 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Text(
-                          'View',
+                        KText(
+                          text: 'View',
                           style: GoogleFonts.poppins(
                             color: Constants.primaryWhite,
                             fontWeight: FontWeight.w600,

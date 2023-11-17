@@ -12,6 +12,7 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     required this.validator,
     required this.onSubmitted,
+    required this.keyboardType,
   });
 
   final IconData? icon;
@@ -19,6 +20,7 @@ class CustomTextField extends StatefulWidget {
   final TextEditingController? controller;
   bool passType;
   final String? value;
+  final TextInputType? keyboardType;
   final String? Function(String?)? validator;
   final String? Function(String?)? onSubmitted;
 
@@ -47,7 +49,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return Container(
       padding: const EdgeInsets.only(right: 15),
       height: size.height * 0.07,
-      width: size.width * 0.75,
+      width: size.width * 0.9,
       decoration: BoxDecoration(
           color: Constants.primaryWhite,
           borderRadius: BorderRadius.circular(10),
@@ -67,6 +69,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: isObsecure,
           enableSuggestions: !widget.passType,
           autocorrect: !widget.passType,
+          keyboardType: widget.keyboardType,
           decoration: InputDecoration(
             border: InputBorder.none,
             prefixIcon: widget.icon != null

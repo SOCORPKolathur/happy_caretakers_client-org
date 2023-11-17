@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/chat_view.dart';
 
+import '../Widgets/kText.dart';
+
 class MessagesView extends StatefulWidget {
   const MessagesView({super.key});
 
@@ -21,58 +23,60 @@ class _MessagesViewState extends State<MessagesView> {
     double width = size.width;
     return Scaffold(
       body:
-      Stack(
-        children: [
-          Container(
-            height: height/3.78,
-            width: size.width,
-            decoration: BoxDecoration(
-                gradient: LinearGradient(
-                    begin: Alignment.centerLeft,
-                    end: Alignment.centerRight,
-                    colors: [
-                      Color(0xffBFA0FF),
-                      Constants.primaryAppColor,
-                    ]
-                )
-            ),
+      SizedBox(
+        height: height,
+        width: width,
+        child: Stack(
+          children: [
+            Container(
+              height: height/3.78,
+              width: size.width,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color(0xffBFA0FF),
+                        Constants.primaryAppColor,
+                      ]
+                  )
+              ),
 
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: EdgeInsets.only(left: width/3.130434782608696),
-                  child: Text(
-                    "Connections",
-                    style: GoogleFonts.poppins(
-                      fontSize: width/15.65217391304348,
-                      fontWeight: FontWeight.w600,
-                        color: Constants.primaryWhite,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width/4.130434782608696),
+                    child: KText(
+                      text: "Connections",
+                      style: GoogleFonts.poppins(
+                        fontSize: width/15.65217391304348,
+                        fontWeight: FontWeight.w600,
+                          color: Constants.primaryWhite,
+                      ),
                     ),
                   ),
-                ),
-                Padding(
-                  padding:  EdgeInsets.only(left: width/6.545454545454545),
-                  child: Icon(
-                    Icons.more_vert_rounded,
-                    color: Constants.primaryWhite,
-                  ),
-                )
-              ],
-            ),
-          ),
-
-          Padding(
-            padding:  EdgeInsets.only(top: height/4.725),
-            child: Material(
-              elevation: 25,
-              color: Constants.primaryWhite,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(30),
-                topRight: Radius.circular(30),
+                  Padding(
+                    padding:  EdgeInsets.only(left: width/6.545454545454545),
+                    child: Icon(
+                      Icons.more_vert_rounded,
+                      color: Constants.primaryWhite,
+                    ),
+                  )
+                ],
               ),
-              child: Expanded(
+            ),
+
+            Padding(
+              padding:  EdgeInsets.only(top: height/4.725),
+              child: Material(
+                elevation: 25,
+                color: Constants.primaryWhite,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(30),
+                  topRight: Radius.circular(30),
+                ),
                 child: Container(
                   width: size.width,
                   decoration: BoxDecoration(
@@ -128,6 +132,7 @@ class _MessagesViewState extends State<MessagesView> {
                       ),
                       Expanded(
                         child: Container(
+                          //height: size.height * 0.585,
                           child: ListView.builder(
                             itemCount: 3,
                             itemBuilder: (ctx,i){
@@ -169,7 +174,7 @@ class _MessagesViewState extends State<MessagesView> {
                                                   children: [
                                                     Container(
                                                       width:width/1.8,
-                                                      child: Text("Dr. Shirley Igimo",style: GoogleFonts.poppins(
+                                                      child: KText(text: "Dr. Shirley Igimo",style: GoogleFonts.poppins(
                                                           color: Constants.darkGrey,
                                                           fontSize: width/25.71428571428571,
                                                           fontWeight: FontWeight.w600
@@ -179,9 +184,9 @@ class _MessagesViewState extends State<MessagesView> {
                                                     Container(
                                                       height: height/37.8,
                                                       width:width/1.8,
-                                                      child: Text(
-                                                        "Don’t forget to take your medicine",
-                                                        overflow: TextOverflow.ellipsis,
+                                                      child: KText(
+                                                        text: "Don’t forget to take your medicine",
+                                                        textOverflow: TextOverflow.ellipsis,
                                                         style: GoogleFonts.poppins(
                                                           color: Constants.lightGrey,
                                                           fontSize: width/32.72727272727273,
@@ -201,8 +206,8 @@ class _MessagesViewState extends State<MessagesView> {
                                                 crossAxisAlignment: CrossAxisAlignment.end,
                                                 mainAxisAlignment: MainAxisAlignment.center,
                                                 children: [
-                                                  Text(
-                                                    "02.16 PM",
+                                                  KText(
+                                                    text: "02.16 PM",
                                                     style: GoogleFonts.poppins(
                                                       color: Constants.lightGrey,
                                                       fontSize: width/32.72727272727273,
@@ -218,7 +223,7 @@ class _MessagesViewState extends State<MessagesView> {
                                                         borderRadius: BorderRadius.circular(100)
                                                     ),
                                                     child: Center(
-                                                      child: Text("99",style: GoogleFonts.poppins(
+                                                      child: KText(text: "99",style: GoogleFonts.poppins(
                                                           color: Constants.primaryWhite,
                                                           fontSize: width/32.72727272727273,
                                                           fontWeight: FontWeight.w600
@@ -243,9 +248,9 @@ class _MessagesViewState extends State<MessagesView> {
                   ),
                 ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
