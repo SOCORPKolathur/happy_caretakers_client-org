@@ -1,13 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/services/care_takers_firecrud.dart';
-import 'package:happy_caretakers_client/views/profile_details_view.dart';
+import 'package:happy_caretakers_client/views/login_view.dart';
+import 'package:happy_caretakers_client/views/user/profile_details_view.dart';
 import 'package:happy_caretakers_client/widgets/custom_profile_card.dart';
+import 'package:happy_caretakers_client/widgets/drawer_widget.dart';
 import 'package:lottie/lottie.dart';
-import '../Widgets/kText.dart';
-import '../widgets/appbar_search.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import '../../widgets/appbar_search.dart';
+import '../../widgets/kText.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -21,11 +27,26 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   TextEditingController searchProfessionalsController = TextEditingController();
   TabController? tabController;
 
+  double lat = 0.0;
+  double lon = 0.0;
+
   @override
   void initState() {
+    getLatLng();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
+
+  getLatLng() async {
+    await Geolocator.requestPermission();
+    Position position = await Geolocator.getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
+    setState(() {
+      lat = position.latitude!;
+      lon = position.longitude!;
+    });
+  }
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +54,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     double height = size.height;
     double width = size.width;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Constants.appBackgroundolor,
       appBar: AppBar(
         elevation: 0,
@@ -62,7 +84,9 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
             icon: const Icon(
               Icons.menu,
               color: Colors.black,
@@ -89,7 +113,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                           fontWeight: FontWeight.w600),
                     ),
                     KText(
-                      text: 'Veronica John',
+                      text: 'User',
                       style: GoogleFonts.poppins(
                           fontSize: width/20,
                           color: Constants.darkGrey,
@@ -108,7 +132,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             SizedBox(height: height/75.6),
             Center(
               child: KText(
-                text: 'Professionals for you',
+                text: 'Professionals near you',
                 style: GoogleFonts.poppins(
                     fontSize: width/20,
                     color: Constants.darkGrey,
@@ -127,6 +151,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 ),
               ),
               child: TabBar(
+                tabAlignment: TabAlignment.start,
                 splashFactory: null,
                 isScrollable: true,
                 controller: tabController,
@@ -177,13 +202,20 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                           return Padding(
                             padding: EdgeInsets.symmetric(vertical: height/50.4),
                             child: CustomProfileCard(
+                              lat: lat,
+                              lon: lon,
                               careTaker: careTakers[i],
                               onTap: () {
-                                Navigator.push(
+                                if(Constants.checkUserLoginStatus()){
+                                  Navigator.push(
                                     context,
                                     MaterialPageRoute(
                                         builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                    ));
+                                    ),
+                                  );
+                                }else{
+                                  showLoginPopUp();
+                                }
                               },
                             ),
                           );
@@ -197,6 +229,41 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           ],
         ),
       ),
+      endDrawer: const DrawerWidget(),
     );
   }
+
+  showLoginPopUp(){
+    Dialogs.materialDialog(
+        color: Colors.white,
+        msg: 'You are not Logged In.Kindly log in to continue',
+        title: 'Log In',
+        lottieBuilder: Lottie.asset(
+          'assets/logout.json',
+          fit: BoxFit.contain,
+        ),
+        context: context,
+        actions: [
+          IconsButton(
+            onPressed: () async {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+            },
+            text: 'Log In',
+            color: Colors.blue,
+            textStyle: TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+          IconsButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            text: 'Cancel',
+            color: Colors.grey,
+            textStyle: TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]
+    );
+  }
+
 }

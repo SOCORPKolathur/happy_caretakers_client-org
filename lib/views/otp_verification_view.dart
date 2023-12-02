@@ -1,19 +1,21 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Widgets/kText.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_main_view.dart';
 import '../constants.dart';
-import 'main_view.dart';
+import '../widgets/kText.dart';
+import 'caretaker/caretaker_register_view.dart';
+import 'user/main_view.dart';
 
 class OtpVerificationView extends StatefulWidget {
   String phone;
+  final bool isCareTaker;
 
-  OtpVerificationView({required this.phone});
+  OtpVerificationView({required this.phone, required this.isCareTaker});
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -163,15 +165,44 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                               )).then((value) async {
                                 if (value.user != null) {
                                   String? fcmToken = await FirebaseMessaging.instance.getToken();
-                                  var document = await FirebaseFirestore.instance.collection('Users').get();
-                                  FirebaseFirestore.instance.collection('Users').doc(value.user!.uid).set(
-                                      {
-                                        "id": value.user!.uid,
-                                        "phone" : widget.phone,
-                                        "fcmToken" : fcmToken,
-                                      }
-                                  );
-                                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
+                                  if(widget.isCareTaker){
+                                    var document = await FirebaseFirestore.instance.collection('CareTakers').doc(value.user!.uid).get();
+                                    if(document.exists){
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (ctx)=> CareTakerMainView()
+                                        ),
+                                      );
+                                    }else{
+                                      FirebaseFirestore.instance.collection('CareTakers').doc(value.user!.uid).set(
+                                          {
+                                            "id": value.user!.uid,
+                                            "firstName" : "",
+                                          }
+                                      );
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(
+                                          id: value.user!.uid,
+                                          phone: widget.phone,
+                                        ),
+                                        ),
+                                      );
+                                    }
+                                  }else{
+                                    var document = await FirebaseFirestore.instance.collection('Users').doc(value.user!.uid).get();
+                                    if(!document.exists){
+                                      FirebaseFirestore.instance.collection('Users').doc(value.user!.uid).set(
+                                          {
+                                            "id": value.user!.uid,
+                                            "phone" : widget.phone,
+                                            "fcmToken" : fcmToken,
+                                            "subscriptionCount": 0,
+                                          }
+                                      );
+                                    }
+                                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
+                                  }
                                 }
                               });
                             } catch (e) {

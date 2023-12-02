@@ -9,7 +9,9 @@ import '../widgets/custom_textfiled.dart';
 import 'otp_verification_view.dart';
 
 class LoginView extends StatefulWidget {
-  const LoginView({super.key});
+  const LoginView({super.key,required this.isCareTaker});
+
+  final bool isCareTaker;
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -104,7 +106,7 @@ class _LoginViewState extends State<LoginView> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (ctx) =>
-                                        OtpVerificationView(phone: phoneController.text)));
+                                        OtpVerificationView(phone: phoneController.text,isCareTaker: widget.isCareTaker)));
                           },
                           child: Container(
                             height: size.height/14.433333333,

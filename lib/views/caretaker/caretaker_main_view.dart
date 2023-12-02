@@ -1,31 +1,29 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:happy_caretakers_client/constants.dart';
-import 'package:happy_caretakers_client/views/home_view.dart';
-import 'package:happy_caretakers_client/views/messages_view.dart';
-import 'package:happy_caretakers_client/views/products_view.dart';
-import 'package:happy_caretakers_client/views/profile_view.dart';
-import 'package:inkblob_navigation_bar/inkblob_navigation_bar.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_home_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_message_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_profile_view.dart';
+import '../../constants.dart';
+import '../user/products_view.dart';
+import '../user/profile_view.dart';
 
-class MainView extends StatefulWidget {
-  const MainView({super.key});
+class CareTakerMainView extends StatefulWidget {
+  const CareTakerMainView({super.key});
 
   @override
-  State<MainView> createState() => _MainViewState();
+  State<CareTakerMainView> createState() => _CareTakerMainViewState();
 }
 
-class _MainViewState extends State<MainView> {
+class _CareTakerMainViewState extends State<CareTakerMainView> {
 
   int _selectedIndex = 0;
 
   List<Widget> pages = [
-    HomeView(),
-    MessagesView(),
+    CaretakerHomeView(),
+    CaretakerMessagesView(),
     ProductsView(),
-    ProfileView(),
+    CareTakerProfileView(),
   ];
-
 
   int animatesetvalue = 0;
 
@@ -34,7 +32,7 @@ class _MainViewState extends State<MainView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: pages[_selectedIndex],
+        body: pages[_selectedIndex],
         bottomNavigationBar: Container(
           color: Constants.appBackgroundolor,
           child: Material(
@@ -72,17 +70,17 @@ class _MainViewState extends State<MainView> {
                               Image.asset(
                                 "assets/home_icon.png", height: height / 30.24,
                                 width: width / 14.4,
-                               color: animatesetvalue == 0
-                                  ? Constants.primaryAppColor
-                                  : Constants.lightGrey,
+                                color: animatesetvalue == 0
+                                    ? Constants.primaryAppColor
+                                    : Constants.lightGrey,
                                 // color: animatesetvalue==0?Color(0xff00194A):
                                 // Color(0xffA0A0A0)
                               ),
                               Text(
                                 "Home",
                                 style: GoogleFonts.poppins(
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: width / 30,
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: width / 30,
                                   color: animatesetvalue == 0
                                       ? Constants.primaryAppColor
                                       : Constants.lightGrey,
@@ -102,15 +100,15 @@ class _MainViewState extends State<MainView> {
                           child: Column(
                             children: [
                               Image.asset("assets/message_icon.png",
-                                  height: height / 30.24, width: width / 14.4,
+                                height: height / 30.24, width: width / 14.4,
                                 color: animatesetvalue == 1
                                     ? Constants.primaryAppColor
                                     : Constants.lightGrey,
                               ),
                               Text("Messages",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: width / 30,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width / 30,
                                     color: animatesetvalue == 1
                                         ? Constants.primaryAppColor
                                         : Constants.lightGrey,
@@ -129,15 +127,15 @@ class _MainViewState extends State<MainView> {
                           child: Column(
                             children: [
                               Image.asset("assets/cart_icon.png",
-                                  height: height / 30.24, width: width / 14.4,
+                                height: height / 30.24, width: width / 14.4,
                                 color: animatesetvalue == 2
                                     ? Constants.primaryAppColor
                                     : Constants.lightGrey,
                               ),
                               Text("Products",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: width / 30,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width / 30,
                                     color: animatesetvalue == 2
                                         ? Constants.primaryAppColor
                                         : Constants.lightGrey,
@@ -156,15 +154,15 @@ class _MainViewState extends State<MainView> {
                           child: Column(
                             children: [
                               Image.asset("assets/profile_icon.png",
-                                  height: height / 30.24, width: width / 14.4,
+                                height: height / 30.24, width: width / 14.4,
                                 color: animatesetvalue == 3
                                     ? Constants.primaryAppColor
                                     : Constants.lightGrey,
                               ),
                               Text("Profile",
                                   style: GoogleFonts.poppins(
-                                      fontWeight: FontWeight.w500,
-                                      fontSize: width / 30,
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: width / 30,
                                     color: animatesetvalue == 3
                                         ? Constants.primaryAppColor
                                         : Constants.lightGrey,

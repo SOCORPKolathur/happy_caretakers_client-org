@@ -3,6 +3,7 @@ class CareTakersModel {
   late String firstName;
   late String lastName;
   late String imgUrl;
+  late String aadharUrl;
   late String city;
   late int age;
   late String phone;
@@ -37,6 +38,7 @@ class CareTakersModel {
         required this.position,
         required this.workingAt,
         required this.imgUrl,
+        required this.aadharUrl,
         required this.timestamp,
         required this.workPreparence});
 
@@ -47,6 +49,7 @@ class CareTakersModel {
     timestamp = json['timestamp'];
     city = json['city'];
     imgUrl = json['imgUrl'];
+    aadharUrl = json['aadharUrl'];
     age = json['age'];
     phone = json['phone'];
     if (json['rating'] != null) {
@@ -76,6 +79,7 @@ class CareTakersModel {
     data['timestamp'] = timestamp;
     data['city'] = city;
     data['imgUrl'] = imgUrl;
+    data['aadharUrl'] = aadharUrl;
     data['id'] = id;
     data['age'] = age;
     data['phone'] = phone;

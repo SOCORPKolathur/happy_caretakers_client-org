@@ -1,6 +1,9 @@
 import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
+
+import '../models/response.dart';
 
 final FirebaseFirestore firestore = FirebaseFirestore.instance;
 final CollectionReference CareTakersCollection = firestore.collection('CareTakers');
@@ -22,6 +25,43 @@ class CareTakersFireCrud {
           .map((doc) => CareTakersModel.fromJson(doc.data() as Map<String,dynamic>))
           .toList());
 
+  static Future<Response> addCareTaker(CareTakersModel careTaker) async {
+    Response response = Response();
+    DocumentReference documentReferencer = FirebaseFirestore.instance.collection('CareTakers').doc(careTaker.id);
+    var json = careTaker.toJson();
+    var result = await documentReferencer.set(json).whenComplete(() {
+      response.code = 200;
+      response.message = "Sucessfully added to the database";
+    }).catchError((e) {
+      response.code = 500;
+      response.message = e;
+    });
+    return response;
+  }
+
+  static Future<Response> updateCareTaker(CareTakersModel careTaker) async {
+    Response response = Response();
+    DocumentReference documentReferencer = FirebaseFirestore.instance.collection('CareTakers').doc(careTaker.id);
+    var json = careTaker.toJson();
+    var result = await documentReferencer.update(json).whenComplete(() {
+      response.code = 200;
+      response.message = "Sucessfully added to the database";
+    }).catchError((e) {
+      response.code = 500;
+      response.message = e;
+    });
+    return response;
+  }
+
+  static Future<String> uploadImageToStorage(file) async {
+    var snapshot = await FirebaseStorage.instance
+        .ref()
+        .child('dailyupdates')
+        .child("${file.name}")
+        .putBlob(file);
+    String downloadUrl = await snapshot.ref.getDownloadURL();
+    return downloadUrl;
+  }
 
   // static Stream<List<UserModel>> fetchUsersWithFilter(String profession) =>
   //     UserCollection

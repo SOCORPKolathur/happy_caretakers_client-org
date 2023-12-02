@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../Widgets/kText.dart';
-import 'main_view.dart';
+import '../widgets/kText.dart';
+import 'user/main_view.dart';
 
 class LanguagesView extends StatefulWidget {
   const LanguagesView({super.key});

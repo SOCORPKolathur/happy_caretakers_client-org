@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
-import 'package:happy_caretakers_client/views/chat_view.dart';
+import 'package:happy_caretakers_client/views/user/chat_view.dart';
 
-import '../Widgets/kText.dart';
+import '../../widgets/kText.dart';
 
-class MessagesView extends StatefulWidget {
-  const MessagesView({super.key});
+
+class CaretakerMessagesView extends StatefulWidget {
+  const CaretakerMessagesView({super.key});
 
   @override
-  State<MessagesView> createState() => _MessagesViewState();
+  State<CaretakerMessagesView> createState() => _CaretakerMessagesViewState();
 }
 
-class _MessagesViewState extends State<MessagesView> {
+class _CaretakerMessagesViewState extends State<CaretakerMessagesView> {
 
   TextEditingController _searchcontroller=TextEditingController();
 
@@ -53,7 +54,7 @@ class _MessagesViewState extends State<MessagesView> {
                       style: GoogleFonts.poppins(
                         fontSize: width/15.65217391304348,
                         fontWeight: FontWeight.w600,
-                          color: Constants.primaryWhite,
+                        color: Constants.primaryWhite,
                       ),
                     ),
                   ),
@@ -151,8 +152,8 @@ class _MessagesViewState extends State<MessagesView> {
                                       height: height/10.8,
                                       width: size.width,
                                       decoration: BoxDecoration(
-                                          color: Constants.primaryWhite,
-                                          borderRadius: BorderRadius.circular(15),
+                                        color: Constants.primaryWhite,
+                                        borderRadius: BorderRadius.circular(15),
                                       ),
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
@@ -167,7 +168,7 @@ class _MessagesViewState extends State<MessagesView> {
                                           SizedBox(width: width/45),
                                           Expanded(
                                             child: SizedBox(
-                                              height: height/9.45,
+                                                height: height/9.45,
                                                 child: Column(
                                                   crossAxisAlignment: CrossAxisAlignment.start,
                                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -188,9 +189,9 @@ class _MessagesViewState extends State<MessagesView> {
                                                         text: "Don’t forget to take your medicine",
                                                         textOverflow: TextOverflow.ellipsis,
                                                         style: GoogleFonts.poppins(
-                                                          color: Constants.lightGrey,
-                                                          fontSize: width/32.72727272727273,
-                                                          fontWeight: FontWeight.w600
+                                                            color: Constants.lightGrey,
+                                                            fontSize: width/32.72727272727273,
+                                                            fontWeight: FontWeight.w600
                                                         ),
                                                       ),
                                                     ),
@@ -200,38 +201,38 @@ class _MessagesViewState extends State<MessagesView> {
                                           ),
                                           SizedBox(width: width/45),
                                           Container(
-                                              width: width/6,
-                                              height: height/9.45,
-                                              child: Column(
-                                                crossAxisAlignment: CrossAxisAlignment.end,
-                                                mainAxisAlignment: MainAxisAlignment.center,
-                                                children: [
-                                                  KText(
-                                                    text: "02.16 PM",
-                                                    style: GoogleFonts.poppins(
+                                            width: width/6,
+                                            height: height/9.45,
+                                            child: Column(
+                                              crossAxisAlignment: CrossAxisAlignment.end,
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: [
+                                                KText(
+                                                  text: "02.16 PM",
+                                                  style: GoogleFonts.poppins(
                                                       color: Constants.lightGrey,
                                                       fontSize: width/32.72727272727273,
                                                       fontWeight: FontWeight.w600
-                                                    ),
                                                   ),
-                                                  SizedBox(height: height/378),
-                                                  Container(
-                                                    width:width/18,
-                                                    height: height/37.8,
-                                                    decoration: BoxDecoration(
-                                                        color: Constants.lightOrange,
-                                                        borderRadius: BorderRadius.circular(100)
-                                                    ),
-                                                    child: Center(
-                                                      child: KText(text: "99",style: GoogleFonts.poppins(
-                                                          color: Constants.primaryWhite,
-                                                          fontSize: width/32.72727272727273,
-                                                          fontWeight: FontWeight.w600
-                                                      ),),
-                                                    ),
+                                                ),
+                                                SizedBox(height: height/378),
+                                                Container(
+                                                  width:width/18,
+                                                  height: height/37.8,
+                                                  decoration: BoxDecoration(
+                                                      color: Constants.lightOrange,
+                                                      borderRadius: BorderRadius.circular(100)
                                                   ),
-                                                ],
-                                              ),
+                                                  child: Center(
+                                                    child: KText(text: "99",style: GoogleFonts.poppins(
+                                                        color: Constants.primaryWhite,
+                                                        fontSize: width/32.72727272727273,
+                                                        fontWeight: FontWeight.w600
+                                                    ),),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
                                           ),
                                           SizedBox(width: width/45),
                                         ],

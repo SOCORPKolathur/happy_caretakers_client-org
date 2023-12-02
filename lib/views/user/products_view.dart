@@ -2,14 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/models/product_model.dart';
-import 'package:happy_caretakers_client/views/product_details_view.dart';
+import 'package:happy_caretakers_client/views/user/product_details_view.dart';
 import 'package:happy_caretakers_client/widgets/product_card.dart';
 import 'package:lottie/lottie.dart';
-
-import '../Widgets/kText.dart';
-import '../constants.dart';
-import '../widgets/appbar_search.dart';
-import '../widgets/category_card_product.dart';
+import '../../constants.dart';
+import '../../widgets/appbar_search.dart';
+import '../../widgets/category_card_product.dart';
+import '../../widgets/kText.dart';
 
 class ProductsView extends StatefulWidget {
   const ProductsView({super.key});

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/login_view.dart';
-import 'package:happy_caretakers_client/views/main_view.dart';
+import 'package:happy_caretakers_client/views/user/main_view.dart';
 import 'package:happy_caretakers_client/widgets/primary_button.dart';
 import 'package:happy_caretakers_client/widgets/secondary_button.dart';
 
@@ -84,7 +84,7 @@ class _IntroViewState extends State<IntroView> {
                 SecondaryButton(
                   title: 'Sign IN',
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView()));
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
                   },
                 ),
                 PrimaryButton(
