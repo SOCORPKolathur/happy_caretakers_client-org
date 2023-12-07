@@ -6,6 +6,7 @@ import 'package:happy_caretakers_client/views/caretaker/caretaker_profile_view.d
 import '../../constants.dart';
 import '../user/products_view.dart';
 import '../user/profile_view.dart';
+import 'caretker_products_view.dart';
 
 class CareTakerMainView extends StatefulWidget {
   const CareTakerMainView({super.key});
@@ -19,9 +20,9 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
   int _selectedIndex = 0;
 
   List<Widget> pages = [
-    CaretakerHomeView(),
+    CareTakerHomeView(),
     CaretakerMessagesView(),
-    ProductsView(),
+    CaretakerProductsView(),
     CareTakerProfileView(),
   ];
 

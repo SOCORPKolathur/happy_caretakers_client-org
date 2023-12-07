@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/models/product_model.dart';
@@ -8,6 +9,7 @@ import 'package:lottie/lottie.dart';
 import '../../constants.dart';
 import '../../widgets/appbar_search.dart';
 import '../../widgets/category_card_product.dart';
+import '../../widgets/drawer_widget.dart';
 import '../../widgets/kText.dart';
 
 class ProductsView extends StatefulWidget {
@@ -22,11 +24,21 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
   TextEditingController searchProductController = TextEditingController();
   TabController? tabController;
 
+  String searchQuery = "";
+
   @override
   void initState() {
     tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
+
+  List<String> tabs = [
+    "All",
+    "Baby",
+    "Senior Citizen"
+  ];
+
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +46,7 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
     double height = size.height;
     double width = size.width;
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: Constants.appBackgroundolor,
       appBar: AppBar(
         elevation: 0,
@@ -63,7 +76,9 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
         ),
         actions: [
           IconButton(
-            onPressed: () {},
+            onPressed: () {
+              _scaffoldKey.currentState!.openEndDrawer();
+            },
             icon: const Icon(
               Icons.menu,
               color: Colors.black,
@@ -77,9 +92,17 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
           if(snap.hasData){
             List<ProductModel> products = [];
             snap.data!.docs.forEach((element) { 
-              products.add(
-                ProductModel.fromJson(element.data())
-              );
+              if(searchQuery != ""){
+                if(element.get("categoty").toString().toLowerCase().contains(searchQuery.toString().toLowerCase())){
+                  products.add(
+                      ProductModel.fromJson(element.data())
+                  );
+                }
+              }else{
+                products.add(
+                    ProductModel.fromJson(element.data())
+                );
+              }
             });
             return Padding(
               padding: EdgeInsets.only(top: height/44.47058823529412/*,left: width/24,right: width/24*/),
@@ -113,53 +136,24 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
                       splashFactory: null,
                       isScrollable: true,
                       controller: tabController,
-                      onTap: (index){},
+                      onTap: (index){
+                        setState(() {
+                          searchQuery = tabs[index];
+                        });
+                      },
                       unselectedLabelColor: Constants.lightGrey,
                       labelColor: Constants.primaryAppColor,
                       labelPadding: EdgeInsets.symmetric(horizontal: 1),
-                      tabs: [
-                        Tab(
-                          child: SizedBox(
-                            width: 90,
-                            child: Center(
-                              child: Text(
-                                "All"
-                              ),
+                      tabs: tabs.map((e) => Tab(
+                        child: SizedBox(
+                          width: 90,
+                          child: Center(
+                            child: Text(
+                                e
                             ),
                           ),
                         ),
-                        Tab(
-                          child: SizedBox(
-                            width: 90,
-                            child: Center(
-                              child: Text(
-                                  "Baby"
-                              ),
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: SizedBox(
-                            width: 90,
-                            child: Center(
-                              child: Text(
-                                  "Senior Citizen"
-                              ),
-                            ),
-                          ),
-                        ),
-                        Tab(
-                          child: Container(
-
-                            width: 90,
-                            child: Center(
-                              child: Text(
-                                  "Other"
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
+                      )).toList(),
                     ),
                   ),
                   SizedBox(height: height/151.2),
@@ -178,31 +172,88 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
                   ),
                   SizedBox(height: height/75.6),
                   Expanded(
-                    child: SizedBox(
-                      width: size.width,
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(horizontal: width/24),
-                        child: GridView.builder(
-                          itemCount: products.length,
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
-                              childAspectRatio: 16/21
-                          ),
-                          itemBuilder: (ctx,i){
-                            ProductModel product = products[i];
-                            return InkWell(
-                              onTap: (){
-                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: '')));
-                              },
-                              child: ProductCard(
-                                title: product.productname!,
-                                imgUrl: product.img!,
-                                price: product.price!,
+                    child: TabBarView(
+                      controller: tabController,
+                      children: [
+                        SizedBox(
+                          width: size.width,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: width/24),
+                            child: GridView.builder(
+                              itemCount: products.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 16/21
                               ),
-                            );
-                          },
+                              itemBuilder: (ctx,i){
+                                ProductModel product = products[i];
+                                return InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
+                                  },
+                                  child: ProductCard(
+                                    title: product.productname!,
+                                    imgUrl: product.img!,
+                                    price: product.price!,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
                         ),
-                      ),
+                        SizedBox(
+                          width: size.width,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: width/24),
+                            child: GridView.builder(
+                              itemCount: products.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 16/21
+                              ),
+                              itemBuilder: (ctx,i){
+                                ProductModel product = products[i];
+                                return InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
+                                  },
+                                  child: ProductCard(
+                                    title: product.productname!,
+                                    imgUrl: product.img!,
+                                    price: product.price!,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          width: size.width,
+                          child: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: width/24),
+                            child: GridView.builder(
+                              itemCount: products.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  childAspectRatio: 16/21
+                              ),
+                              itemBuilder: (ctx,i){
+                                ProductModel product = products[i];
+                                return InkWell(
+                                  onTap: (){
+                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
+                                  },
+                                  child: ProductCard(
+                                    title: product.productname!,
+                                    imgUrl: product.img!,
+                                    price: product.price!,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   )
                 ],
@@ -212,7 +263,8 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
             child: CircularProgressIndicator(),
           );
         },
-      )
+      ),
+      endDrawer: const DrawerWidget(),
     );
   }
 }

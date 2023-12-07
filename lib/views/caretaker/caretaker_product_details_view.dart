@@ -2,30 +2,31 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:happy_caretakers_client/services/cart_firecrud.dart';
+import 'package:lottie/lottie.dart';
 import 'package:photo_view/photo_view.dart';
 import '../../constants.dart';
 import '../../models/cart_model.dart';
 import '../../models/product_model.dart';
 import '../../models/response.dart';
+import '../../services/caretker/caretker_cart_firecrud.dart';
 import '../../widgets/kText.dart';
 
-class ProductDetailsView extends StatefulWidget {
-  const ProductDetailsView(
+class CaretakersProductDetailsView extends StatefulWidget {
+  const CaretakersProductDetailsView(
       {super.key,
-      required this.productId,
-      required this.productName,
-      required this.userDocId});
+        required this.productId,
+        required this.productName,
+        required this.userDocId});
 
   final String productId;
   final String productName;
   final String userDocId;
 
   @override
-  State<ProductDetailsView> createState() => _ProductDetailsViewState();
+  State<CaretakersProductDetailsView> createState() => _CaretakersProductDetailsViewState();
 }
 
-class _ProductDetailsViewState extends State<ProductDetailsView> {
+class _CaretakersProductDetailsViewState extends State<CaretakersProductDetailsView> {
   ProductModel currentProduct = ProductModel();
   List<String> categories = [];
 
@@ -115,7 +116,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   SizedBox(height: 30),
                                   Row(
                                     mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    MainAxisAlignment.spaceBetween,
                                     children: [
                                       SizedBox(
                                         width: 250,
@@ -194,9 +195,9 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       //       onTap: (){
                                       //         // int qty = getQuantity(carts,products[i].productId!)-1;
                                       //         // if(qty == 0){
-                                      //         //   CaretakerCartFireCrud.deleteCart(userDocId: widget.userDocId, docId: products[i].productId!);
+                                      //         //   CareTakersFireCrud.deleteCart(userDocId: widget.userDocId, docId: products[i].productId!);
                                       //         // }else{
-                                      //         //   CaretakerCartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: products[i].productId!,quantity: qty);
+                                      //         //   CareTakersFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: products[i].productId!,quantity: qty);
                                       //         // }
                                       //       },
                                       //       child: Icon(
@@ -219,7 +220,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                       //     InkWell(
                                       //       onTap:(){
                                       //         // int qty = getQuantity(carts,products[i].productId!)+1;
-                                      //         // CaretakerCartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: products[i].productId!,quantity: qty);
+                                      //         // CareTakersFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: products[i].productId!,quantity: qty);
                                       //       },
                                       //       child: Icon(
                                       //         Icons.add_circle,
@@ -239,22 +240,22 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                         ),
                       ),
                       Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          height: 250,
-                          width: 250,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                            border: Border.all(color: Constants.primaryAppColor, width: 3),
-                            image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: NetworkImage(
-                                currentProduct.img!,
-                              )
-                            )
-                          ),
-                        )
+                          alignment: Alignment.topCenter,
+                          child: Container(
+                            height: 250,
+                            width: 250,
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                shape: BoxShape.circle,
+                                border: Border.all(color: Constants.primaryAppColor, width: 3),
+                                image: DecorationImage(
+                                    fit: BoxFit.contain,
+                                    image: NetworkImage(
+                                      currentProduct.img!,
+                                    )
+                                )
+                            ),
+                          )
                       ),
                     ],
                   ),
@@ -292,10 +293,10 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                   child: Center(
                       child: InkWell(
                           onTap: () async {
-                             Response response = await CartFireCrud.addToCart(userDocId: widget.userDocId, price: product.price!, imgUrl: product.img!, quantity: 1, productId: product.id!, productName: product.productname!);
+                            Response response = await CaretakerCartFireCrud.addToCart(userDocId: widget.userDocId, price: product.price!, imgUrl: product.img!, quantity: 1, productId: product.id!, productName: product.productname!);
                           },
                           child: StreamBuilder(
-                            stream: CartFireCrud.fetchCartsForUser(widget.userDocId),
+                            stream: CaretakerCartFireCrud.fetchCartsForUser(widget.userDocId),
                             builder: (ctx, snap) {
                               if (snap.hasData) {
                                 List<CartModel> carts = snap.data!;
@@ -315,64 +316,64 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
                                   child: Center(
                                     child: isAltredyInCart(carts, widget.productId)
                                         ? Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
-                                            children: [
-                                              InkWell(
-                                                onTap: () {
-                                                  int qty = getQuantity(carts,widget.productId)-1;
-                                                  if(qty == 0){
-                                                    CartFireCrud.deleteCart(userDocId: widget.userDocId, docId: cart.productId!);
-                                                  }else{
-                                                    CartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: cart.productId!,quantity: qty);
-                                                  }
-                                                },
-                                                child: Icon(
-                                                  Icons.remove_circle_outline,
-                                                  color: Colors.white,
-                                                  size: size.height * 0.045,
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                  width: size.width / 31.1),
-                                              KText(
-                                                //text: "get Quantity",
-                                                text: getQuantity(carts,widget.productId).toString(),
-                                                style: GoogleFonts.openSans(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                  //fontSize: Constants().getFontSize(context, "M"),
-                                                ),
-                                              ),
-                                              SizedBox(
-                                                  width: size.width / 31.1),
-                                              InkWell(
-                                                onTap: () {
-                                                  int qty = getQuantity(carts,widget.productId)+1;
-                                                  CartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: cart.productId!,quantity: qty);
-                                                },
-                                                child: Icon(
-                                                  Icons.add_circle_outline,
-                                                  color: Colors.white,
-                                                  size: size.height * 0.045,
-                                                ),
-                                              ),
-                                            ],
-                                          )
-                                        : InkWell(
-                                            onTap: () async {
-                                              Response response = await CartFireCrud.addToCart(userDocId: widget.userDocId, price: product.price!, imgUrl: product.img!, quantity: 1, productId: product.productid!, productName: product.productname!);
-                                            },
-                                            child: Center(
-                                              child: KText(
-                                                text: "Add Cart",
-                                                style: GoogleFonts.openSans(
-                                                  color: Colors.white,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
+                                      mainAxisAlignment:
+                                      MainAxisAlignment.center,
+                                      children: [
+                                        InkWell(
+                                          onTap: () {
+                                            int qty = getQuantity(carts,widget.productId)-1;
+                                            if(qty == 0){
+                                              CaretakerCartFireCrud.deleteCart(userDocId: widget.userDocId, docId: cart.productId!);
+                                            }else{
+                                              CaretakerCartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: cart.productId!,quantity: qty);
+                                            }
+                                          },
+                                          child: Icon(
+                                            Icons.remove_circle_outline,
+                                            color: Colors.white,
+                                            size: size.height * 0.045,
                                           ),
+                                        ),
+                                        SizedBox(
+                                            width: size.width / 31.1),
+                                        KText(
+                                          //text: "get Quantity",
+                                          text: getQuantity(carts,widget.productId).toString(),
+                                          style: GoogleFonts.openSans(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            //fontSize: Constants().getFontSize(context, "M"),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                            width: size.width / 31.1),
+                                        InkWell(
+                                          onTap: () {
+                                            int qty = getQuantity(carts,widget.productId)+1;
+                                            CaretakerCartFireCrud.updateCartQuantity(userDocId: widget.userDocId, docId: cart.productId!,quantity: qty);
+                                          },
+                                          child: Icon(
+                                            Icons.add_circle_outline,
+                                            color: Colors.white,
+                                            size: size.height * 0.045,
+                                          ),
+                                        ),
+                                      ],
+                                    )
+                                        : InkWell(
+                                      onTap: () async {
+                                        Response response = await CaretakerCartFireCrud.addToCart(userDocId: widget.userDocId, price: product.price!, imgUrl: product.img!, quantity: 1, productId: product.productid!, productName: product.productname!);
+                                      },
+                                      child: Center(
+                                        child: KText(
+                                          text: "Add Cart",
+                                          style: GoogleFonts.openSans(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
                                   ),
                                 );
                               }

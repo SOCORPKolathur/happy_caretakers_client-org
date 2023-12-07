@@ -46,6 +46,14 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     });
   }
 
+  List<String> tabs = [
+    'Doctors',
+    'Nurses',
+    'Caretakers',
+    'Physiotherapist',
+  ];
+
+  String searchQuery = "doctor";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   @override
@@ -95,39 +103,42 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         ],
       ),
       body: Padding(
-        padding: EdgeInsets.only(top: height/44.47058823529412,left: width/36,right: width/36),
+        padding: EdgeInsets.only(top: height/44.47058823529412),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    KText(
-                      text: 'Hello',
-                      style: GoogleFonts.poppins(
-                          fontSize: width/15.65217391304348,
-                          color: Constants.darkGrey,
-                          fontWeight: FontWeight.w600),
-                    ),
-                    KText(
-                      text: 'User',
-                      style: GoogleFonts.poppins(
-                          fontSize: width/20,
-                          color: Constants.darkGrey,
-                          fontWeight: FontWeight.w600),
-                    ),
-                  ],
-                ),
-                SizedBox(width: width/36),
-                SizedBox(
-                  height: height/18.9,
-                  width: width/9,
-                  child: Lottie.asset('assets/hii_hand.json'),
-                )
-              ],
+            Padding(
+              padding: EdgeInsets.only(left: width/36,right: width/36),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      KText(
+                        text: 'Hello',
+                        style: GoogleFonts.poppins(
+                            fontSize: width/15.65217391304348,
+                            color: Constants.darkGrey,
+                            fontWeight: FontWeight.w600),
+                      ),
+                      KText(
+                        text: 'User',
+                        style: GoogleFonts.poppins(
+                            fontSize: width/20,
+                            color: Constants.darkGrey,
+                            fontWeight: FontWeight.w600),
+                      ),
+                    ],
+                  ),
+                  SizedBox(width: width/36),
+                  SizedBox(
+                    height: height/18.9,
+                    width: width/9,
+                    child: Lottie.asset('assets/hii_hand.json'),
+                  )
+                ],
+              ),
             ),
             SizedBox(height: height/75.6),
             Center(
@@ -155,77 +166,153 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 splashFactory: null,
                 isScrollable: true,
                 controller: tabController,
-                onTap: (index){},
+                onTap: (index){
+                  setState(() {
+                    searchQuery = tabs[index].substring(0,tabs[index].length-1);
+                    print(searchQuery);
+                  });
+                },
                 unselectedLabelColor: Constants.lightGrey,
                 labelColor: Constants.primaryAppColor,
                 labelStyle: GoogleFonts.poppins(
                   fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
-                tabs: [
-                  Tab(
-                    text: 'Doctors',
-                  ),
-                  Tab(
-                    text: 'Nurses',
-                  ),
-                  Tab(
-                    text: 'Caretakers',
-                  ),
-                  Tab(
-                    text: 'Physiotherapist',
-                  ),
-                ],
+                tabs: tabs.map((e) => Tab(text: e)).toList(),
               ),
             ),
+            //padding: EdgeInsets.only(left: width/36,right: width/36),
             Expanded(
-              child: SizedBox(
-                width: size.width,
-                child: StreamBuilder(
-                  stream: CareTakersFireCrud.fetchCareTakers(),
-                  builder: (ctx, snap){
-                    if(snap.hasData){
-                      List<CareTakersModel> careTakers1 = snap.data!;
-                      List<CareTakersModel> careTakers = [];
-                      if(searchProfessionalsController.text != ""){
-                        careTakers1.forEach((element) {
-                          if(element.position.toLowerCase().startsWith(searchProfessionalsController.text.toLowerCase())){
+              child: Padding(
+                padding: EdgeInsets.only(left: width/36,right: width/36),
+                child: SizedBox(
+                  width: size.width,
+                  child: StreamBuilder(
+                    stream: CareTakersFireCrud.fetchCareTakers(),
+                    builder: (ctx, snap){
+                      if(snap.hasData){
+                        List<CareTakersModel> careTakers1 = snap.data!;
+                        List<CareTakersModel> careTakers = [];
+                        if(searchQuery != ""){
+                          careTakers1.forEach((element) {
+                            if(element.position.toLowerCase().startsWith(searchQuery.toLowerCase())){
                               careTakers.add(element);
-                          }
-                        });
-                      }else{
+                            }
+                          });
+                        }else{
                           careTakers = careTakers1;
-                      }
-                      return ListView.builder(
-                        itemCount: careTakers.length,
-                        itemBuilder: (ctx, i) {
-                          return Padding(
-                            padding: EdgeInsets.symmetric(vertical: height/50.4),
-                            child: CustomProfileCard(
-                              lat: lat,
-                              lon: lon,
-                              careTaker: careTakers[i],
-                              onTap: () {
-                                if(Constants.checkUserLoginStatus()){
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                    ),
-                                  );
-                                }else{
-                                  showLoginPopUp();
-                                }
+                        }
+                        return TabBarView(
+                          controller: tabController,
+                          children: [
+                            ListView.builder(
+                              itemCount: careTakers.length,
+                              itemBuilder: (ctx, i) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
+                                  child: CustomProfileCard(
+                                    lat: lat,
+                                    lon: lon,
+                                    careTaker: careTakers[i],
+                                    onTap: () {
+                                      if(Constants.checkUserLoginStatus()){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                                          ),
+                                        );
+                                      }else{
+                                        showLoginPopUp();
+                                      }
+                                    },
+                                  ),
+                                );
                               },
                             ),
-                          );
-                        },
-                      );
-                    }return Container();
-                  },
+                            ListView.builder(
+                              itemCount: careTakers.length,
+                              itemBuilder: (ctx, i) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
+                                  child: CustomProfileCard(
+                                    lat: lat,
+                                    lon: lon,
+                                    careTaker: careTakers[i],
+                                    onTap: () {
+                                      if(Constants.checkUserLoginStatus()){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                                          ),
+                                        );
+                                      }else{
+                                        showLoginPopUp();
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            ListView.builder(
+                              itemCount: careTakers.length,
+                              itemBuilder: (ctx, i) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
+                                  child: CustomProfileCard(
+                                    lat: lat,
+                                    lon: lon,
+                                    careTaker: careTakers[i],
+                                    onTap: () {
+                                      if(Constants.checkUserLoginStatus()){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                                          ),
+                                        );
+                                      }else{
+                                        showLoginPopUp();
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                            ListView.builder(
+                              itemCount: careTakers.length,
+                              itemBuilder: (ctx, i) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
+                                  child: CustomProfileCard(
+                                    lat: lat,
+                                    lon: lon,
+                                    careTaker: careTakers[i],
+                                    onTap: () {
+                                      if(Constants.checkUserLoginStatus()){
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                                          ),
+                                        );
+                                      }else{
+                                        showLoginPopUp();
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          ],
+                        );
+                      }return Container();
+                    },
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

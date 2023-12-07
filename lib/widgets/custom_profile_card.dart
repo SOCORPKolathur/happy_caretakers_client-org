@@ -39,7 +39,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
     var a = 0.5 - c((widget.careTaker.location.lat! - widget.lat) * p)/2 +
         c(widget.lat * p) * c(widget.careTaker.location.lat! * p) *
             (1 - c((widget.careTaker.location.lng! - widget.lon) * p))/2;
-    return ((12742 * asin(sqrt(a)))).toStringAsFixed(2);
+    return ((12742 * asin(sqrt(a)))).toInt();
   }
 
   @override
@@ -48,7 +48,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
     return Column(
       children: [
         Text(
-          "--- ${getDistance()} KM ---",
+          getDistance() < 10 ? "---  ${widget.careTaker.position} Near you ---" : "---  ${widget.careTaker.position} under ${getDistance().toString()} KM ---",
           style: GoogleFonts.poppins(
             color: Constants.lightGrey,
             fontSize: 14,
@@ -230,7 +230,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                           Icon(Icons.school,color: Constants.primaryAppColor,),
                                           SizedBox(width: 5),
                                           KText(
-                                            text: "${widget.careTaker.workExperience} years",
+                                            text: "${widget.careTaker.yearsOfExperience} years",
                                             style: GoogleFonts.poppins(
                                               color: Constants.semiGrey,
                                             ),

@@ -6,12 +6,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/views/login_view.dart';
+import 'package:happy_caretakers_client/views/user/chat_view.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
-
-
-
+import 'package:url_launcher/url_launcher.dart';
+import 'package:intl/intl.dart';
 import '../../widgets/kText.dart';
 import '../../widgets/primary_button.dart';
 import '../../widgets/secondary_button.dart';
@@ -25,12 +25,16 @@ class ProfileDetailsView extends StatefulWidget {
   State<ProfileDetailsView> createState() => _ProfileDetailsViewState();
 }
 
-class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTickerProviderStateMixin{
+class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProviderStateMixin{
   double pi = 3.14;
   bool slidefinish = false;
 
   late AnimationController? animationController;
   Animation<double>? opacityAnimation;
+
+  late final AnimationController _controller = AnimationController(
+      duration: const Duration(milliseconds: 300), vsync: this, value: 1.0);
+
 
   @override
   void initState() {
@@ -217,6 +221,9 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                     return InkWell(
                                       onTap: (){
                                         updateWishList(careTaker,isWishListed);
+                                        _controller
+                                            .reverse()
+                                            .then((value) => _controller.forward());
                                       },
                                       child: Material(
                                         elevation: 10,
@@ -230,11 +237,16 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                             color: Constants.primaryWhite,
                                             borderRadius: BorderRadius.circular(15),
                                           ),
-                                          padding: const EdgeInsets.all(16),
-                                          child: Icon(
-                                            isWishListed ? Icons.bookmark : Icons.bookmark_border,
-                                            color: Constants.primaryAppColor,
-                                            size: 40,
+                                          child: Center(
+                                            child: ScaleTransition(
+                                              scale: Tween(begin: 0.2, end: 1.0).animate(
+                                                  CurvedAnimation(parent: _controller, curve: Curves.easeOut)),
+                                              child: Icon(
+                                                isWishListed ? Icons.bookmark : Icons.bookmark_border,
+                                                color: Constants.primaryAppColor,
+                                                size: 40,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -556,9 +568,41 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                               }
                             },
                             child: SliderButton(
-                              action: () {
+                              action: () async {
                                 if(Constants.checkUserLoginStatus()){
                                   if(userSnap.data!.get("subscriptionCount") > 0){
+                                    FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(careTaker.id).set({
+                                      "timestamp": FieldValue.serverTimestamp(),
+                                      "sender": "${careTaker.firstName} ${careTaker.lastName}",
+                                      "senderPhone": "${careTaker.phone}",
+                                      "senderImage": careTaker.imgUrl,
+                                      "senderMail": careTaker.email,
+                                      "senderAddress": careTaker.address,
+                                      "senderId" : userSnap.data!.id,
+                                      "senderToken" : careTaker.fcmToken,
+                                    });
+                                    var msgDoc = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(careTaker.id).collection('Messages').get();
+                                    if(msgDoc.docs.isEmpty){
+                                      FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(careTaker.id).collection('Messages').doc().set(
+                                          {
+                                            "message": "Welcome",
+                                            "type": "text",
+                                            "time": FieldValue.serverTimestamp(),
+                                            "timestamp" : DateTime.now().millisecondsSinceEpoch,
+                                            "submittime":"${DateFormat('hh:mm a').format(DateTime.now())}",
+                                            "sender": "Happy Caretakers",
+                                            "submitdate":"${DateTime.now().year}-${DateTime.now().month}-${DateTime.now().day}",
+                                          }
+                                      );
+                                    }
+
+                                    // FirebaseFirestore.instance.collection('CareTakers').doc(careTaker.id).collection('Chats').doc(FirebaseAuth.instance.currentUser!.uid).set({
+                                    //   "timestamp": FieldValue.serverTimestamp(),
+                                    //   "sender": "${userSnap.data!.get("firstName")} ${userSnap.data!.get("lastName")}",
+                                    //   "senderPhone": "${userSnap.data!.get("phone")}",
+                                    //   "senderImage": "",
+                                    //   "senderId" : userSnap.data!.id,
+                                    // });
                                     showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,
@@ -690,18 +734,28 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with SingleTick
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: [
                                                     SecondaryButton(
-                                                        title: 'Cancel',
-                                                        onTap: (){
-                                                          Navigator.pop(context);
-                                                        }
-                                                    ),
-                                                    PrimaryButton(
                                                         title: 'Call Now',
                                                         onTap: (){
                                                           FirebaseFirestore.instance.collection('Users').doc(userSnap.data!.id).update({
                                                             "subscriptionCount" : FieldValue.increment(-1),
                                                           });
                                                           Navigator.pop(context);
+                                                          final Uri emailLaunchUri = Uri(
+                                                            scheme: 'tel',
+                                                            path: careTaker.phone,
+                                                          );
+                                                          launchUrl(emailLaunchUri);
+                                                        }
+                                                    ),
+                                                    PrimaryButton(
+                                                        title: 'Message',
+                                                        onTap: () async{
+                                                          var data = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(careTaker.id).get();
+                                                          FirebaseFirestore.instance.collection('Users').doc(userSnap.data!.id).update({
+                                                            "subscriptionCount" : FieldValue.increment(-1),
+                                                          });
+                                                          Navigator.pop(context);
+                                                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ChatView(data: data)));
                                                         }
                                                     ),
                                                   ],

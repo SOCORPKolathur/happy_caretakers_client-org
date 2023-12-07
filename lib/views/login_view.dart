@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/widgets/kText.dart';
 import 'package:lottie/lottie.dart';
 import '../constants.dart';
 import '../widgets/custom_textfiled.dart';
@@ -19,7 +21,12 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   TextEditingController phoneController = TextEditingController();
+  TextEditingController firstNameController = TextEditingController();
+  TextEditingController lasNameController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
+
+  final _keyPhone = GlobalKey<FormFieldState>();
+  String errorText = "";
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +39,12 @@ class _LoginViewState extends State<LoginView> {
           Container(
             height: size.height,
             width: size.width,
-            decoration: const BoxDecoration(
-                image: DecorationImage(
-                  fit: BoxFit.fill,
-                  image: AssetImage("assets/dolomite-alps-peaks-italy 1.png"),
-                )),
+            // decoration: const BoxDecoration(
+            //     image: DecorationImage(
+            //       fit: BoxFit.fill,
+            //       image: AssetImage("assets/dolomite-alps-peaks-italy 1.png"),
+            //     ),
+            // ),
           ),
           Container(
             height: size.height,
@@ -64,92 +72,326 @@ class _LoginViewState extends State<LoginView> {
                       children: [
                         Text(
                           "Welcome",
-                          style: GoogleFonts.playfairDisplay(
-                            fontSize: size.width/11.416666667,
-                            color: const Color(0xff757879),
-                            fontWeight: FontWeight.w900,
+                          style: GoogleFonts.poppins(
+                            //fontSize: size.width/11.416666667,
+                            fontSize: 32,
+                            color: Constants.darkBlack,
+                            fontWeight: FontWeight.w600,
                           ),
                         ),
                         SizedBox(height: size.height/173.2),
                         Text(
-                          "Kindly enter your login details",
+                          "Kindly enter your details",
                           style: GoogleFonts.openSans(
                             fontSize: size.width/29.357142857,
                             color: const Color(0xff757879),
+                            fontWeight: FontWeight.w500,
                           ),
                         )
                       ],
                     ),
-                    SizedBox(height: size.height * 0.42),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        CustomTextField(
-                          keyboardType: TextInputType.phone,
-                          icon: Icons.phone,
-                          hint: "Phone",
-                          passType: false,
-                          controller: phoneController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return '';
-                            }
-                            return null;
-                          },
-                          onSubmitted: (String) {  },
-                        ),
-                        SizedBox(height: size.height/43.3),
-                        InkWell(
-                          onTap: () async {
-                            //authenticate();
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (ctx) =>
-                                        OtpVerificationView(phone: phoneController.text,isCareTaker: widget.isCareTaker)));
-                          },
-                          child: Container(
-                            height: size.height/14.433333333,
-                            width: double.infinity,
-                            decoration: BoxDecoration(
-                              color: Constants.primaryAppColor,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "Login",
-                                style: GoogleFonts.openSans(
-                                    fontSize: size.width/24.176470588,
-                                    color: const Color(0xffFFFFFF),
-                                    fontWeight: FontWeight.bold),
+                    SizedBox(height: size.height * 0.06),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              KText(
+                                text: "Firstname",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Constants.newGrey,
+                                ),
                               ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffEAF1FF),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: const Color(0xffC8E3FF),
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  controller: firstNameController,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+                                  ],
+                                  maxLength: 45,
+                                  onChanged: (val){
+
+                                  },
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 20,top: 10),
+                                    counterText: "",
+                                    border: InputBorder.none,
+                                    suffixIcon: const Icon(Icons.person_outline_rounded,color: Color(0xffC8E3FF)),
+                                    hintText: "Enter your firstname",
+                                    hintStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                    labelStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              KText(
+                                text: "Lastname",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Constants.newGrey,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffEAF1FF),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: const Color(0xffC8E3FF),
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  controller: lasNameController,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+                                  ],
+                                  maxLength: 45,
+                                  onChanged: (val){
+
+                                  },
+                                  keyboardType: TextInputType.name,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 20,top: 10),
+                                    counterText: "",
+                                    border: InputBorder.none,
+                                    suffixIcon: const Icon(Icons.person_outline_rounded,color: Color(0xffC8E3FF)),
+                                    hintText: "Enter your lastname",
+                                    hintStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                    labelStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 20),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              KText(
+                                text: "Phone Number*",
+                                style: GoogleFonts.poppins(
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 16,
+                                  color: Constants.newGrey,
+                                ),
+                              ),
+                              Container(
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffEAF1FF),
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(
+                                    color: const Color(0xffC8E3FF),
+                                  ),
+                                ),
+                                child: TextFormField(
+                                  key: _keyPhone,
+                                  controller: phoneController,
+                                  inputFormatters: [
+                                    FilteringTextInputFormatter.allow(
+                                        RegExp(r'[0-9]')),
+                                  ],
+                                  maxLength: 10,
+                                  validator: (val){
+                                    setState(() {
+                                      if(val!.isEmpty) {
+                                        errorText = 'Field is required';
+                                        //return 'Field is required';
+                                      } else if(val.length != 10){
+                                        errorText = 'number must be 10 digits';
+                                        //return 'number must be 10 digits';
+                                      }else{
+                                        errorText = '';
+                                        //return '';
+                                      }
+                                    });
+                                  },
+                                  onChanged: (val){
+                                    _keyPhone.currentState!.validate();
+                                  },
+                                  keyboardType: TextInputType.number,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.only(left: 20,top: 10),
+                                    counterText: "",
+                                    border: InputBorder.none,
+                                    suffixIcon: Icon(Icons.phone,color: const Color(0xffC8E3FF)),
+                                    hintText: "123456789",
+                                    hintStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                    labelStyle: GoogleFonts.poppins(
+                                      color: Constants.lightGrey,
+                                      fontSize: 18,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 10),
+                            child: Row(
+                              children: [
+                                Text(
+                                  errorText,
+                                  style: TextStyle(color: Colors.red),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(height: size.height/43.3),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                      width: size.width,
+                      child: Row(
+                        children: [
+                          Expanded(child: Container(height: 2,color: const Color(0xffC8E3FF))),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 10),
+                            child: Text(
+                              "Or",
+                              style: GoogleFonts.poppins(
+                                color: Color(0xffC8E3FF),
+                                fontWeight: FontWeight.w900,
+                              ),
+                            ),
+                          ),
+                          Expanded(child: Container(height: 2,color: const Color(0xffC8E3FF))),
+                        ],
+                      ),
+                    ),
+                    SizedBox(height: size.height * 0.02),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffEAF1FF),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: const Color(0xffC8E3FF),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.g_mobiledata,
+                              color: Constants.primaryAppColor,
+                              size: 45,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffEAF1FF),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: const Color(0xffC8E3FF),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.facebook,
+                              color: Constants.primaryAppColor,
+                              size: 35,
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: 20),
+                        Container(
+                          height: 50,
+                          width: 50,
+                          decoration: BoxDecoration(
+                            color: const Color(0xffEAF1FF),
+                            borderRadius: BorderRadius.circular(10),
+                            border: Border.all(
+                              color: const Color(0xffC8E3FF),
+                            ),
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.mail,
+                              color: Constants.primaryAppColor,
+                              size: 30,
                             ),
                           ),
                         ),
                       ],
                     ),
-                    SizedBox(height: size.height * 0.05),
+                    SizedBox(height: size.height * 0.02),
                     InkWell(
-                      onTap: () {
-                        //showNewRegisterPopUp(context);
+                      onTap: () async {
+                        _keyPhone.currentState!.validate();
+                        if(phoneController.text.length == 10){
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (ctx) =>
+                                      OtpVerificationView(firstName: firstNameController.text,lastName: lasNameController.text, phone: phoneController.text,isCareTaker: widget.isCareTaker)));
+                        }
                       },
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'Don\'t have an account?',
-                          style: GoogleFonts.openSans(
-                            fontSize: size.width/29.357142857,
-                            color: const Color(0xff757879),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Container(
+                          height: size.height/14.433333333,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            color: Constants.primaryAppColor,
+                            borderRadius: BorderRadius.circular(30),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Color(0xff7BBCFC),
+                                blurRadius: 5,
+                                offset: Offset(-2, 4),
+                              )
+                            ],
                           ),
-                          children: <TextSpan>[
-                            TextSpan(
-                              text: ' Sign Up',
+                          child: Center(
+                            child: Text(
+                              "Login",
                               style: GoogleFonts.openSans(
-                                color: Constants.primaryAppColor,
-                                fontSize: size.width/29.357142857,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontSize: size.width/24.176470588,
+                                  color: const Color(0xffFFFFFF),
+                                  fontWeight: FontWeight.bold),
                             ),
-                          ],
+                          ),
                         ),
                       ),
                     ),

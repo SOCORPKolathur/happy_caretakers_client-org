@@ -48,9 +48,7 @@ dependencies:
   action_slider: ^0.7.0
   photo_view: ^0.14.0
   cached_network_image: ^3.3.0
-
   inkblob_navigation_bar: ^0.1.2
-
   flutter_launcher_icons: ^0.13.1
   flutter_translate: ^4.0.4
   flutter_localization: ^0.1.13
@@ -60,6 +58,11 @@ dependencies:
   material_dialogs: ^1.1.4
   forked_slider_button: ^2.0.2
   url_launcher: ^6.2.1
+  easy_dialog: ^1.1.1
+  pinput: ^3.0.1
+  email_validator: ^2.1.17
+  toggle_switch: ^2.1.0
+  stylish_dialog: ^1.0.2
 
 
 dev_dependencies:

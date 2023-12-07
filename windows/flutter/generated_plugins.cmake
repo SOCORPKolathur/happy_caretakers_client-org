@@ -10,6 +10,7 @@ list(APPEND FLUTTER_PLUGIN_LIST
   firebase_storage
   flutter_localization
   geolocator_windows
+  smart_auth
   url_launcher_windows
 )
 

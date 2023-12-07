@@ -1,20 +1,33 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_main_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_register_view.dart';
 import 'package:happy_caretakers_client/views/choose_role_view.dart';
 import 'package:happy_caretakers_client/views/user/main_view.dart';
+import 'firebase_api.dart';
 import 'firebase_options.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_translate/flutter_translate.dart';
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    DeviceOrientation.portraitDown
+  ]);
+  await FirebaseApi().initNotifications();
   var delegate = await LocalizationDelegate.create(
       basePath: 'assets/i18n/',
       fallbackLocale: 'en_US',
@@ -67,7 +80,7 @@ class _MyAppState extends State<MyApp> {
             builder: (ctx, snap){
               if(snap.hasData){
                 if(snap.data!.toLowerCase() == "not register"){
-                  return CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!);
+                  return CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '');
                 }else if(snap.data!.toLowerCase() == "caretaker"){
                   return const CareTakerMainView();
                 }else if(snap.data!.toLowerCase() == "user"){

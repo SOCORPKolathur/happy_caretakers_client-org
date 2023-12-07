@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 
@@ -12,6 +13,7 @@ class CustomTextField extends StatefulWidget {
     required this.controller,
     required this.validator,
     required this.onSubmitted,
+    required this.onChanged,
     required this.keyboardType,
   });
 
@@ -22,6 +24,7 @@ class CustomTextField extends StatefulWidget {
   final String? value;
   final TextInputType? keyboardType;
   final String? Function(String?)? validator;
+  final String? Function(String?)? onChanged;
   final String? Function(String?)? onSubmitted;
 
   @override
@@ -41,6 +44,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
     }
     super.initState();
   }
+
+
 
 
   @override
@@ -66,11 +71,18 @@ class _CustomTextFieldState extends State<CustomTextField> {
           onFieldSubmitted: widget.onSubmitted,
           controller: widget.controller,
           validator: widget.validator,
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(
+                RegExp(r'[0-9]')),
+          ],
+          maxLength: 10,
           obscureText: isObsecure,
+          onChanged: widget.onChanged,
           enableSuggestions: !widget.passType,
           autocorrect: !widget.passType,
           keyboardType: widget.keyboardType,
           decoration: InputDecoration(
+            counterText: "",
             border: InputBorder.none,
             prefixIcon: widget.icon != null
                 ? Icon(

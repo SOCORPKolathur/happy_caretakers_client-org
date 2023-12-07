@@ -2,8 +2,11 @@ class CareTakersModel {
   late String id;
   late String firstName;
   late String lastName;
+  late String category;
   late String imgUrl;
-  late String aadharUrl;
+  late String aadharNumber;
+  late String fcmToken;
+  late bool isCurrentlyWorking;
   late String city;
   late int age;
   late String phone;
@@ -17,6 +20,7 @@ class CareTakersModel {
   late int yearsOfExperience;
   late String position;
   late String workingAt;
+  late String orgName;
   late String workPreparence;
   late num timestamp;
 
@@ -24,11 +28,15 @@ class CareTakersModel {
       {required this.firstName,
         required this.id,
         required this.lastName,
+        required this.fcmToken,
         required this.age,
         required this.phone,
         required this.rating,
         required this.workExperience,
         required this.totalWorks,
+        required this.orgName,
+        required this.isCurrentlyWorking,
+        required this.category,
         required this.email,
         required this.location,
         required this.address,
@@ -38,18 +46,22 @@ class CareTakersModel {
         required this.position,
         required this.workingAt,
         required this.imgUrl,
-        required this.aadharUrl,
+        required this.aadharNumber,
         required this.timestamp,
         required this.workPreparence});
 
   CareTakersModel.fromJson(Map<String, dynamic> json) {
     firstName = json['firstName'];
     lastName = json['lastName'];
+    fcmToken = json['fcmToken'];
+    orgName = json['orgName'];
+    category = json['category'];
     id = json['id'];
+    isCurrentlyWorking = json['isCurrentlyWorking'];
     timestamp = json['timestamp'];
     city = json['city'];
     imgUrl = json['imgUrl'];
-    aadharUrl = json['aadharUrl'];
+    aadharNumber = json['aadharNumber'];
     age = json['age'];
     phone = json['phone'];
     if (json['rating'] != null) {
@@ -76,10 +88,14 @@ class CareTakersModel {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['firstName'] = firstName;
     data['lastName'] = lastName;
+    data['fcmToken'] = fcmToken;
+    data['orgName'] = orgName;
+    data['isCurrentlyWorking'] = isCurrentlyWorking;
     data['timestamp'] = timestamp;
     data['city'] = city;
     data['imgUrl'] = imgUrl;
-    data['aadharUrl'] = aadharUrl;
+    data['category'] = category;
+    data['aadharNumber'] = aadharNumber;
     data['id'] = id;
     data['age'] = age;
     data['phone'] = phone;

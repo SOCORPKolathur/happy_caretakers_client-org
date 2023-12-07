@@ -30,8 +30,8 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   File? profileImage;
   XFile? imageForShow;
 
-  File? aadharImage;
-  XFile? aadharImageForShow;
+  // File? aadharImage;
+  // XFile? aadharImageForShow;
 
 
   TextEditingController firstNameController = TextEditingController();
@@ -39,6 +39,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ageController = TextEditingController();
+  TextEditingController aadhaarNumberController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController workExperienceController = TextEditingController();
   TextEditingController totalWorksController = TextEditingController();
@@ -95,6 +96,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
       workPreparenceController.text = widget.careTaker.workPreparence.toString();
       aboutController.text = widget.careTaker.about.toString();
       addressController.text = widget.careTaker.address.toString();
+      aadhaarNumberController.text = widget.careTaker.aadharNumber.toString();
     });
   }
 
@@ -122,19 +124,19 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
     }
   }
 
-  pickAadharImage() async {
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
-    if (pickedFile != null) {
-      setState(() {
-        aadharImage = File(pickedFile.path);
-        aadharImageForShow = pickedFile;
-      });
-    } else {
-      print('No image selected.');
-      return;
-    }
-  }
+  // pickAadharImage() async {
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  //
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       aadharImage = File(pickedFile.path);
+  //       aadharImageForShow = pickedFile;
+  //     });
+  //   } else {
+  //     print('No image selected.');
+  //     return;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -549,53 +551,74 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                   ),
                 ),
                 SizedBox(height: 10),
-                Center(
-                    child: InkWell(
-                      onTap: (){
-                        pickAadharImage();
-                      },
-                      child: Container(
-                        height: 150,
-                        width: 150,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Constants.primaryAppColor,
-                          image: aadharImageForShow != null
-                              ? DecorationImage(
-                              fit: BoxFit.fill,
-                              image: FileImage(aadharImage!)
-                          ) : DecorationImage(
-                              fit: BoxFit.fill,
-                              image: NetworkImage(widget.careTaker.aadharUrl)
-                          ),
-                          //     : DecorationImage(
-                          //     fit: BoxFit.fill,
-                          //     image: NetworkImage(oldImgUrl)
-                          // ),
-                        ),
-                        child: (aadharImageForShow == null && widget.careTaker.aadharUrl == "") ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo,
-                                color: Constants.primaryWhite,
-                                size: 40,
-                              ),
-                              KText(
-                                text: "Aadhaar Photo",
-                                style: GoogleFonts.poppins(
-                                  color: Constants.primaryWhite,
-                                  fontWeight: FontWeight.w700,
-                                  fontSize: 15,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ):null,
-                      ),
-                    )
+                Container(
+                  height: 50,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: TextField(
+                    keyboardType: TextInputType.emailAddress,
+                    controller: aadhaarNumberController,
+                    decoration: InputDecoration(
+                        suffixIcon: Icon(Icons.alternate_email, color: Constants.primaryAppColor),
+                        border: InputBorder.none,
+                        contentPadding:
+                        EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+                        hintText: 'Aadhaar Number',
+                        hintStyle: TextStyle(
+                          color: Constants.lightGrey,
+                        )),
+                  ),
                 ),
+                // Center(
+                //     child: InkWell(
+                //       onTap: (){
+                //         pickAadharImage();
+                //       },
+                //       child: Container(
+                //         height: 150,
+                //         width: 150,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(10),
+                //           color: Constants.primaryAppColor,
+                //           image: aadharImageForShow != null
+                //               ? DecorationImage(
+                //               fit: BoxFit.fill,
+                //               image: FileImage(aadharImage!)
+                //           ) : DecorationImage(
+                //               fit: BoxFit.fill,
+                //               image: NetworkImage(widget.careTaker.aadharUrl)
+                //           ),
+                //           //     : DecorationImage(
+                //           //     fit: BoxFit.fill,
+                //           //     image: NetworkImage(oldImgUrl)
+                //           // ),
+                //         ),
+                //         child: (aadharImageForShow == null && widget.careTaker.aadharUrl == "") ? Center(
+                //           child: Column(
+                //             mainAxisAlignment: MainAxisAlignment.center,
+                //             children: [
+                //               Icon(
+                //                 Icons.add_a_photo,
+                //                 color: Constants.primaryWhite,
+                //                 size: 40,
+                //               ),
+                //               KText(
+                //                 text: "Aadhaar Photo",
+                //                 style: GoogleFonts.poppins(
+                //                   color: Constants.primaryWhite,
+                //                   fontWeight: FontWeight.w700,
+                //                   fontSize: 15,
+                //                 ),
+                //               ),
+                //             ],
+                //           ),
+                //         ):null,
+                //       ),
+                //     )
+                // ),
                 SizedBox(height: 20),
                 InkWell(
                   onTap: () async {
@@ -604,7 +627,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                         isLoading = true;
                       });
                       if(
-                      firstNameController.text != "" &&
+                          firstNameController.text != "" &&
                           lastNameController.text != "" &&
                           phoneController.text != "" &&
                           emailController.text != "" &&
@@ -619,18 +642,18 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           addressController.text != ""
                       ){
                         String downloadUrl = "";
-                        String downloadUrl1 = "";
                         String? fcmToken = await FirebaseMessaging.instance.getToken();
                         if(profileImage != null){
                           downloadUrl =  await uploadImageToStorage(profileImage!);
                         }
-                        if(aadharImage != null){
-                          downloadUrl1 =  await uploadImageToStorage(aadharImage!);
-                        }
                         Response response = await CareTakersFireCrud.updateCareTaker(
                             CareTakersModel(
+                              orgName: "",
+                              isCurrentlyWorking: true,
                               firstName: firstNameController.text,
                               id: widget.careTaker.id,
+                              category: "",
+                              fcmToken: fcmToken!,
                               lastName: lastNameController.text,
                               age: int.parse(ageController.text.toString()),
                               phone: phoneController.text,
@@ -649,7 +672,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                               position: positionController.text,
                               workingAt: workingAtController.text,
                               imgUrl: downloadUrl != "" ? downloadUrl : widget.careTaker.imgUrl,
-                              aadharUrl: downloadUrl1 != "" ? downloadUrl1 : widget.careTaker.aadharUrl,
+                              aadharNumber: aadhaarNumberController.text,
                               timestamp: DateTime.now().millisecondsSinceEpoch,
                               workPreparence: workPreparenceController.text,
                             )
