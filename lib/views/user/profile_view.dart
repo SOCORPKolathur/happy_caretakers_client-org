@@ -359,9 +359,15 @@
 //   }
 // }
 
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/views/user/history_view.dart';
 import 'package:happy_caretakers_client/views/user/wish_list_view.dart';
 import 'package:happy_caretakers_client/widgets/kText.dart';
 import 'package:lottie/lottie.dart';
@@ -372,6 +378,7 @@ import '../../constants.dart';
 import '../about_app_view.dart';
 import '../choose_role_view.dart';
 import '../languages_view.dart';
+import '../login_view.dart';
 import 'carts_view.dart';
 import 'orders_view.dart';
 
@@ -383,6 +390,47 @@ class ProfileView extends StatefulWidget {
 }
 
 class _ProfileViewState extends State<ProfileView> {
+  
+  int connectionsMade = 0;
+  int connectionsLeft = 0;
+  String name = "";
+  String image = "";
+  String phone = "";
+  
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+  
+  // getUser() async {
+  //   var userDoc = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+  //   setState(() {
+  //     name = userDoc.get("firstName")+" "+userDoc.get("lastName");
+  //   });
+  // }
+
+  getUser() async {
+    String? docId = await _getId();
+    if(FirebaseAuth.instance.currentUser != null){
+      var userDoc = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      var userDoc1 = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Connections').get();
+      if(userDoc.exists){
+        setState(() {
+          name = userDoc.get("firstName")+" "+userDoc.get("lastName");
+          phone = userDoc.get("phone");
+          connectionsMade = userDoc1.docs.length;
+          connectionsLeft = userDoc.get("subscriptionCount");
+        });
+      }
+    } else{
+      var tempUserDoc = await FirebaseFirestore.instance.collection('TempUsers').doc(docId).get();
+      setState(() {
+        name = tempUserDoc.get("name");
+      });
+    }
+  }
+  
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -420,9 +468,7 @@ class _ProfileViewState extends State<ProfileView> {
                           shape: BoxShape.circle,
                           image: DecorationImage(
                             fit: BoxFit.fill,
-                            image: NetworkImage(
-                              "https://images4.alphacoders.com/127/1274590.jpg"
-                            )
+                            image: image != "" ? NetworkImage(image) : NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
                           )
                         ),
                       ),
@@ -432,7 +478,7 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               SizedBox(height: 10),
               Text(
-                "Nagaraj K",
+                name,
                 style: GoogleFonts.poppins(
                   color: Constants.darkBlack,
                   fontWeight: FontWeight.w600,
@@ -440,12 +486,24 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ),
               SizedBox(height: 6),
-              Text(
-                "+91 7639033006",
+              phone != "" ? Text(
+                phone,
                 style: GoogleFonts.poppins(
                   color: Constants.primaryAppColor,
                   fontWeight: FontWeight.w400,
                   fontSize: 15,
+                ),
+              ) : InkWell(
+                onTap: (){
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+                },
+                child: Text(
+                  "Log In",
+                  style: GoogleFonts.poppins(
+                    color: Constants.primaryAppColor,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16,
+                  ),
                 ),
               ),
               SizedBox(height: 25),
@@ -457,7 +515,7 @@ class _ProfileViewState extends State<ProfileView> {
                     Column(
                       children: [
                         Text(
-                          "80",
+                          connectionsMade.toString(),
                           style: GoogleFonts.poppins(
                             color: Constants.primaryAppColor,
                             fontWeight: FontWeight.w700,
@@ -477,7 +535,7 @@ class _ProfileViewState extends State<ProfileView> {
                     Column(
                       children: [
                         Text(
-                          "80",
+                          connectionsLeft.toString(),
                           style: GoogleFonts.poppins(
                             color: Constants.primaryAppColor,
                             fontWeight: FontWeight.w700,
@@ -505,7 +563,7 @@ class _ProfileViewState extends State<ProfileView> {
                   children: [
                     InkWell(
                       onTap: () async {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const HistoryView()));
                       },
                       child: Container(
                         height: 45,
@@ -594,7 +652,7 @@ class _ProfileViewState extends State<ProfileView> {
                       SizedBox(height: height/50.4),
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> OrdersView(userDocId: FirebaseAuth.instance.currentUser!.uid)));
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> OrdersView()));
                         },
                         child: CardWidget('Your Orders',Icons.shopping_basket,Colors.pink),
                       ),
@@ -627,6 +685,9 @@ class _ProfileViewState extends State<ProfileView> {
                               actions: [
                                 IconsButton(
                                   onPressed: () async {
+                                    String? devId = await _getId();
+                                    await FirebaseFirestore.instance.collection('TempUsers').doc(devId).delete();
+                                    await setLanguage();
                                     await FirebaseAuth.instance.signOut();
                                     Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const ChooseRoleView()));
                                   },
@@ -656,6 +717,22 @@ class _ProfileViewState extends State<ProfileView> {
       ),
     );
   }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) { // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if(Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.id; // unique ID on Android
+    }
+  }
+
+  setLanguage(){
+    changeLocale(context, 'en_Us');
+  }
+
 
   CardWidget(String title, IconData icon,Color color){
     Size size = MediaQuery.of(context).size;

@@ -1,17 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/services/cart_firecrud.dart';
-
+import 'package:lottie/lottie.dart';
 import '../../constants.dart';
 import '../../models/orders_model.dart';
 import '../../widgets/kText.dart';
 import 'orderDetailsView.dart';
 
 class OrdersView extends StatefulWidget {
-  const OrdersView({super.key, required this.userDocId});
-  final String userDocId;
+  const OrdersView({super.key});
 
 
   @override
@@ -41,11 +41,11 @@ class _OrdersViewState extends State<OrdersView> {
           child: const Icon(Icons.arrow_back,color: Colors.white),
         ),
       ),
-      body: SizedBox(
+      body: FirebaseAuth.instance.currentUser != null ? SizedBox(
         height: size.height,
         width: size.width,
         child: StreamBuilder(
-          stream: CartFireCrud.fetchOrdersForUser(widget.userDocId),
+          stream: CartFireCrud.fetchOrdersForUser(FirebaseAuth.instance.currentUser!.uid),
           builder: (ctx, snapshot) {
             if (snapshot.hasData) {
               List<OrdersModel> orders = snapshot.data!;
@@ -53,10 +53,8 @@ class _OrdersViewState extends State<OrdersView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      "assets/undraw_empty_cart_co35.svg",
-                      height: size.height * 0.246,
-                      width: size.width * 0.3,
+                    Lottie.asset(
+                      "assets/no_noti.json",
                     ),
                     SizedBox(height: size.height/43.3),
                     InkWell(
@@ -89,7 +87,7 @@ class _OrdersViewState extends State<OrdersView> {
                     for (int i = 0; i < orders.length; i++)
                       InkWell(
                         onTap: (){
-                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> OrderDetailsView(orderId: orders[i].orderId!,userDocId: widget.userDocId,order: orders[i])));
+                          Navigator.push(context, MaterialPageRoute(builder: (ctx)=> OrderDetailsView(orderId: orders[i].orderId!,userDocId: FirebaseAuth.instance.currentUser!.uid,order: orders[i])));
                         },
                         child: Container(
                           width: size.width,
@@ -216,7 +214,7 @@ class _OrdersViewState extends State<OrdersView> {
             return Container();
           },
         ),
-      ),
+      ) : Container(),
     );
   }
 }

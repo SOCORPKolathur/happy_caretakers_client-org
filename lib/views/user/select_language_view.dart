@@ -5,18 +5,22 @@ import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
-import '../widgets/kText.dart';
-import 'user/main_view.dart';
 
-class LanguagesView extends StatefulWidget {
-  const LanguagesView({super.key});
+import '../../constants.dart';
+import '../../widgets/kText.dart';
+import '../languages_view.dart';
+import 'main_view.dart';
+
+class SelectLanguageView extends StatefulWidget {
+  const SelectLanguageView({super.key});
 
   @override
-  State<LanguagesView> createState() => _LanguagesViewState();
+  State<SelectLanguageView> createState() => _SelectLanguageViewState();
 }
 
-class _LanguagesViewState extends State<LanguagesView> {
+class _SelectLanguageViewState extends State<SelectLanguageView> {
+  String selectedLanguage = 'en_US';
+
   List<ChooseLanguageModel> languagesList = [
     ChooseLanguageModel(
       name: "Tamil",
@@ -170,8 +174,12 @@ class _LanguagesViewState extends State<LanguagesView> {
                             itemBuilder: (BuildContext context, int i) {
                               return InkWell(
                                 onTap: () {
-                                  setLanguage(languagesList[i].code!);
-                                  //Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
+                                  setState(() {
+                                    selectedLanguage = languagesList[i].code!;
+                                  });
+                                  navigate();
+                                  // changeLocale(context, languagesList[i].code!);
+                                  // Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
                                 },
                                 child: Padding(
                                   padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 16),
@@ -224,17 +232,17 @@ class _LanguagesViewState extends State<LanguagesView> {
     );
   }
 
-  setLanguage(String language) async {
+
+  navigate() async {
     String? devId = await _getId();
-    var doc = await FirebaseFirestore.instance.collection('TempUsers').doc(devId).get();
-    if(doc.exists){
-      FirebaseFirestore.instance.collection('TempUsers').doc(devId).set({
-        "lanCode" : language,
-      });
-    }
-    changeLocale(context, language);
-    Navigator.pop(context);
-    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
+    var userDoc = await FirebaseFirestore.instance.collection('TempUsers').get();
+    FirebaseFirestore.instance.collection('TempUsers').doc(devId).set({
+      "uid" : devId,
+      "lanCode" : selectedLanguage,
+      "name" : "User-"+"${userDoc.docs.length+1}".padLeft(5,"0")
+    });
+    changeLocale(context, selectedLanguage);
+    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const MainView()));
   }
 
   Future<String?> _getId() async {
@@ -248,12 +256,5 @@ class _LanguagesViewState extends State<LanguagesView> {
     }
   }
 
-}
 
-class ChooseLanguageModel {
-  ChooseLanguageModel({this.name, this.code, this.orgName});
-
-  String? name;
-  String? orgName;
-  String? code;
 }

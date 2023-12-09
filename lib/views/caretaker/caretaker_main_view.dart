@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_home_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_message_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_profile_view.dart';
@@ -20,10 +23,10 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
   int _selectedIndex = 0;
 
   List<Widget> pages = [
-    CareTakerHomeView(),
-    CaretakerMessagesView(),
-    CaretakerProductsView(),
-    CareTakerProfileView(),
+    // CareTakerHomeView(),
+    // CaretakerMessagesView(),
+    // CaretakerProductsView(),
+    // CareTakerProfileView(),
   ];
 
   int animatesetvalue = 0;
@@ -33,7 +36,21 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-        body: pages[_selectedIndex],
+        body: FutureBuilder(
+          future: FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get(),
+          builder: (context,snap) {
+            if(snap.hasData){
+              CareTakersModel careTakersModel = CareTakersModel.fromJson(snap.data!.data() as Map<String,dynamic>);
+              pages = [
+                CareTakerHomeView(caretaker: careTakersModel),
+                CaretakerMessagesView(),
+                CaretakerProductsView(caretaker: careTakersModel),
+                CareTakerProfileView(caretaker: careTakersModel),
+              ];
+              return pages[_selectedIndex];
+            }return Center(child: CircularProgressIndicator(),);
+          }
+        ),
         bottomNavigationBar: Container(
           color: Constants.appBackgroundolor,
           child: Material(

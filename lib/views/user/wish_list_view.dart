@@ -5,6 +5,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/user/profile_details_view.dart';
+import 'package:lottie/lottie.dart';
 
 import '../../models/care_takers_model.dart';
 import '../../widgets/custom_profile_card.dart';
@@ -66,11 +67,17 @@ class _WishListViewState extends State<WishListView> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: StreamBuilder(
+        child: FirebaseAuth.instance.currentUser != null ? StreamBuilder(
           stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Wishlist').snapshots(),
           builder: (ctx, snap){
             if(snap.hasData){
-              return ListView.builder(
+              return snap.data!.docs.isEmpty
+                  ? Container(
+                child: Center(
+                  child: Lottie.asset("assets/no_noti.json"),
+                ),
+              )
+                  : ListView.builder(
                 itemCount: snap.data!.docs.length,
                 itemBuilder: (ctx, i) {
                   var data = CareTakersModel.fromJson(snap.data!.docs[i].data());
@@ -94,7 +101,7 @@ class _WishListViewState extends State<WishListView> {
               );
             }return Container();
           },
-        ),
+        ) : Container(),
       ),
     );
   }

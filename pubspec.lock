@@ -17,6 +17,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.7.0"
+  animated_icon:
+    dependency: "direct main"
+    description:
+      name: animated_icon
+      sha256: ae969e5a37e79d616e2af88136dd59b2dea054d5f796b5bb43c2d72323a8f8c9
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.5"
+  animated_widgets:
+    dependency: "direct main"
+    description:
+      name: animated_widgets
+      sha256: "2d6b77a77fc733b06e185553ec0b8225ffd1dd0e6fa327900ff26f1e04995eda"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   archive:
     dependency: transitive
     description:
@@ -178,7 +194,7 @@ packages:
     source: hosted
     version: "1.0.6"
   device_info_plus:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: device_info_plus
       sha256: "0042cb3b2a76413ea5f8a2b40cec2a33e01d0c937e91f0f7c211fde4f7739ba6"
@@ -1130,6 +1146,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.4"
+  visibility_detector:
+    dependency: "direct main"
+    description:
+      name: visibility_detector
+      sha256: dd5cc11e13494f432d15939c3aa8ae76844c42b723398643ce9addb88a5ed420
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.4.0+2"
   web:
     dependency: transitive
     description:

@@ -946,35 +946,40 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                   ),
                   SizedBox(height: 10),
                   Center(
-                      child: Container(
-                        height: 120,
-                        width: 120,
-                        decoration: BoxDecoration(
-                          shape: BoxShape.circle,
-                          color: Constants.primaryAppColor,
-                          image: imageForShow != null
-                              ? DecorationImage(
-                              fit: BoxFit.fill,
-                              image: FileImage(profileImage!)
-                          ) :null,
-                          //     : DecorationImage(
-                          //     fit: BoxFit.fill,
-                          //     image: NetworkImage(oldImgUrl)
-                          // ),
-                          border: Border.all(color: Constants.primaryAppColor,width: 3),
-                        ),
-                        child: imageForShow == null ? Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.add_a_photo,
-                                color: Constants.primaryWhite,
-                                size: 40,
-                              ),
-                            ],
+                      child: InkWell(
+                        onTap: (){
+                          pickImage();
+                        },
+                        child: Container(
+                          height: 120,
+                          width: 120,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: Constants.primaryAppColor,
+                            image: imageForShow != null
+                                ? DecorationImage(
+                                fit: BoxFit.fill,
+                                image: FileImage(profileImage!)
+                            ) :null,
+                            //     : DecorationImage(
+                            //     fit: BoxFit.fill,
+                            //     image: NetworkImage(oldImgUrl)
+                            // ),
+                            border: Border.all(color: Constants.primaryAppColor,width: 3),
                           ),
-                        ):null,
+                          child: imageForShow == null ? Center(
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(
+                                  Icons.add_a_photo,
+                                  color: Constants.primaryWhite,
+                                  size: 40,
+                                ),
+                              ],
+                            ),
+                          ):null,
+                        ),
                       )
                   ),
                   const SizedBox(height: 10),
@@ -1037,7 +1042,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                               },
                               keyboardType: TextInputType.name,
                               onChanged: (val){
-                                _keyFirstName.currentState!.validate();
+                                //_keyFirstName.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1086,7 +1091,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                                 }
                               },
                               onChanged: (val){
-                                 _keyLastName.currentState!.validate();
+                                 //_keyLastName.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1137,7 +1142,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                             }
                           },
                           onChanged: (val){
-                            _keyEmail.currentState!.validate();
+                            //_keyEmail.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",
@@ -1189,7 +1194,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                             }
                           },
                           onChanged: (val){
-                            _keyPhone.currentState!.validate();
+                            //_keyPhone.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",
@@ -1241,7 +1246,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                                 }
                               },
                               onChanged: (val){
-                                _keyAge.currentState!.validate();
+                                //_keyAge.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1290,7 +1295,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                                 }
                               },
                               onChanged: (val){
-                                _keyCity.currentState!.validate();
+                                //_keyCity.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1343,7 +1348,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                             }
                           },
                           onChanged: (val){
-                            _keyAadhar.currentState!.validate();
+                            //_keyAadhar.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",
@@ -1392,7 +1397,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                             }
                           },
                           onChanged: (val){
-                            _keyAddress.currentState!.validate();
+                            //_keyAddress.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",
@@ -1497,7 +1502,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                                 }
                               },
                               onChanged: (val){
-                                 _keyYearOfExp.currentState!.validate();
+                                 //_keyYearOfExp.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1546,7 +1551,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                                 }
                               },
                               onChanged: (val){
-                                 _keyPosition.currentState!.validate();
+                                 //_keyPosition.currentState!.validate();
                               },
                               decoration: InputDecoration(
                                 counterText: "",
@@ -1640,7 +1645,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                             }
                           },
                           onChanged: (val){
-                            _keyOrgName.currentState!.validate();
+                            //_keyOrgName.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",

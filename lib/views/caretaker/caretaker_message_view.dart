@@ -48,27 +48,17 @@ class _CaretakerMessagesViewState extends State<CaretakerMessagesView> {
               ),
 
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: width/4.130434782608696),
-                    child: KText(
-                      text: "Connections",
-                      style: GoogleFonts.poppins(
-                        fontSize: width/15.65217391304348,
-                        fontWeight: FontWeight.w600,
-                        color: Constants.primaryWhite,
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding:  EdgeInsets.only(left: width/6.545454545454545),
-                    child: Icon(
-                      Icons.more_vert_rounded,
+                  KText(
+                    text: "Connections",
+                    style: GoogleFonts.poppins(
+                      fontSize: width/15.65217391304348,
+                      fontWeight: FontWeight.w600,
                       color: Constants.primaryWhite,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),

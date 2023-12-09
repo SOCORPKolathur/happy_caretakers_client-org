@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_appointments_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_main_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_notifications_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_register_view.dart';
 import 'package:happy_caretakers_client/views/choose_role_view.dart';
+import 'package:happy_caretakers_client/views/setPage.dart';
 import 'package:happy_caretakers_client/views/user/main_view.dart';
 import 'firebase_api.dart';
 import 'firebase_options.dart';
@@ -44,24 +50,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
-  Future<String> isRegistered() async {
-    String result = "";
-    if(FirebaseAuth.instance.currentUser!=null){
-      var doc = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      if(doc.exists){
-        if(doc.get("firstName") == ""){
-          result = "Not Register";
-        }else{
-          result = "Caretaker";
-        }
-      }else{
-        result = "User";
-      }
-    }else{
-      result = "Choose";
-    }
-    return result;
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -75,23 +64,28 @@ class _MyAppState extends State<MyApp> {
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
           useMaterial3: true,
         ),
-        home: FutureBuilder(
-            future: isRegistered(),
-            builder: (ctx, snap){
-              if(snap.hasData){
-                if(snap.data!.toLowerCase() == "not register"){
-                  return CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '');
-                }else if(snap.data!.toLowerCase() == "caretaker"){
-                  return const CareTakerMainView();
-                }else if(snap.data!.toLowerCase() == "user"){
-                  return const MainView();
-                }return const ChooseRoleView();
-              }
-              return const Scaffold(body: Center(child: CircularProgressIndicator()));
-            },
-        ),
-        //FirebaseAuth.instance.currentUser != null ? isRegistered() ? RootApp(id: FirebaseAuth.instance.currentUser!.uid) : RootApp(id: FirebaseAuth.instance.currentUser!.uid) : const ChooseRoleView(),
-        //home: CaretakerRegisterView(fcmToken: '',id: "",phone: ""),
+        // home: FutureBuilder(
+        //     future: isRegistered(),
+        //     builder: (ctx, snap){
+        //       if(snap.hasData){
+        //         if(snap.data!.toLowerCase() == "not register"){
+        //           return CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '');
+        //         }else if(snap.data!.toLowerCase() == "caretaker"){
+        //           return const CareTakerMainView();
+        //         }else if(snap.data!.toLowerCase() == "user"){
+        //           return const MainView();
+        //         }else if(snap.data!.toLowerCase() == "get started"){
+        //           changeLocale(context, doc.get("lanCode"));
+        //           return const MainView();
+        //         }else{
+        //           return const ChooseRoleView();
+        //         }
+        //       }
+        //       return const Scaffold(body: Center(child: CircularProgressIndicator()));
+        //     },
+        // ),
+        home: SetPage(),
+        //home: CaretakerAppointmentsView(title: "Appointments History"),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

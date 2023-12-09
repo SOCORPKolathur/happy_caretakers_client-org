@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
@@ -26,15 +30,44 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
 
   TextEditingController searchProfessionalsController = TextEditingController();
   TabController? tabController;
-
+  String name = "";
   double lat = 0.0;
   double lon = 0.0;
 
   @override
   void initState() {
+    getUser();
     getLatLng();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
+  }
+
+  getUser() async {
+    String? docId = await _getId();
+    if(FirebaseAuth.instance.currentUser != null){
+      var userDoc = await FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).get();
+      if(userDoc.exists){
+        setState(() {
+          name = userDoc.get("firstName")+" "+userDoc.get("lastName");
+        });
+      }
+    } else{
+      var tempUserDoc = await FirebaseFirestore.instance.collection('TempUsers').doc(docId).get();
+      setState(() {
+        name = tempUserDoc.get("name");
+      });
+    }
+  }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) { // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if(Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.id; // unique ID on Android
+    }
   }
 
   getLatLng() async {
@@ -73,8 +106,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             SizedBox(width: width/45),
             CircleAvatar(
               radius: height/34.36363636363636,
-              backgroundImage: NetworkImage(
-                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTSAvhi0UxIvUoeY1ZBoYaV4q7adi8eK8Urg&usqp=CAU"),
+              backgroundImage: NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
             ),
           ],
         ),
@@ -123,7 +155,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                             fontWeight: FontWeight.w600),
                       ),
                       KText(
-                        text: 'User',
+                        text: name,
                         style: GoogleFonts.poppins(
                             fontSize: width/20,
                             color: Constants.darkGrey,
@@ -166,12 +198,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 splashFactory: null,
                 isScrollable: true,
                 controller: tabController,
-                onTap: (index){
-                  setState(() {
-                    searchQuery = tabs[index].substring(0,tabs[index].length-1);
-                    print(searchQuery);
-                  });
-                },
+                onTap: (index){},
                 unselectedLabelColor: Constants.lightGrey,
                 labelColor: Constants.primaryAppColor,
                 labelStyle: GoogleFonts.poppins(
@@ -187,129 +214,15 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
                 padding: EdgeInsets.only(left: width/36,right: width/36),
                 child: SizedBox(
                   width: size.width,
-                  child: StreamBuilder(
-                    stream: CareTakersFireCrud.fetchCareTakers(),
-                    builder: (ctx, snap){
-                      if(snap.hasData){
-                        List<CareTakersModel> careTakers1 = snap.data!;
-                        List<CareTakersModel> careTakers = [];
-                        if(searchQuery != ""){
-                          careTakers1.forEach((element) {
-                            if(element.position.toLowerCase().startsWith(searchQuery.toLowerCase())){
-                              careTakers.add(element);
-                            }
-                          });
-                        }else{
-                          careTakers = careTakers1;
-                        }
-                        return TabBarView(
-                          controller: tabController,
-                          children: [
-                            ListView.builder(
-                              itemCount: careTakers.length,
-                              itemBuilder: (ctx, i) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
-                                  child: CustomProfileCard(
-                                    lat: lat,
-                                    lon: lon,
-                                    careTaker: careTakers[i],
-                                    onTap: () {
-                                      if(Constants.checkUserLoginStatus()){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                          ),
-                                        );
-                                      }else{
-                                        showLoginPopUp();
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            ListView.builder(
-                              itemCount: careTakers.length,
-                              itemBuilder: (ctx, i) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
-                                  child: CustomProfileCard(
-                                    lat: lat,
-                                    lon: lon,
-                                    careTaker: careTakers[i],
-                                    onTap: () {
-                                      if(Constants.checkUserLoginStatus()){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                          ),
-                                        );
-                                      }else{
-                                        showLoginPopUp();
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            ListView.builder(
-                              itemCount: careTakers.length,
-                              itemBuilder: (ctx, i) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
-                                  child: CustomProfileCard(
-                                    lat: lat,
-                                    lon: lon,
-                                    careTaker: careTakers[i],
-                                    onTap: () {
-                                      if(Constants.checkUserLoginStatus()){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                          ),
-                                        );
-                                      }else{
-                                        showLoginPopUp();
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            ),
-                            ListView.builder(
-                              itemCount: careTakers.length,
-                              itemBuilder: (ctx, i) {
-                                return Padding(
-                                  padding: EdgeInsets.symmetric(vertical: height/50.4),
-                                  child: CustomProfileCard(
-                                    lat: lat,
-                                    lon: lon,
-                                    careTaker: careTakers[i],
-                                    onTap: () {
-                                      if(Constants.checkUserLoginStatus()){
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
-                                          ),
-                                        );
-                                      }else{
-                                        showLoginPopUp();
-                                      }
-                                    },
-                                  ),
-                                );
-                              },
-                            )
-                          ],
-                        );
-                      }return Container();
-                    },
-                  ),
+                  child: TabBarView(
+                    controller: tabController,
+                    children: [
+                      buildDoctorsTab(),
+                      buildNursesTab(),
+                      buildCartakersTab(),
+                      buildPhysiotherapistTab(),
+                    ],
+                  )
                 ),
               ),
             ),
@@ -317,6 +230,162 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         ),
       ),
       endDrawer: const DrawerWidget(),
+    );
+  }
+
+  buildDoctorsTab(){
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('CareTakers').where("category", isEqualTo: 'Doctor').snapshots(),
+        builder: (ctx, snap){
+          if(snap.hasData){
+            print("object");
+            List<DocumentSnapshot> careTakers1 = snap.data!.docs;
+            List<CareTakersModel> careTakers = [];
+              careTakers1.forEach((element) {
+                  careTakers.add(CareTakersModel.fromJson(element.data() as Map<String,dynamic>));
+              });
+            return ListView.builder(
+              itemCount: careTakers.length,
+              itemBuilder: (ctx, i) {
+                return Padding(
+                  padding: EdgeInsets.symmetric(vertical: height/50.4),
+                  child: CustomProfileCard(
+                    lat: lat,
+                    lon: lon,
+                    careTaker: careTakers[i],
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                        ),
+                      );
+                    },
+                  ),
+                );
+              },
+            );
+          }return Container();
+        },
+    );
+  }
+
+  buildNursesTab(){
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('CareTakers').where("category", isEqualTo: 'Nurse').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          print("object");
+          List<DocumentSnapshot> careTakers1 = snap.data!.docs;
+          List<CareTakersModel> careTakers = [];
+          careTakers1.forEach((element) {
+            careTakers.add(CareTakersModel.fromJson(element.data() as Map<String,dynamic>));
+          });
+          return ListView.builder(
+            itemCount: careTakers.length,
+            itemBuilder: (ctx, i) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: height/50.4),
+                child: CustomProfileCard(
+                  lat: lat,
+                  lon: lon,
+                  careTaker: careTakers[i],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        }return Container();
+      },
+    );
+  }
+
+  buildCartakersTab(){
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('CareTakers').where("category", isEqualTo: 'Caretaker').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          print("object");
+          List<DocumentSnapshot> careTakers1 = snap.data!.docs;
+          List<CareTakersModel> careTakers = [];
+          careTakers1.forEach((element) {
+            careTakers.add(CareTakersModel.fromJson(element.data() as Map<String,dynamic>));
+          });
+          return ListView.builder(
+            itemCount: careTakers.length,
+            itemBuilder: (ctx, i) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: height/50.4),
+                child: CustomProfileCard(
+                  lat: lat,
+                  lon: lon,
+                  careTaker: careTakers[i],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        }return Container();
+      },
+    );
+  }
+
+  buildPhysiotherapistTab(){
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('CareTakers').where("category", isEqualTo: 'Physiotherapist').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          print("object");
+          List<DocumentSnapshot> careTakers1 = snap.data!.docs;
+          List<CareTakersModel> careTakers = [];
+          careTakers1.forEach((element) {
+            careTakers.add(CareTakersModel.fromJson(element.data() as Map<String,dynamic>));
+          });
+          return ListView.builder(
+            itemCount: careTakers.length,
+            itemBuilder: (ctx, i) {
+              return Padding(
+                padding: EdgeInsets.symmetric(vertical: height/50.4),
+                child: CustomProfileCard(
+                  lat: lat,
+                  lon: lon,
+                  careTaker: careTakers[i],
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (ctx) => ProfileDetailsView(id: careTakers[i].id)
+                      ),
+                    );
+                  },
+                ),
+              );
+            },
+          );
+        }return Container();
+      },
     );
   }
 

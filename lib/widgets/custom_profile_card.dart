@@ -48,7 +48,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
     return Column(
       children: [
         Text(
-          getDistance() < 10 ? "---  ${widget.careTaker.position} Near you ---" : "---  ${widget.careTaker.position} under ${getDistance().toString()} KM ---",
+          getDistance() < 10 ? "---  ${widget.careTaker.category} Near you ---" : "---  ${widget.careTaker.category} under ${getDistance().toString()} KM ---",
           style: GoogleFonts.poppins(
             color: Constants.lightGrey,
             fontSize: 14,
@@ -182,7 +182,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                             ),
                             Container(
                               height: 55,
-                              width: double.infinity,
+                              width: size.width,
                               decoration: BoxDecoration(
                                 color: Constants.primaryAppColor,
                                 borderRadius: const BorderRadius.only(
@@ -209,6 +209,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                           KText(
                                             text:widget.careTaker.city,
                                             style: GoogleFonts.poppins(
+                                              fontSize: 13,
                                               color: Constants.semiGrey,
                                             ),
                                           )
@@ -232,6 +233,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                           KText(
                                             text: "${widget.careTaker.yearsOfExperience} years",
                                             style: GoogleFonts.poppins(
+                                              fontSize: 13,
                                               color: Constants.semiGrey,
                                             ),
                                           )
@@ -250,11 +252,12 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                       child: Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
-                                          Icon(Icons.lock_clock,color: Constants.primaryAppColor,),
+                                          Icon(Icons.person,color: Constants.primaryAppColor,),
                                           SizedBox(width: 5),
                                           KText(
-                                            text: widget.careTaker.workPreparence,
+                                            text: widget.careTaker.age.toString() +" years old",
                                             style: GoogleFonts.poppins(
+                                              fontSize: 13,
                                               color: Constants.semiGrey,
                                             ),
                                           )

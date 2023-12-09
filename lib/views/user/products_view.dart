@@ -28,7 +28,7 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
 
   @override
   void initState() {
-    tabController = TabController(length: 4, vsync: this);
+    tabController = TabController(length: 3, vsync: this);
     super.initState();
   }
 
@@ -175,84 +175,9 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
                     child: TabBarView(
                       controller: tabController,
                       children: [
-                        SizedBox(
-                          width: size.width,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: width/24),
-                            child: GridView.builder(
-                              itemCount: products.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 16/21
-                              ),
-                              itemBuilder: (ctx,i){
-                                ProductModel product = products[i];
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
-                                  },
-                                  child: ProductCard(
-                                    title: product.productname!,
-                                    imgUrl: product.img!,
-                                    price: product.price!,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: width/24),
-                            child: GridView.builder(
-                              itemCount: products.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 16/21
-                              ),
-                              itemBuilder: (ctx,i){
-                                ProductModel product = products[i];
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
-                                  },
-                                  child: ProductCard(
-                                    title: product.productname!,
-                                    imgUrl: product.img!,
-                                    price: product.price!,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          width: size.width,
-                          child: Padding(
-                            padding: EdgeInsets.symmetric(horizontal: width/24),
-                            child: GridView.builder(
-                              itemCount: products.length,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2,
-                                  childAspectRatio: 16/21
-                              ),
-                              itemBuilder: (ctx,i){
-                                ProductModel product = products[i];
-                                return InkWell(
-                                  onTap: (){
-                                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!, userDocId: FirebaseAuth.instance.currentUser!.uid)));
-                                  },
-                                  child: ProductCard(
-                                    title: product.productname!,
-                                    imgUrl: product.img!,
-                                    price: product.price!,
-                                  ),
-                                );
-                              },
-                            ),
-                          ),
-                        ),
+                        buildAllProducts(),
+                        buildBabyProducts(),
+                        buildSeniorCitizenProducts(),
                       ],
                     ),
                   )
@@ -267,4 +192,139 @@ class _ProductsViewState extends State<ProductsView> with SingleTickerProviderSt
       endDrawer: const DrawerWidget(),
     );
   }
+
+
+  buildAllProducts(){
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('Eccomerce').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          List<ProductModel> products = [];
+          snap.data!.docs.forEach((element) {
+              products.add(ProductModel.fromJson(element.data()));
+          });
+          print(products.length);
+          return SizedBox(
+            width: size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width/24),
+              child: GridView.builder(
+                itemCount: products.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 16/21
+                ),
+                itemBuilder: (ctx,i){
+                  ProductModel product = products[i];
+                  return InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!)));
+                    },
+                    child: ProductCard(
+                      title: product.productname!,
+                      imgUrl: product.img!,
+                      price: product.price!,
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }return Container();
+      },
+    );
+  }
+
+  buildBabyProducts(){
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('Eccomerce').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          List<ProductModel> products = [];
+          snap.data!.docs.forEach((element) {
+            if(element.get("categoty").toString().toLowerCase().contains("baby")){
+              products.add(ProductModel.fromJson(element.data()));
+            }
+          });
+          print(products.length);
+          return SizedBox(
+            width: size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width/24),
+              child: GridView.builder(
+                itemCount: products.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 16/21
+                ),
+                itemBuilder: (ctx,i){
+                  ProductModel product = products[i];
+                  return InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!)));
+                    },
+                    child: ProductCard(
+                      title: product.productname!,
+                      imgUrl: product.img!,
+                      price: product.price!,
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }return Container();
+      },
+    );
+  }
+
+  buildSeniorCitizenProducts(){
+    Size size = MediaQuery.of(context).size;
+    double width = size.width;
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('Eccomerce').snapshots(),
+      builder: (ctx, snap){
+        if(snap.hasData){
+          List<ProductModel> products = [];
+          snap.data!.docs.forEach((element) {
+            if(element.get("categoty").toString().toLowerCase().contains("senior citizen")){
+              products.add(ProductModel.fromJson(element.data()));
+            }
+          });
+          print(products.length);
+          return SizedBox(
+            width: size.width,
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: width/24),
+              child: GridView.builder(
+                itemCount: products.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 16/21
+                ),
+                itemBuilder: (ctx,i){
+                  ProductModel product = products[i];
+                  return InkWell(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> ProductDetailsView(productId: product.id!, productName: product.productname!)));
+                    },
+                    child: ProductCard(
+                      title: product.productname!,
+                      imgUrl: product.img!,
+                      price: product.price!,
+                    ),
+                  );
+                },
+              ),
+            ),
+          );
+        }return Container();
+      },
+    );
+  }
+
 }

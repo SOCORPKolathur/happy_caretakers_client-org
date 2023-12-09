@@ -89,11 +89,9 @@ class _CaretakerCartViewState extends State<CaretakerCartView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // SvgPicture.asset(
-                      //   "assets/undraw_empty_cart_co35.svg",
-                      //   height: size.height * 0.246,
-                      //   width: size.width * 0.3,
-                      // ),
+                      Lottie.asset(
+                        "assets/no_noti.json",
+                      ),
                       SizedBox(height: size.height/43.3),
                       InkWell(
                         onTap: (){

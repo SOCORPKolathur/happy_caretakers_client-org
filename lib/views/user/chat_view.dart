@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 
 class ChatView extends StatefulWidget {
   const ChatView({super.key, required this.data});
@@ -42,309 +43,332 @@ class _ChatViewState extends State<ChatView> {
             if(userSnap1.hasData){
               setCurrentUser(userSnap1.data!);
               DocumentSnapshot user = userSnap1.data!;
-              return Column(
-                children: [
-                  Container(
-                    height: size.height/9.45,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                        color: Constants.primaryAppColor,
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(30),
-                          bottomRight: Radius.circular(30),
-                        )),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            SizedBox(width: size.width/22.5),
-                            InkWell(
-                              onTap: () {
-                                Navigator.pop(context);
-                              },
-                              child: Icon(
-                                Icons.arrow_back_ios,
-                                color: Constants.primaryWhite,
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width/45,
-                            ),
-                            CircleAvatar(
-                              radius: size.height/32.8695652173913,
-                              backgroundColor: Colors.grey.shade300,
-                              backgroundImage: NetworkImage(widget.data.get("senderImage"),
-                              ),
-                            ),
-                            SizedBox(
-                              width: size.width/20,
-                            ),
-                            Expanded(
-                              child: SizedBox(
-                                  height: size.height/9.45,
-                                  child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                        width: size.width/1.8,
-                                        child: Text(
-                                          widget.data.get("sender"),
-                                          style: GoogleFonts.poppins(
-                                              color: Constants.primaryWhite,
-                                              fontSize: size.width/20,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: size.height/75.6),
-                  Padding(
-                    padding: EdgeInsets.symmetric(horizontal: size.width/36),
-                    child: SizedBox(
-                      height: size.height/3.28695652173913,
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    Container(
+                      height: size.height/9.45,
                       width: size.width,
+                      decoration: BoxDecoration(
+                          color: Constants.primaryAppColor,
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(30),
+                            bottomRight: Radius.circular(30),
+                          )),
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: size.height/15.12,
-                            width: size.width,
-                            decoration: BoxDecoration(
-                                color: Constants.primaryAppColor,
-                                borderRadius: const BorderRadius.only(
-                                  topRight: Radius.circular(10),
-                                  topLeft: Radius.circular(10),
-                                )),
-                            child: Center(
-                              child: Text(
-                                "Contact Details",
-                                style: GoogleFonts.poppins(
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SizedBox(width: size.width/22.5),
+                              InkWell(
+                                onTap: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Icon(
+                                  Icons.arrow_back_ios,
                                   color: Constants.primaryWhite,
-                                  fontWeight: FontWeight.w600,
-                                  fontSize: size.width/18.94736842105263,
                                 ),
                               ),
-                            ),
-                          ),
-                          Container(
-                            height: size.height/4.2,
-                            width: size.width,
-                            decoration: BoxDecoration(
-                                color: Constants.primaryWhite,
-                                borderRadius: const BorderRadius.only(
-                                  bottomRight: Radius.circular(10),
-                                  bottomLeft: Radius.circular(10),
-                                )),
-                            padding: EdgeInsets.symmetric(vertical: size.height/75.6, horizontal: size.width/18),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
+                              SizedBox(
+                                width: size.width/45,
+                              ),
+                              CircleAvatar(
+                                radius: size.height/32.8695652173913,
+                                backgroundColor: Colors.grey.shade300,
+                                backgroundImage: NetworkImage(widget.data.get("senderImage"),
+                                ),
+                              ),
+                              SizedBox(
+                                width: size.width/20,
+                              ),
+                              Expanded(
+                                child: SizedBox(
+                                    height: size.height/9.45,
+                                    child: Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
-                                        Text(
-                                          "Phone :",
-                                          style: GoogleFonts.poppins(
-                                            color: Constants.darkGrey,
-                                            fontSize: size.width/24,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        SizedBox(height: size.height/378),
-                                        Text(
-                                          widget.data.get("senderPhone"),
-                                          style: GoogleFonts.poppins(
-                                            color: Constants.darkGrey,
-                                            fontSize: size.width/27.69230769230769,
-                                            fontWeight: FontWeight.normal,
+                                        SizedBox(
+                                          width: size.width/1.8,
+                                          child: Text(
+                                            widget.data.get("sender"),
+                                            style: GoogleFonts.poppins(
+                                                color: Constants.primaryWhite,
+                                                fontSize: size.width/20,
+                                                fontWeight: FontWeight.w600),
                                           ),
                                         ),
                                       ],
-                                    ),
-                                    Icon(
-                                      Icons.phone,
-                                      color: Constants.primaryAppColor,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: size.height/63),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          "Mail ID :",
-                                          style: GoogleFonts.poppins(
-                                            color: Constants.darkGrey,
-                                            fontSize: size.width/24,
-                                            fontWeight: FontWeight.w600,
-                                          ),
-                                        ),
-                                        SizedBox(height: size.height/378),
-                                        Text(
-                                          widget.data.get("senderMail"),
-                                          style: GoogleFonts.poppins(
-                                            color: Constants.darkGrey,
-                                            fontSize: size.width/27.69230769230769,
-                                            fontWeight: FontWeight.normal,
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Icon(
-                                      Icons.mail_outline,
-                                      color: Constants.primaryAppColor,
-                                    )
-                                  ],
-                                ),
-                                SizedBox(height: size.height/63),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Address:",
-                                      style: GoogleFonts.poppins(
-                                        color: Constants.darkGrey,
-                                        fontSize: size.width/24,
-                                        fontWeight: FontWeight.w600,
-                                      ),
-                                    ),
-                                    SizedBox(height: size.height/378),
-                                    Text(
-                                      widget.data.get("senderAddress"),
-                                      style: GoogleFonts.poppins(
-                                        color: Constants.darkGrey,
-                                        fontSize: size.width/27.69230769230769,
-                                        fontWeight: FontWeight.normal,
-                                      ),
-                                    ),
-                                  ],
-                                )
-                              ],
-                            ),
+                                    )),
+                              ),
+                            ],
                           ),
                         ],
                       ),
                     ),
-                  ),
-                  Expanded(
-                    child: StreamBuilder(
-                        stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(widget.data.id).collection('Messages').orderBy("timestamp", descending: false).snapshots(),
-                        builder: (context, messageSnap) {
-                          if(messageSnap.hasData){
-                            return Container(
-                              height: MediaQuery.of(context).size.height,
-                              width: MediaQuery.of(context).size.width,
-                              color: Constants.appBackgroundolor,
-                              padding: EdgeInsets.symmetric(vertical: height / 37.95, horizontal: width / 19.6),
-                              child: SingleChildScrollView(
-                                reverse: true,
-                                child: ListView.builder(
-                                    itemCount: messageSnap.data!.docs.length,
-                                    scrollDirection: Axis.vertical,
-                                    controller: _scrollController,
-                                    shrinkWrap: true,
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemBuilder: (context, index) {
-                                      return Column(
-                                        crossAxisAlignment: messageSnap.data!.docs[index]["sender"] == "${user.get("firstName")} ${user.get("lastName")}" ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-                                        children: [
-                                          messageTile(Size(width, height), messageSnap.data!.docs[index].data(),
-                                            context,
-                                            messageSnap.data!.docs[index].id,
-                                            user,
-                                          ),
-                                          messageSnap.data!.docs[index]["submitdate"] == "${DateTime.now().year}-${ DateTime.now().month}-${ DateTime.now().day}" ?
-                                          Text(
-                                            'Today  ${messageSnap
-                                                .data!
-                                                .docs[index]["submittime"]}',
-                                            style: TextStyle(
-                                                fontSize: width /
-                                                    40,
-                                                color: Colors
-                                                    .grey,
-                                                fontWeight: FontWeight
-                                                    .w700),)
-                                              :
-                                          messageSnap
-                                              .data!
-                                              .docs[index]["submitdate"] ==
-                                              "${DateTime
-                                                  .now()
-                                                  .year}-${ DateTime
-                                                  .now()
-                                                  .month}-${ DateTime
-                                                  .now()
-                                                  .day -
-                                                  1}"
-                                              ?
-                                          Text(
-                                            'Yesterday  ${messageSnap
-                                                .data!
-                                                .docs[index]["submittime"]}',
-                                            style: TextStyle(
-                                                fontSize: width /
-                                                    40,
-                                                color: Colors
-                                                    .grey,
-                                                fontWeight: FontWeight
-                                                    .w700),)
-                                              :
-                                          Text(
-                                            "${messageSnap
-                                                .data!
-                                                .docs[index]["submitdate"]}  ${messageSnap
-                                                .data!
-                                                .docs[index]["submittime"]}",
-                                            style: TextStyle(
-                                                fontSize: width /
-                                                    40,
-                                                color: Colors
-                                                    .grey,
-                                                fontWeight: FontWeight
-                                                    .w700),),
-                                          Text(
-                                            '${messageSnap
-                                                .data!
-                                                .docs[index]["sender"]}',
-                                            style: TextStyle(
-                                                fontSize: width /
-                                                    40,
-                                                color: Colors
-                                                    .grey,
-                                                fontWeight: FontWeight
-                                                    .w700),),
-                                          SizedBox(
-                                            height: height /
-                                                80,)
-                                        ],
-                                      );
-                                    }),
+                    SizedBox(height: size.height/75.6),
+                    Padding(
+                      padding: EdgeInsets.symmetric(horizontal: size.width/36),
+                      child: SizedBox(
+                        height: size.height/3.28695652173913,
+                        width: size.width,
+                        child: Column(
+                          children: [
+                            Container(
+                              height: size.height/15.12,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  color: Constants.primaryAppColor,
+                                  borderRadius: const BorderRadius.only(
+                                    topRight: Radius.circular(10),
+                                    topLeft: Radius.circular(10),
+                                  )),
+                              child: Center(
+                                child: Text(
+                                  "Contact Details",
+                                  style: GoogleFonts.poppins(
+                                    color: Constants.primaryWhite,
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: size.width/18.94736842105263,
+                                  ),
+                                ),
                               ),
-                            );
-                          }return Container();
-                        }
+                            ),
+                            Container(
+                              height: size.height/4.2,
+                              width: size.width,
+                              decoration: BoxDecoration(
+                                  color: Constants.primaryWhite,
+                                  borderRadius: const BorderRadius.only(
+                                    bottomRight: Radius.circular(10),
+                                    bottomLeft: Radius.circular(10),
+                                  )),
+                              padding: EdgeInsets.symmetric(vertical: size.height/75.6, horizontal: size.width/18),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Phone :",
+                                            style: GoogleFonts.poppins(
+                                              color: Constants.darkGrey,
+                                              fontSize: size.width/24,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(height: size.height/378),
+                                          Text(
+                                            widget.data.get("senderPhone"),
+                                            style: GoogleFonts.poppins(
+                                              color: Constants.darkGrey,
+                                              fontSize: size.width/27.69230769230769,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: (){
+                                          final Uri emailLaunchUri = Uri(
+                                            scheme: 'tel',
+                                            path: widget.data.get("senderPhone"),
+                                          );
+                                          launchUrl(emailLaunchUri);
+                                        },
+                                        child: Icon(
+                                          Icons.phone,
+                                          color: Constants.primaryAppColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: size.height/63),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(
+                                            "Mail ID :",
+                                            style: GoogleFonts.poppins(
+                                              color: Constants.darkGrey,
+                                              fontSize: size.width/24,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                          SizedBox(height: size.height/378),
+                                          Text(
+                                            widget.data.get("senderMail"),
+                                            style: GoogleFonts.poppins(
+                                              color: Constants.darkGrey,
+                                              fontSize: size.width/27.69230769230769,
+                                              fontWeight: FontWeight.normal,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                      InkWell(
+                                        onTap: (){
+                                          final Uri emailLaunchUri = Uri(
+                                            scheme: 'mailto',
+                                            path: widget.data.get("senderMail"),
+                                          );
+                                          launchUrl(emailLaunchUri);
+                                        },
+                                        child: Icon(
+                                          Icons.mail_outline,
+                                          color: Constants.primaryAppColor,
+                                        ),
+                                      )
+                                    ],
+                                  ),
+                                  SizedBox(height: size.height/63),
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Address:",
+                                        style: GoogleFonts.poppins(
+                                          color: Constants.darkGrey,
+                                          fontSize: size.width/24,
+                                          fontWeight: FontWeight.w600,
+                                        ),
+                                      ),
+                                      SizedBox(height: size.height/378),
+                                      Text(
+                                        widget.data.get("senderAddress"),
+                                        style: GoogleFonts.poppins(
+                                          color: Constants.darkGrey,
+                                          fontSize: size.width/27.69230769230769,
+                                          fontWeight: FontWeight.normal,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                     ),
-                  ),
-                  Container(
-                    height: height / 10.18,
-                  )
-                ],
+                    Container(
+                      height: 370,
+                      width: width,
+                      color: Colors.red,
+                      child: StreamBuilder(
+                          stream: FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(widget.data.id).collection('Messages').orderBy("timestamp", descending: false).snapshots(),
+                          builder: (context, messageSnap) {
+                            if(messageSnap.hasData){
+                              return Container(
+                                height: MediaQuery.of(context).size.height,
+                                width: MediaQuery.of(context).size.width,
+                                color: Constants.appBackgroundolor,
+                                padding: EdgeInsets.symmetric(vertical: height / 37.95, horizontal: width / 19.6),
+                                child: SingleChildScrollView(
+                                  reverse: true,
+                                  child: ListView.builder(
+                                      itemCount: messageSnap.data!.docs.length,
+                                      scrollDirection: Axis.vertical,
+                                      controller: _scrollController,
+                                      shrinkWrap: true,
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemBuilder: (context, index) {
+                                        return Column(
+                                          crossAxisAlignment: messageSnap.data!.docs[index]["sender"] == "${user.get("firstName")} ${user.get("lastName")}" ? CrossAxisAlignment.end : CrossAxisAlignment.start,
+                                          children: [
+                                            messageTile(Size(width, height), messageSnap.data!.docs[index].data(),
+                                              context,
+                                              messageSnap.data!.docs[index].id,
+                                              user,
+                                            ),
+                                            messageSnap.data!.docs[index]["submitdate"] == "${DateTime.now().year}-${ DateTime.now().month}-${ DateTime.now().day}" ?
+                                            Text(
+                                              'Today  ${messageSnap
+                                                  .data!
+                                                  .docs[index]["submittime"]}',
+                                              style: TextStyle(
+                                                  fontSize: width /
+                                                      40,
+                                                  color: Colors
+                                                      .grey,
+                                                  fontWeight: FontWeight
+                                                      .w700),)
+                                                :
+                                            messageSnap
+                                                .data!
+                                                .docs[index]["submitdate"] ==
+                                                "${DateTime
+                                                    .now()
+                                                    .year}-${ DateTime
+                                                    .now()
+                                                    .month}-${ DateTime
+                                                    .now()
+                                                    .day -
+                                                    1}"
+                                                ?
+                                            Text(
+                                              'Yesterday  ${messageSnap
+                                                  .data!
+                                                  .docs[index]["submittime"]}',
+                                              style: TextStyle(
+                                                  fontSize: width /
+                                                      40,
+                                                  color: Colors
+                                                      .grey,
+                                                  fontWeight: FontWeight
+                                                      .w700),)
+                                                :
+                                            Text(
+                                              "${messageSnap
+                                                  .data!
+                                                  .docs[index]["submitdate"]}  ${messageSnap
+                                                  .data!
+                                                  .docs[index]["submittime"]}",
+                                              style: TextStyle(
+                                                  fontSize: width /
+                                                      40,
+                                                  color: Colors
+                                                      .grey,
+                                                  fontWeight: FontWeight
+                                                      .w700),),
+                                            Text(
+                                              '${messageSnap
+                                                  .data!
+                                                  .docs[index]["sender"]}',
+                                              style: TextStyle(
+                                                  fontSize: width /
+                                                      40,
+                                                  color: Colors
+                                                      .grey,
+                                                  fontWeight: FontWeight
+                                                      .w700),),
+                                            SizedBox(
+                                              height: height /
+                                                  80,)
+                                          ],
+                                        );
+                                      }),
+                                ),
+                              );
+                            }return Container();
+                          }
+                      ),
+                    ),
+                    Container(
+                      height: height / 10.18,
+                    )
+                  ],
+                ),
               );
             }
             return Container();

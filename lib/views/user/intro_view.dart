@@ -1,8 +1,14 @@
+import 'dart:io';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/login_view.dart';
 import 'package:happy_caretakers_client/views/user/main_view.dart';
+import 'package:happy_caretakers_client/views/user/select_language_view.dart';
 import 'package:happy_caretakers_client/widgets/primary_button.dart';
 import 'package:happy_caretakers_client/widgets/secondary_button.dart';
 
@@ -89,8 +95,15 @@ class _IntroViewState extends State<IntroView> {
                 ),
                 PrimaryButton(
                   title: 'Get Started',
-                  onTap: () {
-                    Navigator.pushReplacement(context,_createRoute());
+                  onTap: () async {
+                    String? devId = await _getId();
+                    var doc = await FirebaseFirestore.instance.collection('TempUsers').doc(devId).get();
+                    if(doc.exists){
+                        changeLocale(context, doc.get("lanCode"));
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const MainView()));
+                    }else{
+                      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const SelectLanguageView()));
+                    }
                   },
                 )
               ],
@@ -124,6 +137,17 @@ class _IntroViewState extends State<IntroView> {
         ),
       ),
     );
+  }
+
+  Future<String?> _getId() async {
+    var deviceInfo = DeviceInfoPlugin();
+    if (Platform.isIOS) { // import 'dart:io'
+      var iosDeviceInfo = await deviceInfo.iosInfo;
+      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
+    } else if(Platform.isAndroid) {
+      var androidDeviceInfo = await deviceInfo.androidInfo;
+      return androidDeviceInfo.id; // unique ID on Android
+    }
   }
 
   Route _createRoute() {

@@ -16,7 +16,9 @@ import '../views/choose_role_view.dart';
 import '../views/languages_view.dart';
 
 class CaretakerDrawerWidget extends StatefulWidget {
-  const CaretakerDrawerWidget({super.key});
+  const CaretakerDrawerWidget({super.key, required this.caretaker});
+
+  final CareTakersModel caretaker;
 
   @override
   State<CaretakerDrawerWidget> createState() => _CaretakerDrawerWidgetState();
@@ -25,18 +27,11 @@ class CaretakerDrawerWidget extends StatefulWidget {
 class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
 
   CareTakersModel? careTaker;
+  DocumentSnapshot? data;
 
   @override
   void initState() {
-    getUser();
     super.initState();
-  }
-
-  getUser() async {
-    var doc = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
-    setState(() {
-      careTaker = CareTakersModel.fromJson(doc.data() as Map<String, dynamic>);
-    });
   }
 
   @override
@@ -55,16 +50,16 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                careTaker != null ? CircleAvatar(
+                data != null ? CircleAvatar(
                   radius: 40,
                   backgroundColor: Constants.primaryWhite,
-                  backgroundImage: NetworkImage(careTaker!.imgUrl),
+                  backgroundImage: NetworkImage(widget.caretaker.imgUrl),
                 ) : CircleAvatar(radius: 40),
                 SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: KText(
-                    text: careTaker!=null? "${careTaker!.firstName} ${careTaker!.lastName}" : "Guest",
+                    text: widget.caretaker.firstName + " "+ widget.caretaker.lastName,
                     style: GoogleFonts.poppins(
                       color: Constants.primaryWhite,
                       fontSize: 17,

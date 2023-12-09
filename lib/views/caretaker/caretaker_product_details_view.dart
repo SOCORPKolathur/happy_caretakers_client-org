@@ -250,9 +250,12 @@ class _CaretakersProductDetailsViewState extends State<CaretakersProductDetailsV
                                 border: Border.all(color: Constants.primaryAppColor, width: 3),
                                 image: DecorationImage(
                                     fit: BoxFit.contain,
-                                    image: NetworkImage(
+                                    image: CachedNetworkImageProvider(
                                       currentProduct.img!,
                                     )
+                                //   NetworkImage(
+                                //   currentProduct.img!,
+                                // )
                                 )
                             ),
                           )

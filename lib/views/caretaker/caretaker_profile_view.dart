@@ -359,6 +359,7 @@
 
 
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -369,27 +370,51 @@ import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
+import '../../models/care_takers_model.dart';
 import '../about_app_view.dart';
 import '../choose_role_view.dart';
 import '../languages_view.dart';
+import 'caretaker_appointments_view.dart';
 import 'caretaker_carts_view.dart';
 import 'caretaker_edit_profile_view.dart';
 import 'caretaker_orders_view.dart';
 
 class CareTakerProfileView extends StatefulWidget {
-  const CareTakerProfileView({super.key});
+  const CareTakerProfileView({super.key, required this.caretaker});
+
+  final CareTakersModel caretaker;
 
   @override
   State<CareTakerProfileView> createState() => _CareTakerProfileViewState();
 }
 
 class _CareTakerProfileViewState extends State<CareTakerProfileView> {
+
+  //CareTakersModel? careTaker;
+  int connectionMadeCount = 0;
+
+  @override
+  void initState() {
+    getUser();
+    super.initState();
+  }
+
+  getUser() async {
+    //var doc = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
+    var doc1 = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).collection('Connections').get();
+    setState(() {
+      //careTaker = CareTakersModel.fromJson(doc.data() as Map<String, dynamic>);
+      connectionMadeCount = doc1.docs.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     double height = size.height;
     double width = size.width;
     return Scaffold(
+      backgroundColor: Constants.primaryWhite,
       body: Container(
         width: width,
         child: SingleChildScrollView(
@@ -421,9 +446,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                             shape: BoxShape.circle,
                             image: DecorationImage(
                                 fit: BoxFit.fill,
-                                image: NetworkImage(
-                                    "https://images4.alphacoders.com/127/1274590.jpg"
-                                )
+                                image: NetworkImage(widget.caretaker.imgUrl),
                             )
                         ),
                       ),
@@ -433,7 +456,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
               ),
               SizedBox(height: 10),
               Text(
-                "Nagaraj K",
+                widget.caretaker.firstName +" "+widget.caretaker.lastName,
                 style: GoogleFonts.poppins(
                   color: Constants.darkBlack,
                   fontWeight: FontWeight.w600,
@@ -442,7 +465,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
               ),
               SizedBox(height: 6),
               Text(
-                "+91 7639033006",
+                "+91 "+widget.caretaker.phone,
                 style: GoogleFonts.poppins(
                   color: Constants.primaryAppColor,
                   fontWeight: FontWeight.w400,
@@ -460,7 +483,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                       child: Column(
                         children: [
                           Text(
-                            "80",
+                            connectionMadeCount.toString(),
                             style: GoogleFonts.poppins(
                               color: Constants.primaryAppColor,
                               fontWeight: FontWeight.w700,
@@ -484,7 +507,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                         child: Column(
                           children: [
                             Text(
-                              "3.5",
+                              widget.caretaker.rating.length.toDouble().toString(),
                               style: GoogleFonts.poppins(
                                 color: Constants.primaryAppColor,
                                 fontWeight: FontWeight.w700,
@@ -514,7 +537,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                   children: [
                     InkWell(
                       onTap: () async {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerAppointmentsView(title: "History")));
                       },
                       child: Container(
                         height: 45,
@@ -543,7 +566,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                     ),
                     InkWell(
                       onTap: () async {
-
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerEditProfileView(careTaker: widget.caretaker)));
                       },
                       child: Container(
                         height: 45,
@@ -574,12 +597,6 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                 ),
               ),
               SizedBox(height: 25),
-              InkWell(
-                        onTap: (){
-                          //Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerEditProfileView(careTaker: careTaker!)));
-                        },
-                        child: CardWidget('Edit Profile',Icons.person,Colors.red),
-                      ),
                       SizedBox(height: height/50.4),
                       InkWell(
                         onTap: (){

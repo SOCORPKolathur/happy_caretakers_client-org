@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/services/caretker/caretker_cart_firecrud.dart';
 import 'package:happy_caretakers_client/services/cart_firecrud.dart';
+import 'package:lottie/lottie.dart';
 import '../../constants.dart';
 import '../../models/orders_model.dart';
 import '../../widgets/kText.dart';
@@ -53,10 +54,8 @@ class _CaretakerOrdersViewState extends State<CaretakerOrdersView> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    SvgPicture.asset(
-                      "assets/undraw_empty_cart_co35.svg",
-                      height: size.height * 0.246,
-                      width: size.width * 0.3,
+                    Lottie.asset(
+                      "assets/no_noti.json",
                     ),
                     SizedBox(height: size.height/43.3),
                     InkWell(

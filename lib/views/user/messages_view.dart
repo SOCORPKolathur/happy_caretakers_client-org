@@ -4,8 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/views/user/chat_view.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 
 import '../../widgets/kText.dart';
+import '../login_view.dart';
 
 
 class MessagesView extends StatefulWidget {
@@ -26,7 +30,7 @@ class _MessagesViewState extends State<MessagesView> {
     double width = size.width;
     return Scaffold(
       body:
-      SizedBox(
+      FirebaseAuth.instance.currentUser != null ? SizedBox(
         height: height,
         width: width,
         child: Stack(
@@ -46,27 +50,24 @@ class _MessagesViewState extends State<MessagesView> {
               ),
 
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: width/4.130434782608696),
-                    child: KText(
-                      text: "Connections",
-                      style: GoogleFonts.poppins(
-                        fontSize: width/15.65217391304348,
-                        fontWeight: FontWeight.w600,
-                          color: Constants.primaryWhite,
-                      ),
+                  KText(
+                    text: "Connections",
+                    style: GoogleFonts.poppins(
+                      fontSize: width/15.65217391304348,
+                      fontWeight: FontWeight.w600,
+                        color: Constants.primaryWhite,
                     ),
                   ),
-                  Padding(
-                    padding:  EdgeInsets.only(left: width/6.545454545454545),
-                    child: Icon(
-                      Icons.more_vert_rounded,
-                      color: Constants.primaryWhite,
-                    ),
-                  )
+                  // Padding(
+                  //   padding:  EdgeInsets.only(left: width/6.545454545454545),
+                  //   child: Icon(
+                  //     Icons.more_vert_rounded,
+                  //     color: Constants.primaryWhite,
+                  //   ),
+                  // )
                 ],
               ),
             ),
@@ -140,7 +141,13 @@ class _MessagesViewState extends State<MessagesView> {
                             if(snap.hasData){
                               return Container(
                                 //height: size.height * 0.585,
-                                child: ListView.builder(
+                                child: snap.data!.docs.isEmpty
+                                    ? Container(
+                                  child: Center(
+                                    child: Lottie.asset("assets/no_noti.json"),
+                                  ),
+                                )
+                                    : ListView.builder(
                                   itemCount: snap.data!.docs.length,
                                   itemBuilder: (ctx,i){
                                     var data = snap.data!.docs[i];
@@ -276,7 +283,95 @@ class _MessagesViewState extends State<MessagesView> {
             )
           ],
         ),
+      ) : SizedBox(
+        child: Column(
+          children: [
+            Container(
+              height: height/3.78,
+              width: size.width,
+              decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color(0xffBFA0FF),
+                        Constants.primaryAppColor,
+                      ]
+                  )
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.only(left: width/4.130434782608696),
+                    child: KText(
+                      text: "Connections",
+                      style: GoogleFonts.poppins(
+                        fontSize: width/15.65217391304348,
+                        fontWeight: FontWeight.w600,
+                        color: Constants.primaryWhite,
+                      ),
+                    ),
+                  ),
+                  Padding(
+                    padding:  EdgeInsets.only(left: width/6.545454545454545),
+                    child: Icon(
+                      Icons.more_vert_rounded,
+                      color: Constants.primaryWhite,
+                    ),
+                  )
+                ],
+              ),
+            ),
+            Expanded(
+              child: Center(
+                child: ElevatedButton(
+                  onPressed: (){
+                    showLoginPopUp();
+                  },
+                  child: Text("Login"),
+                ),
+              ),
+            )
+          ],
+        ),
+
       ),
     );
   }
+
+  showLoginPopUp(){
+    Dialogs.materialDialog(
+        color: Colors.white,
+        msg: 'You are not Logged In.Kindly log in to continue',
+        title: 'Log In',
+        lottieBuilder: Lottie.asset(
+          'assets/logout.json',
+          fit: BoxFit.contain,
+        ),
+        context: context,
+        actions: [
+          IconsButton(
+            onPressed: () async {
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+            },
+            text: 'Log In',
+            color: Colors.blue,
+            textStyle: TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+          IconsButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            text: 'Cancel',
+            color: Colors.grey,
+            textStyle: TextStyle(color: Colors.white),
+            iconColor: Colors.white,
+          ),
+        ]
+    );
+  }
+
 }

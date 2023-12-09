@@ -5,6 +5,9 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
+import 'package:material_dialogs/dialogs.dart';
+import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import '../../constants.dart';
 import '../../models/cart_model.dart';
 import '../../models/orders_model.dart';
@@ -72,7 +75,8 @@ class _CartViewState extends State<CartView> {
           child: const Icon(Icons.arrow_back,color: Colors.white),
         ),
       ),
-      body: SizedBox(
+      body: FirebaseAuth.instance.currentUser != null
+          ? SizedBox(
           height: size.height,
           width: size.width,
           child: StreamBuilder(
@@ -85,10 +89,8 @@ class _CartViewState extends State<CartView> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      SvgPicture.asset(
-                        "assets/undraw_empty_cart_co35.svg",
-                        height: size.height * 0.246,
-                        width: size.width * 0.3,
+                      Lottie.asset(
+                        "assets/no_noti.json",
                       ),
                       SizedBox(height: size.height/43.3),
                       InkWell(
@@ -277,7 +279,8 @@ class _CartViewState extends State<CartView> {
               }
               return Container();
             },
-          )),
+          ))
+          : Container(),
     );
   }
 
@@ -359,7 +362,28 @@ class _CartViewState extends State<CartView> {
                             Response res = await CartFireCrud.deleteCart(
                                 userDocId: FirebaseAuth.instance.currentUser!.uid, docId: carts[k].productId!);
                           }
-                          _basicImageEasyDialog();
+
+                          Dialogs.materialDialog(
+                              color: Colors.white,
+                              msg: 'Order placed Successfully',
+                              title: 'Success',
+                              lottieBuilder: Lottie.asset(
+                                'assets/logout.json',
+                                fit: BoxFit.contain,
+                              ),
+                              context: context,
+                              actions: [
+                                IconsButton(
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                  text: 'Ok',
+                                  color: Colors.blue,
+                                  textStyle: TextStyle(color: Colors.white),
+                                  iconColor: Colors.white,
+                                ),
+                              ]
+                          );
                           // CoolAlert.show(
                           //     context: context,
                           //     type: CoolAlertType.success,
