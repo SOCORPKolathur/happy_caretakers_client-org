@@ -53,10 +53,11 @@ class _DrawerWidgetState extends State<DrawerWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
+                  backgroundColor: Colors.white,
+                  child: Lottie.asset("assets/profile.json"),
+                  //backgroundImage: NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
                 ),
                 SizedBox(height: 10),
                 Padding(

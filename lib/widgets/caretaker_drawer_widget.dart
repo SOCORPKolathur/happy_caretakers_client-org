@@ -50,11 +50,13 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                data != null ? CircleAvatar(
+                CircleAvatar(
                   radius: 40,
                   backgroundColor: Constants.primaryWhite,
-                  backgroundImage: NetworkImage(widget.caretaker.imgUrl),
-                ) : CircleAvatar(radius: 40),
+                  backgroundImage: NetworkImage(
+                    widget.caretaker.imgUrl,
+                  ),
+                ),
                 SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -66,7 +68,7 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                )
+                ),
               ],
             ), //UserAccountDrawerHeader
           ), //DrawerHeader

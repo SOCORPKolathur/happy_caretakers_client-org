@@ -106,7 +106,11 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
             SizedBox(width: width/45),
             CircleAvatar(
               radius: height/34.36363636363636,
-              backgroundImage: NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
+              backgroundColor: Colors.white,
+              child: Lottie.asset(
+                "assets/profile.json",
+              ),
+              //backgroundImage: NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png"),
             ),
           ],
         ),

@@ -75,12 +75,16 @@ class _CaretakerChatViewState extends State<CaretakerChatView> {
                               CircleAvatar(
                                 radius: size.height/32.8695652173913,
                                 backgroundColor: Colors.grey.shade300,
-                                backgroundImage: NetworkImage(widget.data.get("senderImage"),
+                                //backgroundImage: NetworkImage(widget.data.get("senderImage"),
+                                //),
+                                child: Center(
+                                  child: Icon(
+                                    Icons.person,
+                                    size: 30,
+                                  ),
                                 ),
                               ),
-                              SizedBox(
-                                width: size.width/20,
-                              ),
+                              SizedBox(width: size.width/20),
                               Expanded(
                                 child: SizedBox(
                                     height: size.height/9.45,

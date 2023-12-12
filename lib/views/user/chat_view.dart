@@ -54,7 +54,8 @@ class _ChatViewState extends State<ChatView> {
                           borderRadius: BorderRadius.only(
                             bottomLeft: Radius.circular(30),
                             bottomRight: Radius.circular(30),
-                          )),
+                          ),
+                      ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -81,9 +82,7 @@ class _ChatViewState extends State<ChatView> {
                                 backgroundImage: NetworkImage(widget.data.get("senderImage"),
                                 ),
                               ),
-                              SizedBox(
-                                width: size.width/20,
-                              ),
+                              SizedBox(width: size.width/20),
                               Expanded(
                                 child: SizedBox(
                                     height: size.height/9.45,
@@ -102,7 +101,8 @@ class _ChatViewState extends State<ChatView> {
                                           ),
                                         ),
                                       ],
-                                    )),
+                                    ),
+                                ),
                               ),
                             ],
                           ),

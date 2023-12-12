@@ -434,7 +434,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                               image: AssetImage(
                                   "assets/back_imgs.png"
                               )
-                          )
+                          ),
                       ),
                     ),
                     Align(

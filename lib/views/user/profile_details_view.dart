@@ -638,7 +638,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                           }
                                       );
                                     }
-                                    await sendPushMessage(careTaker.fcmToken, "${careTaker.firstName+" "+careTaker.lastName} is made connection with you", "New Connection added");
+                                    await sendPushMessage(careTaker.fcmToken, "${"${userSnap.data!.get("firstName")} ${userSnap.data!.get("lastName")}"} is made connection with you", "New Connection added");
                                     showModalBottomSheet(
                                         context: context,
                                         isScrollControlled: true,

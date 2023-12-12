@@ -462,14 +462,17 @@ class _ProfileViewState extends State<ProfileView> {
                     Align(
                       alignment: Alignment.bottomCenter,
                       child: Container(
-                        height: 120,
-                        width: 120,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          image: DecorationImage(
-                            fit: BoxFit.fill,
-                            image: image != "" ? NetworkImage(image) : NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
-                          )
+                          // image: DecorationImage(
+                          //   fit: BoxFit.fill,
+                          //   image: image != "" ? NetworkImage(image) : NetworkImage("https://www.pngitem.com/pimgs/m/150-1503945_transparent-user-png-default-user-image-png-png.png")
+                          // )
+                        ),
+                        child: Lottie.asset(
+                          "assets/profile.json",
+                          height: 180,
+                          width: 180,
                         ),
                       ),
                     )

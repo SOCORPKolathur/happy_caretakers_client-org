@@ -3,7 +3,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_dialog/easy_dialog.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/dialogs.dart';
@@ -35,6 +34,7 @@ class _CartViewState extends State<CartView> {
     return isAltreadyIn;
   }
 
+
   getQuantity(List<CartModel> carts, String itemId){
     int quantity = 0;
     carts.forEach((element) {
@@ -45,6 +45,7 @@ class _CartViewState extends State<CartView> {
     return quantity;
   }
 
+
   double getTotalAmount(List<CartModel> products) {
     double amount = 0.0;
     for (int i = 0; i < products.length; i++) {
@@ -52,6 +53,7 @@ class _CartViewState extends State<CartView> {
     }
     return amount;
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -265,7 +267,8 @@ class _CartViewState extends State<CartView> {
                                           image: CachedNetworkImageProvider(
                                             carts[i].imgUrl!,
                                           ),
-                                        )),
+                                        ),
+                                    ),
                                   ),
                                 ],
                               ),
@@ -363,6 +366,7 @@ class _CartViewState extends State<CartView> {
                                 userDocId: FirebaseAuth.instance.currentUser!.uid, docId: carts[k].productId!);
                           }
 
+
                           Dialogs.materialDialog(
                               color: Colors.white,
                               msg: 'Order placed Successfully',
@@ -384,6 +388,8 @@ class _CartViewState extends State<CartView> {
                                 ),
                               ]
                           );
+
+
                           // CoolAlert.show(
                           //     context: context,
                           //     type: CoolAlertType.success,
