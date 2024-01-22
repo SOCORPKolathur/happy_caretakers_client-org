@@ -10,6 +10,7 @@ import 'package:flutter/services.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_appointments_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_main_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_notifications_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_register_form_view.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_register_view.dart';
 import 'package:happy_caretakers_client/views/choose_role_view.dart';
 import 'package:happy_caretakers_client/views/setPage.dart';
@@ -85,7 +86,6 @@ class _MyAppState extends State<MyApp> {
         //     },
         // ),
         home: SetPage(),
-        //home: CaretakerAppointmentsView(title: "Appointments History"),
         localizationsDelegates: [
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,

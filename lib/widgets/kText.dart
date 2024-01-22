@@ -43,14 +43,14 @@ class _KTextState extends State<KText> {
             return Text(
               snapshot.data,
               maxLines: null,
+              textAlign: widget.textAlign,
               overflow: widget.textOverflow,
-              textAlign: TextAlign.left,
               style: widget.style,
             );
           }
           return Text(
             widget.text,
-            textAlign: TextAlign.left,
+            textAlign: widget.textAlign,
             style: widget.style,
           );
         }

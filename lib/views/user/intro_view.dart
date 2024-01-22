@@ -90,7 +90,7 @@ class _IntroViewState extends State<IntroView> {
                 SecondaryButton(
                   title: 'Sign IN',
                   onTap: () {
-                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false,lanCode: 'en_US')));
                   },
                 ),
                 PrimaryButton(

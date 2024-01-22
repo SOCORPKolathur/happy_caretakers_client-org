@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_main_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_register_form_view.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pinput/pinput.dart';
 import '../constants.dart';
@@ -17,15 +19,17 @@ class OtpVerificationView extends StatefulWidget {
   String phone;
   String firstName;
   String lastName;
+  String lanCode;
   final bool isCareTaker;
 
-  OtpVerificationView({required this.firstName, required this.lastName, required this.phone, required this.isCareTaker});
+  OtpVerificationView({required this.lanCode,required this.firstName, required this.lastName, required this.phone, required this.isCareTaker});
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
 }
 
 class _OtpVerificationViewState extends State<OtpVerificationView> {
+
   TextEditingController otp = TextEditingController();
   bool isLoading = false;
   @override
@@ -248,15 +252,52 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                                             {
                                               "id": value.user!.uid,
                                               "firstName" : "",
+                                              "fcmToken" : "",
+                                              "lanCode" : widget.lanCode,
                                             }
                                         );
+                                        // Navigator.pushReplacement(
+                                        //   context,
+                                        //   MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(
+                                        //     id: value.user!.uid,
+                                        //     phone: widget.phone,
+                                        //     firstName: widget.firstName,
+                                        //     lastName: widget.lastName,
+                                        //     lanCode: widget.lanCode,
+                                        //   ),
+                                        //   ),
+                                        // );
                                         Navigator.pushReplacement(
                                           context,
-                                          MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(
-                                            id: value.user!.uid,
-                                            phone: widget.phone,
-                                            firstName: widget.firstName,
-                                            lastName: widget.lastName,
+                                          MaterialPageRoute(builder: (ctx)=> CareTakerRegisterFormView(
+                                            careTaker: CareTakersModel(
+                                                name: widget.firstName,
+                                                id: value.user!.uid,
+                                                
+                                                fcmToken: "",
+                                                age: 0,
+                                                phone: widget.phone,
+                                               
+                                                workExperience: "",
+                                                totalWorks: 0,
+                                                orgName: "",
+                                                isCurrentlyWorking: false,
+                                                category: "",
+                                                email: "",
+                                                location: Location(lat: 0.0,lng: 0.0),
+                                                address: "",
+                                                subCategory: "",
+                                                city: "",
+                                                gender: "",
+                                                yearsOfExperience: 0,
+                                                position: "",
+                                                workingAt: "",
+                                                imgUrl: "",
+                                                aadharNumber: widget.lastName,
+                                                lanCode: widget.lanCode,
+                                                timestamp: DateTime.now().millisecondsSinceEpoch,
+                                                workType: '', languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
+                                            ),
                                           ),
                                           ),
                                         );

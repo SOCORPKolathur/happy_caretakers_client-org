@@ -6,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/views/caretaker/widgets/selection_checkbox.dart';
+import 'package:happy_caretakers_client/views/caretaker/widgets/selection_container.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import '../../constants.dart';
@@ -29,7 +31,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
 
   File? profileImage;
   XFile? imageForShow;
-
+  List<String> subCategoriesList = ["AAA", "BBB", "CCC", "DDD", "FFF"];
   // File? aadharImage;
   // XFile? aadharImageForShow;
 
@@ -46,7 +48,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   TextEditingController positionController = TextEditingController();
   TextEditingController workingAtController = TextEditingController();
   TextEditingController workPreparenceController = TextEditingController();
-  TextEditingController aboutController = TextEditingController();
+  TextEditingController subCategoryController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController yearOfExperienceController = TextEditingController();
   TextEditingController orgNameController = TextEditingController();
@@ -69,7 +71,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
       positionController.clear();
       workingAtController.clear();
       workPreparenceController.clear();
-      aboutController.clear();
+      subCategoryController.clear();
       aadhaarNumberController.clear();
       orgNameController.clear();
       addressController.clear();
@@ -89,15 +91,14 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   setData(){
     setState(() {
       phoneController.text = widget.careTaker.phone;
-      firstNameController.text = widget.careTaker.firstName;
-      lastNameController.text = widget.careTaker.lastName;
+      firstNameController.text = widget.careTaker.name;
       emailController.text = widget.careTaker.email;
       ageController.text = widget.careTaker.age.toString();
       aadhaarNumberController.text = widget.careTaker.aadharNumber;
       aadhaarNumberController.text = widget.careTaker.aadharNumber;
       addressController.text = widget.careTaker.address;
+      subCategoryController.text = widget.careTaker.subCategory;
       orgNameController.text = widget.careTaker.orgName;
-      aboutController.text = widget.careTaker.about;
       categoryController.text = widget.careTaker.category;
       cityController.text = widget.careTaker.city;
       yearOfExperienceController.text = widget.careTaker.yearsOfExperience.toString();
@@ -239,116 +240,115 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Firstname *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyFirstName,
-                              //focusNode: firstNameFocusNode,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              keyboardType: TextInputType.name,
-                              onChanged: (val){
-                                //_keyFirstName.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: firstNameController,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Lastname *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyLastName,
-                              //focusNode: firstNameFocusNode,
-                              autofocus: true,
-                              keyboardType: TextInputType.name,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                //_keyLastName.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: lastNameController,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     SizedBox(
+                  //       width: width,
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           KText(
+                  //             text: "Name *",
+                  //             style: GoogleFonts.roboto(
+                  //               color: Constants.lightGrey,
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w400,
+                  //             ),
+                  //           ),
+                  //           TextFormField(
+                  //             key: _keyFirstName,
+                  //             //focusNode: firstNameFocusNode,
+                  //             autofocus: true,
+                  //             // onEditingComplete: (){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             // onFieldSubmitted: (val){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             validator: (val){
+                  //               if(val!.isEmpty){
+                  //                 return 'Field is required';
+                  //               }else{
+                  //                 return '';
+                  //               }
+                  //             },
+                  //             keyboardType: TextInputType.name,
+                  //             onChanged: (val){
+                  //               //_keyFirstName.currentState!.validate();
+                  //             },
+                  //             decoration: InputDecoration(
+                  //               counterText: "",
+                  //               contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //             ),
+                  //             maxLength: 40,
+                  //             inputFormatters: [
+                  //               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //             ],
+                  //             style: TextStyle(fontSize: 15),
+                  //             controller: firstNameController,
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     // SizedBox(width: width / 68.3),
+                  //     // SizedBox(
+                  //     //   width: width / 2.4,
+                  //     //   child: Column(
+                  //     //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     //     children: [
+                  //     //       KText(
+                  //     //         text: "Lastname *",
+                  //     //         style: GoogleFonts.roboto(
+                  //     //           color: Constants.lightGrey,
+                  //     //           fontSize: 16,
+                  //     //           fontWeight: FontWeight.w400,
+                  //     //         ),
+                  //     //       ),
+                  //     //       TextFormField(
+                  //     //         key: _keyLastName,
+                  //     //         //focusNode: firstNameFocusNode,
+                  //     //         autofocus: true,
+                  //     //         keyboardType: TextInputType.name,
+                  //     //         // onEditingComplete: (){
+                  //     //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //     //         // },
+                  //     //         // onFieldSubmitted: (val){
+                  //     //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //     //         // },
+                  //     //         validator: (val){
+                  //     //           if(val!.isEmpty){
+                  //     //             return 'Field is required';
+                  //     //           }else{
+                  //     //             return '';
+                  //     //           }
+                  //     //         },
+                  //     //         onChanged: (val){
+                  //     //           //_keyLastName.currentState!.validate();
+                  //     //         },
+                  //     //         decoration: InputDecoration(
+                  //     //           counterText: "",
+                  //     //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //     //         ),
+                  //     //         maxLength: 40,
+                  //     //         inputFormatters: [
+                  //     //           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //     //         ],
+                  //     //         style: TextStyle(fontSize: 15),
+                  //     //         controller: lastNameController,
+                  //     //       )
+                  //     //     ],
+                  //     //   ),
+                  //     // ),
+                  //   ],
+                  // ),
                   SizedBox(
                     width: width,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         KText(
-                          text: "Email *",
+                          text: "Name *",
                           style: GoogleFonts.roboto(
                             color: Constants.lightGrey,
                             fontSize: 16,
@@ -356,8 +356,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           ),
                         ),
                         TextFormField(
-                          key: _keyEmail,
-                          keyboardType: TextInputType.emailAddress,
+                          key: _keyFirstName,
                           //focusNode: firstNameFocusNode,
                           autofocus: true,
                           // onEditingComplete: (){
@@ -367,14 +366,15 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           //   FocusScope.of(context).requestFocus(lastNameFocusNode);
                           // },
                           validator: (val){
-                            if(!isEmail(val!)){
-                              return 'Please enter a valid email.';
+                            if(val!.isEmpty){
+                              return 'Field is required';
                             }else{
                               return '';
                             }
                           },
+                          keyboardType: TextInputType.name,
                           onChanged: (val){
-                            //_keyEmail.currentState!.validate();
+                            //_keyFirstName.currentState!.validate();
                           },
                           decoration: InputDecoration(
                             counterText: "",
@@ -382,15 +382,64 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           ),
                           maxLength: 40,
                           inputFormatters: [
-                            //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
                           ],
                           style: TextStyle(fontSize: 15),
-                          controller: emailController,
+                          controller: firstNameController,
                         )
                       ],
                     ),
                   ),
                   SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Email *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       TextFormField(
+                  //         key: _keyEmail,
+                  //         keyboardType: TextInputType.emailAddress,
+                  //         //focusNode: firstNameFocusNode,
+                  //         autofocus: true,
+                  //         // onEditingComplete: (){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         // onFieldSubmitted: (val){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         validator: (val){
+                  //           if(!isEmail(val!)){
+                  //             return 'Please enter a valid email.';
+                  //           }else{
+                  //             return '';
+                  //           }
+                  //         },
+                  //         onChanged: (val){
+                  //           //_keyEmail.currentState!.validate();
+                  //         },
+                  //         decoration: InputDecoration(
+                  //           counterText: "",
+                  //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //         ),
+                  //         maxLength: 40,
+                  //         inputFormatters: [
+                  //           //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //         ],
+                  //         style: TextStyle(fontSize: 15),
+                  //         controller: emailController,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(height: 30),
                   SizedBox(
                     width: width,
                     child: Column(
@@ -850,7 +899,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         KText(
-                          text: "Organization Name *",
+                          text: "Organization Name",
                           style: GoogleFonts.roboto(
                             color: Constants.lightGrey,
                             fontSize: 16,
@@ -899,46 +948,129 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         KText(
-                          text: "About yourself",
+                          text: "Sub Categories",
                           style: GoogleFonts.roboto(
                             color: Constants.lightGrey,
                             fontSize: 16,
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        TextFormField(
-                          //key: _keyFirstname,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.text,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            // _keyFirstname.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
+                        // Generate subcategory containers dynamically using GridView
+                        GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3, // You can adjust the cross-axis count as needed
+                            crossAxisSpacing: 8.0,
+                            mainAxisSpacing: 8.0,
                           ),
-                          maxLength: 200,
-                          inputFormatters: [
-                            // FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                          controller: aboutController,
-                        )
-                      ],
+                          itemCount: subCategories.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String subCategory = subCategories[index];
+                            return SubCategoryContainer(
+                              text: subCategory,
+                              isSelected: selectedSubCategory == subCategory,
+                              onTap: () {
+                                updateSubCategory(subCategory);
+                              },
+                            );
+                          },
+                        ),  ],
+
+                    ),
+
+
+                  ),
+
+                  SizedBox(height: 30),
+                  SizedBox(
+                    width: width,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          WorkTypeSelection(),
+
+                        ]
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  SizedBox(
+                    width: width,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          KText(
+                            text: "Languages Known with",
+                            style: GoogleFonts.roboto(
+                              color: Constants.lightGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 3, // You can adjust the cross-axis count as needed
+                              crossAxisSpacing: 8.0,
+                              mainAxisSpacing: 8.0,
+                            ),
+                            itemCount: subCategoriesList.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              String subCategory = subCategories[index];
+                              return SubCategoryContainer(
+                                text: subCategory,
+                                isSelected: selectedSubCategory == subCategory,
+                                onTap: () {
+                                  updateSubCategory(subCategory);
+                                },
+                              );
+                            },
+                          ),
+
+                        ]
+                    ),
+                  ),
+                  SizedBox(height: 30),
+                  SizedBox(
+                    width: width,
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          KText(
+                            text: "Are you willing to work out of stations ?",
+                            style: GoogleFonts.roboto(
+                              color: Constants.lightGrey,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          ToggleSwitch(
+                            minWidth: width,
+                            minHeight: 35.0,
+                            fontSize: 16.0,
+                            initialLabelIndex: 1,
+                            activeBgColor: [Constants.primaryAppColor],
+                            activeFgColor: Colors.white,
+                            inactiveBgColor: Colors.grey,
+                            inactiveFgColor: Colors.grey[900],
+                            totalSwitches: 2,
+                            labels: ['Yes', 'No'],
+                            onToggle: (index) {
+                              if(index == 0){
+                                // setState(() {
+                                isCurrentlyWorking = true;
+                                //});
+                              }else{
+                                // setState(() {
+                                isCurrentlyWorking = false;
+                                // });
+                              }
+                              print(isCurrentlyWorking);
+                            },
+                          ),
+                        ]
                     ),
                   ),
                   SizedBox(height: 30),
@@ -949,28 +1081,27 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           isLoading = true;
                         });
                         _keyFirstName.currentState!.validate();
-                        _keyLastName.currentState!.validate();
+                        //_keyLastName.currentState!.validate();
                         _keyPhone.currentState!.validate();
-                        _keyEmail.currentState!.validate();
+                        //_keyEmail.currentState!.validate();
                         _keyAge.currentState!.validate();
                         _keyCity.currentState!.validate();
                         _keyAadhar.currentState!.validate();
                         _keyAddress.currentState!.validate();
                         _keyYearOfExp.currentState!.validate();
-                        _keyOrgName.currentState!.validate();
+                        //_keyOrgName.currentState!.validate();
                         _keyPosition.currentState!.validate();
                         _keyOrgName.currentState!.validate();
                         if(
                         firstNameController.text != "" &&
-                            lastNameController.text != "" &&
+                            //lastNameController.text != "" &&
                             phoneController.text != "" &&
                             phoneController.text.length == 10 &&
                             aadhaarNumberController.text.length == 12 &&
-                            emailController.text != "" &&
+                            //emailController.text != "" &&
                             ageController.text != "" &&
                             cityController.text != "" &&
                             positionController.text != "" &&
-                            orgNameController.text != "" &&
                             categoryController.text != "Select Category" &&
                             addressController.text != ""
                         ){
@@ -982,25 +1113,25 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           //downloadUrl1 =  await uploadImageToStorage(aadharImage!);
                           Response response = await CareTakersFireCrud.updateCareTaker(
                               CareTakersModel(
+                                gender: widget.careTaker.gender,
                                 orgName: orgNameController.text,
+                                lanCode: widget.careTaker.lanCode,
                                 isCurrentlyWorking: isCurrentlyWorking,
-                                firstName: firstNameController.text,
+                                name: firstNameController.text,
                                 category : categoryController.text,
                                 id: widget.careTaker.id,
                                 fcmToken: fcmToken!,
-                                lastName: lastNameController.text,
                                 age: int.parse(ageController.text.toString()),
                                 phone: phoneController.text,
-                                rating: [],
                                 workExperience: workExperienceController.text,
-                                totalWorks: 0,//int.parse(totalWorksController.text.toString()),
+                                totalWorks: widget.careTaker.totalWorks,//int.parse(totalWorksController.text.toString()),
                                 email: emailController.text,
                                 location: Location(
                                   lat: latitude,
                                   lng: longitude,
                                 ),
                                 address: addressController.text,
-                                about: aboutController.text,
+                                subCategory: subCategoryController.text,
                                 city: cityController.text,
                                 yearsOfExperience: int.parse(yearOfExperienceController.text.toString()),
                                 position: positionController.text,
@@ -1008,7 +1139,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                                 imgUrl: downloadUrl != "" ? downloadUrl : widget.careTaker.imgUrl,
                                 aadharNumber: aadhaarNumberController.text,
                                 timestamp: DateTime.now().millisecondsSinceEpoch,
-                                workPreparence: workPreparenceController.text,
+                                workType: workPreparenceController.text, languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
                               )
                           );
                           if(response.code == 200){
@@ -1044,7 +1175,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                             color: Constants.primaryWhite,
                           )
                               : KText(
-                            text: "Register",
+                            text: "Update",
                             style: GoogleFonts.poppins(
                               color: Constants.primaryWhite,
                               fontSize: 18,
@@ -1106,5 +1237,20 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
         )),
   );
 
+  String selectedSubCategory = "";
 
+  List<String> subCategories = ['BBB', 'CCC', 'DDD', 'YYY', 'GGG', 'JJJJ'];
+  void updateSubCategory(String subCategory) {
+    setState(() {
+      if (selectedSubCategory == subCategory) {
+        selectedSubCategory = ""; // Deselect if already selected
+      } else {
+        selectedSubCategory = subCategory;
+      }
+      subCategoryController.text = selectedSubCategory;
+    });
+  }
 }
+
+
+

@@ -38,6 +38,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
   void initState() {
     getUser();
     getLatLng();
+    getProfessionals();
     tabController = TabController(length: 4, vsync: this);
     super.initState();
   }
@@ -86,8 +87,21 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
     'Physiotherapist',
   ];
 
-  String searchQuery = "doctor";
+  String searchQuery = "";
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  List<CareTakersModel> totalProfessionals = [];
+  List<CareTakersModel> searchedProfessionals = [];
+
+  getProfessionals() async {
+    var productDoc = await FirebaseFirestore.instance.collection('CareTakers').get();
+    for(int p = 0; p < productDoc.docs.length; p++){
+      setState(() {
+        totalProfessionals.add(CareTakersModel.fromJson(productDoc.docs[p].data()));
+      });
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -115,12 +129,23 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           ],
         ),
         title: AppBarSearchWidget(
+          isProduct: false,
           controller: searchProfessionalsController,
           onTap:(){
             setState(() {});
           },
           onChanged: (){
-            setState(() {});
+            setState(() {
+              totalProfessionals.forEach((element) {
+                if(element.category.toLowerCase().startsWith(searchProfessionalsController.text.toLowerCase())){
+                  setState(() {
+                    if(!searchedProfessionals.contains(element)){
+                      searchedProfessionals.add(element);
+                    }
+                  });
+                }
+              });
+            });
           },
           onSubmitted:(){
             setState(() {});
@@ -138,7 +163,87 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
           )
         ],
       ),
-      body: Padding(
+      body: searchProfessionalsController.text != ""
+          ? Padding(
+        padding: EdgeInsets.only(top: height/44.47058823529412/*,left: width/24,right: width/24*/),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Container(
+                child: ListView.builder(
+                  itemCount: searchedProfessionals.length,
+                  itemBuilder: (ctx, i){
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Constants.primaryWhite,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: ListTile(
+                            leading: Container(
+                              width: 60,
+                              decoration: BoxDecoration(
+                                  color: Constants.lightGrey.withOpacity(0.2),
+                                  borderRadius: BorderRadius.circular(8),
+                                  image: DecorationImage(
+                                    image: NetworkImage(searchedProfessionals[i].imgUrl),
+                                  )
+                              ),
+                            ),
+                            title: Text(
+                              "${searchedProfessionals[i].name} ",
+                              style: GoogleFonts.poppins(
+
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                searchedProfessionals[i].category.toString(),
+                                style: GoogleFonts.poppins(
+
+                                ),
+                              ),
+                            ),
+                            trailing: InkWell(
+                              onTap: (){
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (ctx) => ProfileDetailsView(id: searchedProfessionals[i].id)
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Constants.primaryAppColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                  child: Text(
+                                    "View",
+                                    style: GoogleFonts.poppins(
+                                        color: Constants.primaryWhite,
+                                        fontSize: 13
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+            )
+          ],
+        ),
+      )
+          : Padding(
         padding: EdgeInsets.only(top: height/44.47058823529412),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -406,7 +511,7 @@ class _HomeViewState extends State<HomeView> with SingleTickerProviderStateMixin
         actions: [
           IconsButton(
             onPressed: () async {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false,lanCode: 'en_US')));
             },
             text: 'Log In',
             color: Colors.blue,

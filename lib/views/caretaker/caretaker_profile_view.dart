@@ -408,6 +408,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -443,11 +444,19 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                         height: 120,
                         width: 120,
                         decoration: BoxDecoration(
+                          color: Colors.white,
                             shape: BoxShape.circle,
-                            image: DecorationImage(
+                            image: widget.caretaker.imgUrl != "" ? DecorationImage(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(widget.caretaker.imgUrl),
-                            )
+                            ) : null,
+                        ),
+                        child: Visibility(
+                          visible: widget.caretaker.imgUrl == "",
+                          child: Lottie.asset(
+                              "assets/profile.json",
+                            height: 200,
+                          ),
                         ),
                       ),
                     )
@@ -456,7 +465,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
               ),
               SizedBox(height: 10),
               Text(
-                widget.caretaker.firstName +" "+widget.caretaker.lastName,
+                widget.caretaker.name,
                 style: GoogleFonts.poppins(
                   color: Constants.darkBlack,
                   fontWeight: FontWeight.w600,
@@ -501,31 +510,7 @@ class _CareTakerProfileViewState extends State<CareTakerProfileView> {
                         ],
                       ),
                     ),
-                    Container(
-                      width: width * 0.4,
-                      child: Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              widget.caretaker.rating.length.toDouble().toString(),
-                              style: GoogleFonts.poppins(
-                                color: Constants.primaryAppColor,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 17,
-                              ),
-                            ),
-                            Text(
-                              "Rating",
-                              style: GoogleFonts.poppins(
-                                color: Constants.darkBlack,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 14,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
+
                   ],
                 ),
               ),

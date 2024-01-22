@@ -3,11 +3,12 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants.dart';
 
 class AppBarSearchWidget extends StatefulWidget {
-  AppBarSearchWidget({super.key, required this.controller, required this.onTap,required this.onSubmitted,required this.onChanged});
+  AppBarSearchWidget({super.key,required this.isProduct, required this.controller, required this.onTap,required this.onSubmitted,required this.onChanged});
   TextEditingController controller;
   Function onTap;
   Function onSubmitted;
   Function onChanged;
+  bool isProduct;
 
   @override
   State<AppBarSearchWidget> createState() => _AppBarSearchWidgetState();
@@ -43,7 +44,7 @@ class _AppBarSearchWidgetState extends State<AppBarSearchWidget> {
                 widget.onTap();
               },
             ),
-            hintText: 'Search any type professionals',
+            hintText: widget.isProduct ? 'Search Here' : 'Search any type professionals',
             hintStyle: GoogleFonts.poppins(
               color: Constants.lightGrey,
               fontSize: 14,

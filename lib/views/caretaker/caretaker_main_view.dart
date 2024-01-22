@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_home_view.dart';
@@ -30,6 +31,11 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
   ];
 
   int animatesetvalue = 0;
+  PageController controller = PageController(viewportFraction: 1, keepPage: true);
+
+  setLanguage(String language){
+      changeLocale(context, language);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,13 +47,26 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
           builder: (context,snap) {
             if(snap.hasData){
               CareTakersModel careTakersModel = CareTakersModel.fromJson(snap.data!.data() as Map<String,dynamic>);
+              //setLanguage(careTakersModel.lanCode);
               pages = [
                 CareTakerHomeView(caretaker: careTakersModel),
                 CaretakerMessagesView(),
                 CaretakerProductsView(caretaker: careTakersModel),
                 CareTakerProfileView(caretaker: careTakersModel),
               ];
-              return pages[_selectedIndex];
+              return PageView.builder(
+                controller: controller,
+                itemCount: pages.length,
+                itemBuilder: (ctx, i){
+                  return pages[i];
+                },
+                onPageChanged: (index){
+                  setState(() {
+                    _selectedIndex = index;
+                    animatesetvalue = index;
+                  });
+                },
+              );
             }return Center(child: CircularProgressIndicator(),);
           }
         ),
@@ -81,6 +100,7 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
                               _selectedIndex = 0;
                               animatesetvalue = 0;
                             });
+                            controller.animateToPage(0, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(
@@ -113,6 +133,7 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
                               _selectedIndex = 1;
                               animatesetvalue = 1;
                             });
+                            controller.animateToPage(1, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(
@@ -140,6 +161,7 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
                               _selectedIndex = 2;
                               animatesetvalue = 2;
                             });
+                            controller.animateToPage(2, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(
@@ -157,7 +179,8 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
                                     color: animatesetvalue == 2
                                         ? Constants.primaryAppColor
                                         : Constants.lightGrey,
-                                  ))
+                                  ),
+                              )
                             ],
                           ),
                         ),
@@ -167,6 +190,7 @@ class _CareTakerMainViewState extends State<CareTakerMainView> {
                               _selectedIndex = 3;
                               animatesetvalue = 3;
                             });
+                            controller.animateToPage(3, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_language_select_view.dart';
 import 'package:happy_caretakers_client/views/user/intro_view.dart';
 import 'package:happy_caretakers_client/widgets/kText.dart';
 import 'package:lottie/lottie.dart';
 
+import 'caretaker/caretaker_login_view.dart';
 import 'login_view.dart';
 
 class ChooseRoleView extends StatefulWidget {
@@ -39,13 +41,14 @@ class _ChooseRoleViewState extends State<ChooseRoleView> {
               Center(
                 child: GestureDetector(
                   onTap: (){
-                    Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: true)));
+                   // Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: true)));
+                    Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CaretakerLoginView(isCareTaker: true, lanCode: "")));
                   },
                   child: Material(
                     elevation: 3,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      height: 270,
+                      height: height * 0.36,
                       width: width * 0.8,
                       decoration: BoxDecoration(
                         color: Constants.primaryWhite,
@@ -61,12 +64,14 @@ class _ChooseRoleViewState extends State<ChooseRoleView> {
                             child: Lottie.asset('assets/anim11.json'),
                           ),
                           SizedBox(height: 20),
-                          KText(
-                            text: "I am Looking for Job",
-                            style: GoogleFonts.poppins(
-                              color: Constants.primaryAppColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
+                          Expanded(
+                            child: KText(
+                              text: "I am Looking for Job",
+                              style: GoogleFonts.poppins(
+                                color: Constants.primaryAppColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ],
@@ -94,7 +99,7 @@ class _ChooseRoleViewState extends State<ChooseRoleView> {
                     elevation: 3,
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
-                      height: 270,
+                      height: height * 0.36,
                       width: width * 0.8,
                       decoration: BoxDecoration(
                         color: Constants.primaryWhite,
@@ -110,12 +115,14 @@ class _ChooseRoleViewState extends State<ChooseRoleView> {
                             child: Lottie.asset('assets/anim11.json'),
                           ),
                           SizedBox(height: 20),
-                          KText(
-                            text: "I am Looking for Person",
-                            style: GoogleFonts.poppins(
-                              color: Constants.primaryAppColor,
-                              fontWeight: FontWeight.w700,
-                              fontSize: 18,
+                          Expanded(
+                            child: KText(
+                              text: "I am Looking for Person",
+                              style: GoogleFonts.poppins(
+                                color: Constants.primaryAppColor,
+                                fontWeight: FontWeight.w700,
+                                fontSize: 18,
+                              ),
                             ),
                           ),
                         ],

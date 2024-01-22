@@ -655,7 +655,7 @@ class _ProductDetailsViewState extends State<ProductDetailsView> {
         actions: [
           IconsButton(
             onPressed: () async {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false,lanCode: 'en_US')));
             },
             text: 'Log In',
             color: Colors.blue,

@@ -29,12 +29,27 @@ class _MainViewState extends State<MainView> {
 
   int animatesetvalue = 0;
 
+  PageController controller = PageController(viewportFraction: 1, keepPage: true);
+
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
     double height = MediaQuery.of(context).size.height;
     return Scaffold(
-      body: pages[_selectedIndex],
+        //body: pages[_selectedIndex],
+      body: PageView.builder(
+        controller: controller,
+        itemCount: pages.length,
+        itemBuilder: (ctx, i){
+          return pages[i];
+        },
+        onPageChanged: (index){
+          setState(() {
+            _selectedIndex = index;
+            animatesetvalue = index;
+          });
+        },
+      ),
         bottomNavigationBar: Container(
           color: Constants.appBackgroundolor,
           child: Material(
@@ -65,6 +80,7 @@ class _MainViewState extends State<MainView> {
                               _selectedIndex = 0;
                               animatesetvalue = 0;
                             });
+                            controller.animateToPage(0, curve: Curves.decelerate, duration: Duration(milliseconds: 300)); // for animated jump. Requires a curve and a duration
                             setState(() {});
                           },
                           child: Column(
@@ -97,6 +113,7 @@ class _MainViewState extends State<MainView> {
                               _selectedIndex = 1;
                               animatesetvalue = 1;
                             });
+                            controller.animateToPage(1, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(
@@ -124,6 +141,7 @@ class _MainViewState extends State<MainView> {
                               _selectedIndex = 2;
                               animatesetvalue = 2;
                             });
+                            controller.animateToPage(2, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(
@@ -151,6 +169,7 @@ class _MainViewState extends State<MainView> {
                               _selectedIndex = 3;
                               animatesetvalue = 3;
                             });
+                            controller.animateToPage(3, curve: Curves.decelerate, duration: Duration(milliseconds: 300));
                             setState(() {});
                           },
                           child: Column(

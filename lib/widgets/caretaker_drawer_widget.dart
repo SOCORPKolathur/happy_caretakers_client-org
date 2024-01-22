@@ -8,10 +8,11 @@ import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
 import 'package:url_launcher/url_launcher.dart';
-
 import '../models/care_takers_model.dart';
 import '../views/about_app_view.dart';
+import '../views/caretaker/caretaker_carts_view.dart';
 import '../views/caretaker/caretaker_edit_profile_view.dart';
+import '../views/caretaker/caretaker_orders_view.dart';
 import '../views/choose_role_view.dart';
 import '../views/languages_view.dart';
 
@@ -61,7 +62,7 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: KText(
-                    text: widget.caretaker.firstName + " "+ widget.caretaker.lastName,
+                    text: widget.caretaker.name,
                     style: GoogleFonts.poppins(
                       color: Constants.primaryWhite,
                       fontSize: 17,
@@ -74,7 +75,7 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
           ), //DrawerHeader
           buildMenuTile(
             onPressed: (){
-              Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerEditProfileView(careTaker: careTaker!)));
+              Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerEditProfileView(careTaker: widget.caretaker)));
             },
             title: "Edit Profile",
             leading: Icons.person,
@@ -87,12 +88,16 @@ class _CaretakerDrawerWidgetState extends State<CaretakerDrawerWidget> {
             leading: Icons.translate,
           ),
           buildMenuTile(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const CaretakerCartView()));
+            },
             title: "Your Cart",
             leading: Icons.shopping_cart,
           ),
           buildMenuTile(
-            onPressed: (){},
+            onPressed: (){
+              Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakerOrdersView(userDocId: FirebaseAuth.instance.currentUser!.uid)));
+            },
             title: "Your Orders",
             leading: Icons.shopping_basket,
           ),

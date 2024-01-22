@@ -784,6 +784,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_register_form_view.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
@@ -794,12 +795,15 @@ import '../../services/care_takers_firecrud.dart';
 import '../../widgets/kText.dart';
 import 'caretaker_main_view.dart';
 
+enum genderEnum { Male, Female, Others  }
+
 class CaretakerRegisterView extends StatefulWidget {
-  const CaretakerRegisterView({super.key,required this.id, required this.phone, required this.firstName, required this.lastName});
+  const CaretakerRegisterView({super.key,required this.id, required this.phone, required this.firstName, required this.lastName,required this.lanCode});
 
   final String phone;
   final String firstName;
   final String lastName;
+  final String lanCode;
   final String id;
   @override
   State<CaretakerRegisterView> createState() => _CaretakerRegisterViewState();
@@ -829,7 +833,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
   TextEditingController positionController = TextEditingController();
   TextEditingController workingAtController = TextEditingController();
   TextEditingController workPreparenceController = TextEditingController();
-  TextEditingController aboutController = TextEditingController();
+  TextEditingController subCategoryController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController yearOfExperienceController = TextEditingController();
   TextEditingController orgNameController = TextEditingController();
@@ -852,7 +856,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
         positionController.clear();
         workingAtController.clear();
         workPreparenceController.clear();
-        aboutController.clear();
+        subCategoryController.clear();
         aadhaarNumberController.clear();
         orgNameController.clear();
         addressController.clear();
@@ -861,6 +865,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
     });
   }
 
+  genderEnum genderController = genderEnum.Male;
 
   @override
   void initState() {
@@ -1110,55 +1115,55 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                     ],
                   ),
                   SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Email *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          key: _keyEmail,
-                          keyboardType: TextInputType.emailAddress,
-                          //focusNode: firstNameFocusNode,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(!isEmail(val!)){
-                              return 'Please enter a valid email.';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            //_keyEmail.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 40,
-                          inputFormatters: [
-                            //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                          controller: emailController,
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Email *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       TextFormField(
+                  //         key: _keyEmail,
+                  //         keyboardType: TextInputType.emailAddress,
+                  //         //focusNode: firstNameFocusNode,
+                  //         autofocus: true,
+                  //         // onEditingComplete: (){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         // onFieldSubmitted: (val){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         validator: (val){
+                  //           if(!isEmail(val!)){
+                  //             return 'Please enter a valid email.';
+                  //           }else{
+                  //             return '';
+                  //           }
+                  //         },
+                  //         onChanged: (val){
+                  //           //_keyEmail.currentState!.validate();
+                  //         },
+                  //         decoration: InputDecoration(
+                  //           counterText: "",
+                  //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //         ),
+                  //         maxLength: 40,
+                  //         inputFormatters: [
+                  //           //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //         ],
+                  //         style: TextStyle(fontSize: 15),
+                  //         controller: emailController,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(height: 30),
                   SizedBox(
                     width: width,
                     child: Column(
@@ -1262,53 +1267,102 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                           ],
                         ),
                       ),
-                      SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "City *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyCity,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.name,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                //_keyCity.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: cityController,
-                            )
-                          ],
+                      // SizedBox(width: width / 68.3),
+                      // SizedBox(
+                      //   width: width / 2.4,
+                      //   child: Column(
+                      //     crossAxisAlignment: CrossAxisAlignment.start,
+                      //     children: [
+                      //       KText(
+                      //         text: "City *",
+                      //         style: GoogleFonts.roboto(
+                      //           color: Constants.lightGrey,
+                      //           fontSize: 16,
+                      //           fontWeight: FontWeight.w400,
+                      //         ),
+                      //       ),
+                      //       TextFormField(
+                      //         key: _keyCity,
+                      //         //focusNode: firstNameFocusNode,
+                      //         keyboardType: TextInputType.name,
+                      //         autofocus: true,
+                      //         // onEditingComplete: (){
+                      //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                      //         // },
+                      //         // onFieldSubmitted: (val){
+                      //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                      //         // },
+                      //         validator: (val){
+                      //           if(val!.isEmpty){
+                      //             return 'Field is required';
+                      //           }else{
+                      //             return '';
+                      //           }
+                      //         },
+                      //         onChanged: (val){
+                      //           //_keyCity.currentState!.validate();
+                      //         },
+                      //         decoration: InputDecoration(
+                      //           counterText: "",
+                      //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                      //         ),
+                      //         maxLength: 40,
+                      //         inputFormatters: [
+                      //           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                      //         ],
+                      //         style: TextStyle(fontSize: 15),
+                      //         controller: cityController,
+                      //       )
+                      //     ],
+                      //   ),
+                      // ),
+                    ],
+                  ),
+                  SizedBox(height: 30),
+                  KText(
+                    text: "Gender",
+                    style: GoogleFonts.roboto(
+                      color: Constants.lightGrey,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w400,
+                    ),
+                  ),
+                  Column(
+                    children: <Widget>[
+                      ListTile(
+                        title: KText(text: 'Male',style: TextStyle()),
+                        leading: Radio(
+                          value: genderEnum.Male,
+                          groupValue: genderController,
+                          onChanged: (genderEnum? value) {
+                            setState(() {
+                              genderController = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: KText(text: 'Female',style: TextStyle()),
+                        leading: Radio(
+                          value: genderEnum.Female,
+                          groupValue: genderController,
+                          onChanged: (genderEnum? value) {
+                            setState(() {
+                              genderController = value!;
+                            });
+                          },
+                        ),
+                      ),
+                      ListTile(
+                        title: KText(text: 'Other',style: TextStyle()),
+                        leading: Radio(
+                          value: genderEnum.Others,
+                          groupValue: genderController,
+                          onChanged: (genderEnum? value) {
+                            setState(() {
+                              genderController = value!;
+                            });
+                          },
                         ),
                       ),
                     ],
@@ -1364,351 +1418,352 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Address *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          key: _keyAddress,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.streetAddress,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            //_keyAddress.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 200,
-                          inputFormatters: [
-                            //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                          controller: addressController,
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  KText(
-                      text: "Professional Details",
-                      style: GoogleFonts.roboto(
-                        color: Constants.darkBlack,
-                        fontWeight: FontWeight.w600,
-                        fontSize: 18,
-                      )
-                  ),
-                  SizedBox(height: 30),
-                  Container(
-                    width: width,
-                    decoration:  BoxDecoration(
-                        border: Border(
-                            bottom: BorderSide(width:width/910.66,color: Colors.grey)
-                        )
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Select your profession category *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        DropdownButton(
-                          value: categoryController.text,
-                          isExpanded: true,
-                          underline: Container(),
-                          icon: Icon(Icons.keyboard_arrow_down),
-                          items: [
-                            "Select Category",
-                            "Doctor",
-                            "Caretaker",
-                            "Nurse"
-                          ].map((items) {
-                            return DropdownMenuItem(
-                              value: items,
-                              child: Text(items),
-                            );
-                          }).toList(),
-                          onChanged: (newValue) {
-                            setState(() {
-                              categoryController.text = newValue!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Total years of Exp *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyYearOfExp,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.number,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                 //_keyYearOfExp.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 3,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: yearOfExperienceController,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Position *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyPosition,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.text,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                 //_keyPosition.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: positionController,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Are you currently working *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        SizedBox(height: 10),
-                        ToggleSwitch(
-                          minWidth: width,
-                          minHeight: 35.0,
-                          fontSize: 16.0,
-                          initialLabelIndex: 1,
-                          activeBgColor: [Constants.primaryAppColor],
-                          activeFgColor: Colors.white,
-                          inactiveBgColor: Colors.grey,
-                          inactiveFgColor: Colors.grey[900],
-                          totalSwitches: 2,
-                          labels: ['Yes', 'No'],
-                          onToggle: (index) {
-                            if(index == 0){
-                             // setState(() {
-                                isCurrentlyWorking = true;
-                              //});
-                            }else{
-                             // setState(() {
-                                isCurrentlyWorking = false;
-                             // });
-                            }
-                            print(isCurrentlyWorking);
-                          },
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Organization Name *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          key: _keyOrgName,
-                          controller: orgNameController,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.name,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            //_keyOrgName.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 40,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "About yourself",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          //key: _keyFirstname,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.text,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            // _keyFirstname.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 200,
-                          inputFormatters: [
-                           // FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                          controller: aboutController,
-                        )
-                      ],
-                    ),
-                  ),
+
+                  // SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Address *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       TextFormField(
+                  //         key: _keyAddress,
+                  //         //focusNode: firstNameFocusNode,
+                  //         keyboardType: TextInputType.streetAddress,
+                  //         autofocus: true,
+                  //         // onEditingComplete: (){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         // onFieldSubmitted: (val){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         validator: (val){
+                  //           if(val!.isEmpty){
+                  //             return 'Field is required';
+                  //           }else{
+                  //             return '';
+                  //           }
+                  //         },
+                  //         onChanged: (val){
+                  //           //_keyAddress.currentState!.validate();
+                  //         },
+                  //         decoration: InputDecoration(
+                  //           counterText: "",
+                  //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //         ),
+                  //         maxLength: 200,
+                  //         inputFormatters: [
+                  //           //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //         ],
+                  //         style: TextStyle(fontSize: 15),
+                  //         controller: addressController,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  //SizedBox(height: 30),
+                  // KText(
+                  //     text: "Professional Details",
+                  //     style: GoogleFonts.roboto(
+                  //       color: Constants.darkBlack,
+                  //       fontWeight: FontWeight.w600,
+                  //       fontSize: 18,
+                  //     )
+                  // ),
+                  // SizedBox(height: 30),
+                  // Container(
+                  //   width: width,
+                  //   decoration:  BoxDecoration(
+                  //       border: Border(
+                  //           bottom: BorderSide(width:width/910.66,color: Colors.grey)
+                  //       )
+                  //   ),
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Select your profession category *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       DropdownButton(
+                  //         value: categoryController.text,
+                  //         isExpanded: true,
+                  //         underline: Container(),
+                  //         icon: Icon(Icons.keyboard_arrow_down),
+                  //         items: [
+                  //           "Select Category",
+                  //           "Doctor",
+                  //           "Caretaker",
+                  //           "Nurse"
+                  //         ].map((items) {
+                  //           return DropdownMenuItem(
+                  //             value: items,
+                  //             child: Text(items),
+                  //           );
+                  //         }).toList(),
+                  //         onChanged: (newValue) {
+                  //           setState(() {
+                  //             categoryController.text = newValue!;
+                  //           });
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  //SizedBox(height: 30),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //   children: [
+                  //     SizedBox(
+                  //       width: width / 2.4,
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           KText(
+                  //             text: "Total years of Exp *",
+                  //             style: GoogleFonts.roboto(
+                  //               color: Constants.lightGrey,
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w400,
+                  //             ),
+                  //           ),
+                  //           TextFormField(
+                  //             key: _keyYearOfExp,
+                  //             //focusNode: firstNameFocusNode,
+                  //             keyboardType: TextInputType.number,
+                  //             autofocus: true,
+                  //             // onEditingComplete: (){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             // onFieldSubmitted: (val){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             validator: (val){
+                  //               if(val!.isEmpty){
+                  //                 return 'Field is required';
+                  //               }else{
+                  //                 return '';
+                  //               }
+                  //             },
+                  //             onChanged: (val){
+                  //                //_keyYearOfExp.currentState!.validate();
+                  //             },
+                  //             decoration: InputDecoration(
+                  //               counterText: "",
+                  //               contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //             ),
+                  //             maxLength: 3,
+                  //             inputFormatters: [
+                  //               FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
+                  //             ],
+                  //             style: TextStyle(fontSize: 15),
+                  //             controller: yearOfExperienceController,
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //     SizedBox(width: width / 68.3),
+                  //     SizedBox(
+                  //       width: width / 2.4,
+                  //       child: Column(
+                  //         crossAxisAlignment: CrossAxisAlignment.start,
+                  //         children: [
+                  //           KText(
+                  //             text: "Position *",
+                  //             style: GoogleFonts.roboto(
+                  //               color: Constants.lightGrey,
+                  //               fontSize: 16,
+                  //               fontWeight: FontWeight.w400,
+                  //             ),
+                  //           ),
+                  //           TextFormField(
+                  //             key: _keyPosition,
+                  //             //focusNode: firstNameFocusNode,
+                  //             keyboardType: TextInputType.text,
+                  //             autofocus: true,
+                  //             // onEditingComplete: (){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             // onFieldSubmitted: (val){
+                  //             //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //             // },
+                  //             validator: (val){
+                  //               if(val!.isEmpty){
+                  //                 return 'Field is required';
+                  //               }else{
+                  //                 return '';
+                  //               }
+                  //             },
+                  //             onChanged: (val){
+                  //                //_keyPosition.currentState!.validate();
+                  //             },
+                  //             decoration: InputDecoration(
+                  //               counterText: "",
+                  //               contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //             ),
+                  //             maxLength: 40,
+                  //             inputFormatters: [
+                  //               FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //             ],
+                  //             style: TextStyle(fontSize: 15),
+                  //             controller: positionController,
+                  //           )
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ],
+                  // ),
+                  // SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Are you currently working *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       SizedBox(height: 10),
+                  //       ToggleSwitch(
+                  //         minWidth: width,
+                  //         minHeight: 35.0,
+                  //         fontSize: 16.0,
+                  //         initialLabelIndex: 1,
+                  //         activeBgColor: [Constants.primaryAppColor],
+                  //         activeFgColor: Colors.white,
+                  //         inactiveBgColor: Colors.grey,
+                  //         inactiveFgColor: Colors.grey[900],
+                  //         totalSwitches: 2,
+                  //         labels: ['Yes', 'No'],
+                  //         onToggle: (index) {
+                  //           if(index == 0){
+                  //            // setState(() {
+                  //               isCurrentlyWorking = true;
+                  //             //});
+                  //           }else{
+                  //            // setState(() {
+                  //               isCurrentlyWorking = false;
+                  //            // });
+                  //           }
+                  //           print(isCurrentlyWorking);
+                  //         },
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),
+                  //SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "Organization Name *",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       TextFormField(
+                  //         key: _keyOrgName,
+                  //         controller: orgNameController,
+                  //         //focusNode: firstNameFocusNode,
+                  //         keyboardType: TextInputType.name,
+                  //         autofocus: true,
+                  //         // onEditingComplete: (){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         // onFieldSubmitted: (val){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         validator: (val){
+                  //           if(val!.isEmpty){
+                  //             return 'Field is required';
+                  //           }else{
+                  //             return '';
+                  //           }
+                  //         },
+                  //         onChanged: (val){
+                  //           //_keyOrgName.currentState!.validate();
+                  //         },
+                  //         decoration: InputDecoration(
+                  //           counterText: "",
+                  //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //         ),
+                  //         maxLength: 40,
+                  //         inputFormatters: [
+                  //           FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //         ],
+                  //         style: TextStyle(fontSize: 15),
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
+                  // SizedBox(height: 30),
+                  // SizedBox(
+                  //   width: width,
+                  //   child: Column(
+                  //     crossAxisAlignment: CrossAxisAlignment.start,
+                  //     children: [
+                  //       KText(
+                  //         text: "About yourself",
+                  //         style: GoogleFonts.roboto(
+                  //           color: Constants.lightGrey,
+                  //           fontSize: 16,
+                  //           fontWeight: FontWeight.w400,
+                  //         ),
+                  //       ),
+                  //       TextFormField(
+                  //         //key: _keyFirstname,
+                  //         //focusNode: firstNameFocusNode,
+                  //         keyboardType: TextInputType.text,
+                  //         autofocus: true,
+                  //         // onEditingComplete: (){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         // onFieldSubmitted: (val){
+                  //         //   FocusScope.of(context).requestFocus(lastNameFocusNode);
+                  //         // },
+                  //         validator: (val){
+                  //           if(val!.isEmpty){
+                  //             return 'Field is required';
+                  //           }else{
+                  //             return '';
+                  //           }
+                  //         },
+                  //         onChanged: (val){
+                  //           // _keyFirstname.currentState!.validate();
+                  //         },
+                  //         decoration: InputDecoration(
+                  //           counterText: "",
+                  //           contentPadding: EdgeInsets.only(top: 5,left: 5),
+                  //         ),
+                  //         maxLength: 200,
+                  //         inputFormatters: [
+                  //          // FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  //         ],
+                  //         style: TextStyle(fontSize: 15),
+                  //         controller: aboutController,
+                  //       )
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(height: 30),
               InkWell(
                   onTap: () async {
@@ -1719,77 +1774,78 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                        _keyFirstName.currentState!.validate();
                        _keyLastName.currentState!.validate();
                        _keyPhone.currentState!.validate();
-                       _keyEmail.currentState!.validate();
+                       //_keyEmail.currentState!.validate();
                        _keyAge.currentState!.validate();
-                        _keyCity.currentState!.validate();
+                        //_keyCity.currentState!.validate();
                         _keyAadhar.currentState!.validate();
-                        _keyAddress.currentState!.validate();
-                        _keyYearOfExp.currentState!.validate();
-                        _keyOrgName.currentState!.validate();
-                        _keyPosition.currentState!.validate();
-                        _keyOrgName.currentState!.validate();
+                        //_keyAddress.currentState!.validate();
+                        // _keyYearOfExp.currentState!.validate();
+                        // _keyOrgName.currentState!.validate();
+                        // _keyPosition.currentState!.validate();
+                        // _keyOrgName.currentState!.validate();
                       if(
                        firstNameController.text != "" &&
                         lastNameController.text != "" &&
                         phoneController.text != "" &&
-                        phoneController.text.length == 10 &&
                         aadhaarNumberController.text.length == 12 &&
-                        emailController.text != "" &&
-                        ageController.text != "" &&
-                        cityController.text != "" &&
-                         positionController.text != "" &&
-                           orgNameController.text != "" &&
-                           categoryController.text != "Select Category" &&
-                         addressController.text != ""
+                        //emailController.text != "" &&
+                        ageController.text != ""
+                        //cityController.text != "" &&
+                         //positionController.text != "" &&
+                           //orgNameController.text != "" &&
+                           //categoryController.text != "Select Category" &&
+                         //addressController.text != ""
                       ){
                         String downloadUrl = "";
                         String? fcmToken = await FirebaseMessaging.instance.getToken();
                         if(profileImage != null){
                           downloadUrl =  await uploadImageToStorage(profileImage!);
                         }
-                        //downloadUrl1 =  await uploadImageToStorage(aadharImage!);
-                        Response response = await CareTakersFireCrud.addCareTaker(
-                            CareTakersModel(
-                              orgName: orgNameController.text,
-                              isCurrentlyWorking: isCurrentlyWorking,
-                              firstName: firstNameController.text,
-                              category : categoryController.text,
-                              id: widget.id,
-                              fcmToken: fcmToken!,
-                              lastName: lastNameController.text,
-                              age: int.parse(ageController.text.toString()),
-                              phone: phoneController.text,
-                              rating: [],
-                              workExperience: workExperienceController.text,
-                              totalWorks: 0,//int.parse(totalWorksController.text.toString()),
-                              email: emailController.text,
-                              location: Location(
-                                lat: latitude,
-                                lng: longitude,
-                              ),
-                              address: addressController.text,
-                              about: aboutController.text,
-                              city: cityController.text,
-                              yearsOfExperience: int.parse(yearOfExperienceController.text.toString()),
-                              position: positionController.text,
-                              workingAt: workingAtController.text,
-                              imgUrl: downloadUrl,
-                              aadharNumber: aadhaarNumberController.text,
-                              timestamp: DateTime.now().millisecondsSinceEpoch,
-                              workPreparence: workPreparenceController.text,
-                            )
+                        CareTakersModel careTaker = CareTakersModel(
+                          gender: genderController.name,
+                          orgName: orgNameController.text,
+                          isCurrentlyWorking: isCurrentlyWorking,
+                          name: firstNameController.text,
+                          category : categoryController.text,
+                          id: widget.id,
+                          lanCode: widget.lanCode,
+                          fcmToken: fcmToken!,
+                          age: int.parse(ageController.text.toString()),
+                          phone: phoneController.text,
+                          workExperience: workExperienceController.text,
+                          totalWorks: 0,//int.parse(totalWorksController.text.toString()),
+                          email: emailController.text,
+                          location: Location(
+                            lat: latitude,
+                            lng: longitude,
+                          ),
+                          address: addressController.text,
+                          subCategory: subCategoryController.text,
+                          city: cityController.text,
+                          yearsOfExperience: 0,
+                          position: positionController.text,
+                          workingAt: workingAtController.text,
+                          imgUrl: downloadUrl,
+                          aadharNumber: aadhaarNumberController.text,
+                          timestamp: DateTime.now().millisecondsSinceEpoch,
+                          workType: workPreparenceController.text, languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
                         );
-                        if(response.code == 200){
-                          setState(() {
-                            isLoading = false;
-                          });
-                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CareTakerMainView()));
-                        }else{
-                          print("Failed");
-                          setState(() {
-                            isLoading = false;
-                          });
-                        }
+                        Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CareTakerRegisterFormView(careTaker: careTaker)));
+                        //downloadUrl1 =  await uploadImageToStorage(aadharImage!);
+                        // Response response = await CareTakersFireCrud.addCareTaker(
+                        //    
+                        // );
+                        // if(response.code == 200){
+                        //   setState(() {
+                        //     isLoading = false;
+                        //   });
+                        //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CareTakerMainView()));
+                        // }else{
+                        //   print("Failed");
+                        //   setState(() {
+                        //     isLoading = false;
+                        //   });
+                        // }
                       }else{
                         setState(() {
                           isLoading = false;
@@ -1811,7 +1867,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                         color: Constants.primaryWhite,
                       )
                           : KText(
-                        text: "Register",
+                        text: "Next",
                         style: GoogleFonts.poppins(
                           color: Constants.primaryWhite,
                           fontSize: 18,

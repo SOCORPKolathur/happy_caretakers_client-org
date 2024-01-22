@@ -1,22 +1,23 @@
-import 'dart:io';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants.dart';
-import '../widgets/kText.dart';
-import 'user/main_view.dart';
+import 'package:happy_caretakers_client/views/caretaker/caretaker_login_view.dart';
+import 'package:happy_caretakers_client/views/choose_role_view.dart';
+import 'package:happy_caretakers_client/views/login_view.dart';
 
-class LanguagesView extends StatefulWidget {
-  const LanguagesView({super.key});
+import '../../constants.dart';
+import '../../widgets/kText.dart';
+import '../languages_view.dart';
+
+class CareTakerLanguageSelectView extends StatefulWidget {
+  const CareTakerLanguageSelectView({super.key});
 
   @override
-  State<LanguagesView> createState() => _LanguagesViewState();
+  State<CareTakerLanguageSelectView> createState() => _CareTakerLanguageSelectViewState();
 }
 
-class _LanguagesViewState extends State<LanguagesView> {
+class _CareTakerLanguageSelectViewState extends State<CareTakerLanguageSelectView> {
+
   List<ChooseLanguageModel> languagesList = [
     ChooseLanguageModel(
       name: "Tamil",
@@ -220,49 +221,16 @@ class _LanguagesViewState extends State<LanguagesView> {
                 ),
               ),
             ],
-          )),
+          ),
+      ),
     );
   }
 
   setLanguage(String language) async {
-    String? devId = await _getId();
-    var doc = await FirebaseFirestore.instance.collection('TempUsers').doc(devId).get();
-    if(doc.exists){
-      FirebaseFirestore.instance.collection('TempUsers').doc(devId).set({
-        "lanCode" : language,
-      });
-    }
-    if(FirebaseAuth.instance.currentUser != null){
-      var doc1 = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
-      if(doc1.exists){
-        FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).update({
-          "lanCode" : language,
-        });
-      }
-    }
+    await changeLocale(context, language);
+    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> LoginView(isCareTaker: true, lanCode: language)));
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> ChooseRoleView()));
 
-    changeLocale(context, language);
-    Navigator.pop(context);
-    //Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> MainView()));
   }
 
-  Future<String?> _getId() async {
-    var deviceInfo = DeviceInfoPlugin();
-    if (Platform.isIOS) { // import 'dart:io'
-      var iosDeviceInfo = await deviceInfo.iosInfo;
-      return iosDeviceInfo.identifierForVendor; // unique ID on iOS
-    } else if(Platform.isAndroid) {
-      var androidDeviceInfo = await deviceInfo.androidInfo;
-      return androidDeviceInfo.id; // unique ID on Android
-    }
-  }
-
-}
-
-class ChooseLanguageModel {
-  ChooseLanguageModel({this.name, this.code, this.orgName});
-
-  String? name;
-  String? orgName;
-  String? code;
 }

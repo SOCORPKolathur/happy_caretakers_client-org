@@ -83,8 +83,9 @@ class CartFireCrud {
         required String address,
       }) async {
     Response response = Response();
-    DocumentReference documentReferencer = UserCollection.doc(userDocId).collection('Orders').doc();
-    DocumentReference documentReferencer1 = OrdersCollection.doc();
+    String doccId = generateRandomString(20);
+    DocumentReference documentReferencer = UserCollection.doc(userDocId).collection('Orders').doc(doccId);
+    DocumentReference documentReferencer1 = OrdersCollection.doc(doccId);
     OrdersModel order = OrdersModel(
       id: "",
       date: DateFormat('dd/MM/yyyy').format(DateTime.now()),
@@ -99,7 +100,7 @@ class CartFireCrud {
       address: address,
       orderId: "",
     );
-    order.id = documentReferencer.id;
+    order.id = doccId;
     order.orderId = generateRandomString(8);
     var json = order.toJson();
     var result = await documentReferencer.set(json).whenComplete(() {

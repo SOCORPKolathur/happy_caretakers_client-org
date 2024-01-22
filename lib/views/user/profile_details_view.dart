@@ -75,10 +75,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                   builder: (ctx,snap){
                     if(snap.hasData){
                       CareTakersModel careTaker = CareTakersModel.fromJson(snap.data!.data() as Map<String,dynamic>);
-                      double rating = 0.0;
-                      careTaker.rating.forEach((element) {
-                        rating += element.rating!;
-                      });
+
                       return Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -103,7 +100,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   KText(
-                                    text: "${careTaker.firstName} ${careTaker.lastName}",
+                                    text: "${careTaker.name}",
                                     style: GoogleFonts.poppins(
                                         color: Constants.darkGrey,
                                         fontSize: 23,
@@ -139,29 +136,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                                     children: [
-                                      Padding(
-                                        padding: EdgeInsets.only(left: 8),
-                                        child: Column(
-                                          mainAxisAlignment: MainAxisAlignment.center,
-                                          children: [
-                                            KText(
-                                              text: "Rating",
-                                              style: GoogleFonts.poppins(
-                                                  color: Constants.semiGrey,
-                                                  fontSize: 15,
-                                                  fontWeight: FontWeight.w500),
-                                            ),
-                                            KText(
-                                              text: (rating/careTaker.rating.length).toString(),
-                                              style: GoogleFonts.poppins(
-                                                color: Constants.darkGrey,
-                                                fontSize: 11,
-                                                fontWeight: FontWeight.w700,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+
                                       Padding(
                                         padding: EdgeInsets.only(top: 12, bottom: 12),
                                         child: VerticalDivider(thickness: 1),
@@ -271,7 +246,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                           SizedBox(
                             width: size.width,
                             child: KText(
-                              text: careTaker.about,
+                              text: careTaker.subCategory,
                               style: GoogleFonts.poppins(
                                 color: Constants.lightGrey,
                                 fontSize: 15,
@@ -454,7 +429,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                                   ),
                                                   const SizedBox(height: 10),
                                                   KText(
-                                                    text: "${careTaker.firstName} ${careTaker.lastName}",
+                                                    text: "${careTaker.name} }",
                                                     style: GoogleFonts.poppins(
                                                       color: Constants.darkGrey,
                                                       fontWeight: FontWeight.w600,
@@ -575,7 +550,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                   if(userSnap.data!.get("subscriptionCount") > 0){
                                     FirebaseFirestore.instance.collection('Users').doc(FirebaseAuth.instance.currentUser!.uid).collection('Chats').doc(careTaker.id).set({
                                       "timestamp": FieldValue.serverTimestamp(),
-                                      "sender": "${careTaker.firstName} ${careTaker.lastName}",
+                                      "sender": "${careTaker.name}",
                                       "senderPhone": "${careTaker.phone}",
                                       "senderImage": careTaker.imgUrl,
                                       "senderMail": careTaker.email,
@@ -605,7 +580,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                             "date": DateFormat('dd-MM-yyyy').format(DateTime.now()),
                                             "time": DateFormat('hh:mm a').format(DateTime.now()),
                                             "timestamp": DateTime.now().millisecondsSinceEpoch,
-                                            "content": "${"${careTaker.firstName} ${careTaker.lastName}"} is made connection with you",
+                                            "content": "${"${careTaker.name}"} is made connection with you",
                                             "to": careTaker.phone,
                                             "subject": "New Connection added",
                                             "isViewed": false,
@@ -616,7 +591,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                             "date": DateFormat('dd-MM-yyyy').format(DateTime.now()),
                                             "time": DateFormat('hh:mm a').format(DateTime.now()),
                                             "timestamp": DateTime.now().millisecondsSinceEpoch,
-                                            "content": "${"${careTaker.firstName} ${careTaker.lastName}"} is made connection with you",
+                                            "content": "${"${careTaker.name}"} is made connection with you",
                                             "firstName": userSnap.data!.get("firstName"),
                                             "lastName": userSnap.data!.get("lastName"),
                                             "phone": userSnap.data!.get("phone"),
@@ -631,8 +606,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                             "time": DateFormat('hh:mm a').format(DateTime.now()),
                                             "timestamp": DateTime.now().millisecondsSinceEpoch,
                                             "content": "${"${userSnap.data!.get("firstName")} ${userSnap.data!.get("lastName")}"} is made connection with you",
-                                            "firstName": careTaker.firstName,
-                                            "lastName": careTaker.lastName,
+                                            "firstName": careTaker.name,
                                             "phone": careTaker.phone,
                                             "location": "",
                                           }
@@ -683,7 +657,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                                     ),
                                                     const SizedBox(height: 10),
                                                     KText(
-                                                      text: "${careTaker.firstName} ${careTaker.lastName}",
+                                                      text: "${careTaker.name}",
                                                       style: GoogleFonts.poppins(
                                                         color: Constants.darkGrey,
                                                         fontWeight: FontWeight.w600,
@@ -860,10 +834,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
           builder: (ctx,snap){
             if(snap.hasData){
               CareTakersModel careTaker = CareTakersModel.fromJson(snap.data!.data() as Map<String,dynamic>);
-              double rating = 0.0;
-              careTaker.rating.forEach((element) {
-                rating += element.rating!;
-              });
+
               return SingleChildScrollView(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -889,7 +860,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             KText(
-                              text: "${careTaker.firstName} ${careTaker.lastName}",
+                              text: "${careTaker.name} ",
                               style: GoogleFonts.poppins(
                                   color: Constants.darkGrey,
                                   fontSize: 23,
@@ -925,29 +896,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [
-                                Padding(
-                                  padding: EdgeInsets.only(left: 8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      KText(
-                                        text: "Rating",
-                                        style: GoogleFonts.poppins(
-                                            color: Constants.semiGrey,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      KText(
-                                        text: (rating/careTaker.rating.length).toString(),
-                                        style: GoogleFonts.poppins(
-                                          color: Constants.darkGrey,
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w700,
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
                                 Padding(
                                   padding: EdgeInsets.only(top: 12, bottom: 12),
                                   child: VerticalDivider(thickness: 1),
@@ -1049,7 +998,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                     SizedBox(
                       width: size.width,
                       child: KText(
-                        text: careTaker.about,
+                        text: careTaker.subCategory,
                         style: GoogleFonts.poppins(
                           color: Constants.lightGrey,
                           fontSize: 15,
@@ -1653,7 +1602,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
         actions: [
           IconsButton(
             onPressed: () async {
-              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+              Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false,lanCode: 'en_US')));
             },
             text: 'Log In',
             color: Colors.blue,

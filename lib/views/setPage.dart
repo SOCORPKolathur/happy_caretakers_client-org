@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_translate/flutter_translate.dart';
 import 'package:happy_caretakers_client/views/user/main_view.dart';
 
+import 'caretaker/caretaker_language_select_view.dart';
 import 'caretaker/caretaker_main_view.dart';
 import 'caretaker/caretaker_register_view.dart';
 import 'choose_role_view.dart';
@@ -32,8 +33,10 @@ class _SetPageState extends State<SetPage> {
       var doc1 = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
       if(doc1.exists){
         if(doc1.get("firstName") == ""){
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '')));
+          changeLocale(context, doc1.get("lanCode"));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '',lanCode: doc1.get("lanCode"))));
         }else{
+          changeLocale(context, doc1.get("lanCode"));
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CareTakerMainView()));
         }
       }else{
@@ -46,7 +49,7 @@ class _SetPageState extends State<SetPage> {
       print("____________________");
       //return "Get started";
     }else{
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> ChooseRoleView()));
+      Navigator.push(context, MaterialPageRoute(builder: (ctx)=> const CareTakerLanguageSelectView()));
       result = "Choose";
     }
     return result;

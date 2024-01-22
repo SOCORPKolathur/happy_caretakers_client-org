@@ -498,7 +498,7 @@ class _ProfileViewState extends State<ProfileView> {
                 ),
               ) : InkWell(
                 onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false)));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> const LoginView(isCareTaker: false,lanCode: 'en_US')));
                 },
                 child: Text(
                   "Log In",

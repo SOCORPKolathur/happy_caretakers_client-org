@@ -144,6 +144,7 @@ import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_appointments_view.dart';
 import 'package:happy_caretakers_client/widgets/caretaker_drawer_widget.dart';
 import 'package:happy_caretakers_client/widgets/kText.dart';
+import 'package:lottie/lottie.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../constants.dart';
 import 'caretaker_edit_profile_view.dart';
@@ -260,12 +261,20 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
                           height: 100,
                           width: 100,
                           decoration: BoxDecoration(
+                            color: Colors.white,
                               shape: BoxShape.circle,
                               border: Border.all(color: Constants.primaryWhite,width: 4),
-                              image: DecorationImage(
+                              image: widget.caretaker.imgUrl != "" ? DecorationImage(
                                 fit: BoxFit.fill,
                                 image: NetworkImage(widget.caretaker.imgUrl),
-                              )
+                              ) : null
+                          ),
+                          child: Visibility(
+                            visible: widget.caretaker.imgUrl == "",
+                            child: Lottie.asset(
+                              "assets/profile.json",
+                              height: 200,
+                            ),
                           ),
                         ),
                         SizedBox(width: 10),
@@ -274,7 +283,7 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Text(
-                              "Welcome ${widget.caretaker.firstName+" "+widget.caretaker.lastName}",
+                              "Welcome ${widget.caretaker.name}",
                               style: GoogleFonts.poppins(
                                 color: Constants.primaryWhite,
                                 fontWeight: FontWeight.w600,
@@ -427,7 +436,7 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
                                 SizedBox(height: 20),
                                 InkWell(
                                   onTap: (){
-                                    showAppointmentDetailsPopUp(context, docs.last);
+                                    //showAppointmentDetailsPopUp(context, docs.last);
                                   },
                                   child: Container(
                                     height: 150,
@@ -583,7 +592,7 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
                                     children: [
                                       InkWell(
                                         onTap:(){
-                                          showAppointmentDetailsPopUp(context,docs[k]);
+                                          //showAppointmentDetailsPopUp(context,docs[k]);
                                         },
                                         child: Container(
                                           height: 60,
@@ -665,7 +674,7 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
     );
   }
 
-  showAppointmentDetailsPopUp(context,DocumentSnapshot data) async {
+  showAppointmentDetailsPopUp1(context,DocumentSnapshot data) async {
     Size size = MediaQuery.of(context).size;
     await showDialog(
       context: context,

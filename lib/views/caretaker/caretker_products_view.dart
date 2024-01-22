@@ -6,6 +6,7 @@ import 'package:happy_caretakers_client/models/care_takers_model.dart';
 import 'package:happy_caretakers_client/models/product_model.dart';
 import 'package:happy_caretakers_client/views/caretaker/caretaker_product_details_view.dart';
 import 'package:happy_caretakers_client/widgets/product_card.dart';
+import 'package:lottie/lottie.dart';
 import '../../constants.dart';
 import '../../widgets/appbar_search.dart';
 import '../../widgets/caretaker_drawer_widget.dart';
@@ -27,9 +28,13 @@ class _CaretakerProductsViewState extends State<CaretakerProductsView> with Sing
 
   String searchQuery = "All";
 
+  List<ProductModel> totalProducts = [];
+  List<ProductModel> searchedProducts = [];
+
   @override
   void initState() {
     tabController = TabController(length: 4, vsync: this);
+    getProducts();
     super.initState();
   }
 
@@ -40,6 +45,15 @@ class _CaretakerProductsViewState extends State<CaretakerProductsView> with Sing
   ];
 
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+
+  getProducts() async {
+    var productDoc = await FirebaseFirestore.instance.collection('Eccomerce').get();
+    for(int p = 0; p < productDoc.docs.length; p++){
+      setState(() {
+        totalProducts.add(ProductModel.fromJson(productDoc.docs[p].data()));
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -57,18 +71,37 @@ class _CaretakerProductsViewState extends State<CaretakerProductsView> with Sing
             children: [
               SizedBox(width: width/45),
               CircleAvatar(
+                backgroundColor: Colors.white,
                 radius: height/34.36363636363636,
-                backgroundImage: NetworkImage(widget.caretaker.imgUrl)
-                ),
+                backgroundImage: widget.caretaker.imgUrl != ""  ? NetworkImage(widget.caretaker.imgUrl) : null,
+                 child: Visibility(
+                 visible: widget.caretaker.imgUrl == "",
+                  child: Lottie.asset(
+                    "assets/profile.json",
+                     height: 200,
+                  ),
+               ),
+              ),
             ],
           ),
           title: AppBarSearchWidget(
+            isProduct: true,
             controller: searchProductController,
             onTap: (){
 
             },
             onChanged: (){
-              setState(() {});
+              setState(() {
+                totalProducts.forEach((element) {
+                  if(element.productname!.toLowerCase().startsWith(searchProductController.text)){
+                    setState(() {
+                      if(!searchedProducts.contains(element)){
+                        searchedProducts.add(element);
+                      }
+                    });
+                  }
+                });
+              });
             },
             onSubmitted: (){
               setState(() {});
@@ -86,7 +119,82 @@ class _CaretakerProductsViewState extends State<CaretakerProductsView> with Sing
             )
           ],
         ),
-        body: Padding(
+        body: searchProductController.text != ""
+            ? Padding(
+          padding: EdgeInsets.only(top: height/44.47058823529412/*,left: width/24,right: width/24*/),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Expanded(
+                child: Container(
+                  child: ListView.builder(
+                    itemCount: searchedProducts.length,
+                    itemBuilder: (ctx, i){
+                      return Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Constants.primaryWhite,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: ListTile(
+                            leading: Container(
+                              width: 60,
+                              decoration: BoxDecoration(
+                                color: Constants.lightGrey.withOpacity(0.2),
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image: NetworkImage(searchedProducts[i].img!),
+                                )
+                              ),
+                            ),
+                            title: Text(
+                              searchedProducts[i].productname!,
+                              style: GoogleFonts.poppins(
+
+                              ),
+                            ),
+                            subtitle: Padding(
+                              padding: const EdgeInsets.only(top: 10),
+                              child: Text(
+                                "₹ "+searchedProducts[i].price!.toString(),
+                                style: GoogleFonts.poppins(
+
+                                ),
+                              ),
+                            ),
+                            trailing: InkWell(
+                              onTap: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CaretakersProductDetailsView(productId: searchedProducts[i].id!, productName: searchedProducts[i].productname!,userDocId: FirebaseAuth.instance.currentUser!.uid)));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Constants.primaryAppColor,
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 15, vertical: 8),
+                                  child: Text(
+                                    "View",
+                                    style: GoogleFonts.poppins(
+                                      color: Constants.primaryWhite,
+                                      fontSize: 13
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            )
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              )
+            ],
+          ),
+        )
+            : Padding(
           padding: EdgeInsets.only(top: height/44.47058823529412/*,left: width/24,right: width/24*/),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,

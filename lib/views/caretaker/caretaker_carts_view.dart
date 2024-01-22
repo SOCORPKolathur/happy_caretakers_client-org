@@ -351,7 +351,7 @@ class _CaretakerCartViewState extends State<CaretakerCartView> {
                           phone: careTakersModel.phone,
                           method: "method",
                           status: "Ordered",
-                          userName: careTakersModel.firstName + careTakersModel.lastName,
+                          userName: careTakersModel.name,
                           amount: getTotalAmount(carts),
                           products: tempProducts,
                           address: careTakersModel.address,

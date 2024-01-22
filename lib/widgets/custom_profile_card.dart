@@ -93,7 +93,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 KText(
-                                  text: "${widget.careTaker.firstName} ${widget.careTaker.lastName}",
+                                  text: "${widget.careTaker.name}",
                                   style: GoogleFonts.poppins(
                                     fontSize: 15.5,
                                     fontWeight: FontWeight.w600,
@@ -161,7 +161,7 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                   ),
                                   padding: const EdgeInsets.all(10),
                                   child: ReadMoreText(
-                                    widget.careTaker.about,
+                                    widget.careTaker.subCategory,
                                     style: GoogleFonts.poppins(
                                       color: Constants.semiGrey,
                                       fontWeight: FontWeight.w500,
