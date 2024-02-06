@@ -106,14 +106,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                         fontSize: 23,
                                         fontWeight: FontWeight.w700),
                                   ),
-                                  KText(
-                                    text: "${careTaker.position} at ${careTaker.workingAt}",
-                                    style: GoogleFonts.poppins(
-                                        color: Constants.darkGrey,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.w400
-                                    ),
-                                  ),
+
                                 ],
                               )
                             ],
@@ -175,13 +168,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                                   color: Constants.semiGrey,
                                                   fontSize: 15,
                                                   fontWeight: FontWeight.w500),
-                                            ),
-                                            KText(
-                                              text: "${careTaker.totalWorks}+",
-                                              style: GoogleFonts.poppins(
-                                                  color: Constants.darkGrey,
-                                                  fontSize: 11,
-                                                  fontWeight: FontWeight.w700),
                                             ),
                                           ],
                                         ),
@@ -296,42 +282,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                         ),
                                         KText(
                                           text: "+91 ${maskPhone(careTaker.phone)}",
-                                          style: GoogleFonts.poppins(
-                                              color: Constants.lightGrey,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.w600),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                ),
-                                SizedBox(height: 20),
-                                Material(
-                                  elevation: 10,
-                                  color: Constants.primaryWhite,
-                                  borderRadius: BorderRadius.circular(15),
-                                  shadowColor: Colors.black12,
-                                  child: Container(
-                                    height: 50,
-                                    width: size.width * 0.9,
-                                    decoration: BoxDecoration(
-                                        color: Constants.primaryWhite,
-                                        borderRadius: BorderRadius.circular(15)),
-                                    child: Row(
-                                      mainAxisAlignment: MainAxisAlignment.start,
-                                      children: [
-                                        Padding(
-                                          padding: EdgeInsets.only(left: 20),
-                                          child: Icon(
-                                            Icons.email_outlined,
-                                            color: Constants.primaryAppColor,
-                                          ),
-                                        ),
-                                        SizedBox(
-                                          width: 10,
-                                        ),
-                                        KText(
-                                          text: maskEmail(careTaker.email),
                                           style: GoogleFonts.poppins(
                                               color: Constants.lightGrey,
                                               fontSize: 15,
@@ -487,30 +437,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                                   Divider(thickness: 1,)
                                                 ],
                                               ),
-                                              const SizedBox(height: 10),
-                                              Column(
-                                                crossAxisAlignment: CrossAxisAlignment.start,
-                                                children: [
-                                                  KText(
-                                                    text: "Mail ID :",
-                                                    style: GoogleFonts.poppins(
-                                                      color: Constants.darkGrey,
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 18,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 10),
-                                                  KText(
-                                                    text: careTaker.email,
-                                                    style: GoogleFonts.poppins(
-                                                      color: Constants.darkGrey,
-                                                      fontWeight: FontWeight.w600,
-                                                      fontSize: 14,
-                                                    ),
-                                                  ),
-                                                  Divider(thickness: 1,)
-                                                ],
-                                              ),
                                               const SizedBox(height: 20),
                                               Row(
                                                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -553,7 +479,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                       "sender": "${careTaker.name}",
                                       "senderPhone": "${careTaker.phone}",
                                       "senderImage": careTaker.imgUrl,
-                                      "senderMail": careTaker.email,
                                       "senderAddress": careTaker.address,
                                       "senderId" : userSnap.data!.id,
                                       "senderToken" : careTaker.fcmToken,
@@ -592,8 +517,8 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                             "time": DateFormat('hh:mm a').format(DateTime.now()),
                                             "timestamp": DateTime.now().millisecondsSinceEpoch,
                                             "content": "${"${careTaker.name}"} is made connection with you",
-                                            "firstName": userSnap.data!.get("firstName"),
-                                            "lastName": userSnap.data!.get("lastName"),
+                                            "name": userSnap.data!.get("name"),
+                                            // "lastName": userSnap.data!.get("lastName"),
                                             "phone": userSnap.data!.get("phone"),
                                             "location": "",
                                           }
@@ -606,7 +531,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                             "time": DateFormat('hh:mm a').format(DateTime.now()),
                                             "timestamp": DateTime.now().millisecondsSinceEpoch,
                                             "content": "${"${userSnap.data!.get("firstName")} ${userSnap.data!.get("lastName")}"} is made connection with you",
-                                            "firstName": careTaker.name,
+                                            "name": careTaker.name,
                                             "phone": careTaker.phone,
                                             "location": "",
                                           }
@@ -716,30 +641,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                                   ],
                                                 ),
                                                 const SizedBox(height: 10),
-                                                Column(
-                                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                                  children: [
-                                                    KText(
-                                                      text: "Mail ID :",
-                                                      style: GoogleFonts.poppins(
-                                                        color: Constants.darkGrey,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 18,
-                                                      ),
-                                                    ),
-                                                    const SizedBox(height: 10),
-                                                    KText(
-                                                      text: careTaker.email,
-                                                      style: GoogleFonts.poppins(
-                                                        color: Constants.darkGrey,
-                                                        fontWeight: FontWeight.w600,
-                                                        fontSize: 14,
-                                                      ),
-                                                    ),
-                                                    Divider(thickness: 1,)
-                                                  ],
-                                                ),
-                                                const SizedBox(height: 20),
+
                                                 Row(
                                                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                                                   children: [
@@ -866,14 +768,6 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                   fontSize: 23,
                                   fontWeight: FontWeight.w700),
                             ),
-                            KText(
-                              text: "${careTaker.position} at ${careTaker.workingAt}",
-                              style: GoogleFonts.poppins(
-                                  color: Constants.darkGrey,
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w400
-                              ),
-                            ),
                           ],
                         )
                       ],
@@ -899,7 +793,7 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
 
                                 Padding(
                                   padding: EdgeInsets.only(top: 12, bottom: 12),
-                                  child: VerticalDivider(thickness: 1),
+                                  child: VerticalDivider(thickness: 0),
                                 ),
                                 Column(
                                   mainAxisAlignment: MainAxisAlignment.center,
@@ -922,30 +816,9 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                 ),
                                 Padding(
                                   padding: EdgeInsets.only(top: 12, bottom: 12),
-                                  child: VerticalDivider(thickness: 1),
+                                  child: VerticalDivider(thickness: 0),
                                 ),
-                                Padding(
-                                  padding: EdgeInsets.only(right: 8),
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      KText(
-                                        text: "Work on",
-                                        style: GoogleFonts.poppins(
-                                            color: Constants.semiGrey,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.w500),
-                                      ),
-                                      KText(
-                                        text: "${careTaker.totalWorks}+",
-                                        style: GoogleFonts.poppins(
-                                            color: Constants.darkGrey,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w700),
-                                      ),
-                                    ],
-                                  ),
-                                ),
+
                               ],
                             ),
                           ),
@@ -988,20 +861,75 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                     ),
                     SizedBox(height: 20),
                     KText(
-                      text: "About",
+                      text: "Sub Category",
                       style: GoogleFonts.poppins(
                           color: Constants.darkGrey,
                           fontSize: 20,
                           fontWeight: FontWeight.w600),
                     ),
                     SizedBox(height: 20),
-                    SizedBox(
-                      width: size.width,
-                      child: KText(
-                        text: careTaker.subCategory,
-                        style: GoogleFonts.poppins(
-                          color: Constants.lightGrey,
-                          fontSize: 15,
+                    Material(
+                      elevation: 10,
+                      color: Constants.primaryWhite,
+                      borderRadius: BorderRadius.circular(15),
+                      shadowColor: Colors.black12,
+                      child: Container(
+                        height: 50,
+                        width: size.width * 0.9,
+                        decoration: BoxDecoration(
+                            color: Constants.primaryWhite,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 30,
+                            ),
+                            KText(
+                              text: "${careTaker.subCategory}",
+                              style: GoogleFonts.poppins(
+                                  color: Constants.lightGrey,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 20),
+                    KText(
+                      text: "WorkType",
+                      style: GoogleFonts.poppins(
+                          color: Constants.darkGrey,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w600),
+                    ),
+                    SizedBox(height: 20),
+                    Material(
+                      elevation: 10,
+                      color: Constants.primaryWhite,
+                      borderRadius: BorderRadius.circular(15),
+                      shadowColor: Colors.black12,
+                      child: Container(
+                        height: 50,
+                        width: size.width * 0.9,
+                        decoration: BoxDecoration(
+                            color: Constants.primaryWhite,
+                            borderRadius: BorderRadius.circular(15)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            SizedBox(
+                              width: 30,
+                            ),
+                            KText(
+                              text: "${careTaker.subCategory}",
+                              style: GoogleFonts.poppins(
+                                  color: Constants.lightGrey,
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600),
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -1082,13 +1010,13 @@ class _ProfileDetailsViewState extends State<ProfileDetailsView> with TickerProv
                                   SizedBox(
                                     width: 10,
                                   ),
-                                  KText(
-                                    text: maskEmail(careTaker.email),
-                                    style: GoogleFonts.poppins(
-                                        color: Constants.lightGrey,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.w600),
-                                  ),
+                                  // KText(
+                                  //   text: maskEmail(careTaker.email),
+                                  //   style: GoogleFonts.poppins(
+                                  //       color: Constants.lightGrey,
+                                  //       fontSize: 15,
+                                  //       fontWeight: FontWeight.w600),
+                                  // ),
                                 ],
                               ),
                             ),

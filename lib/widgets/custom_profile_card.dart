@@ -100,14 +100,6 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                     color: Constants.darkGrey,
                                   ),
                                 ),
-                                KText(
-                                  text: widget.careTaker.position,
-                                  style: GoogleFonts.poppins(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.normal,
-                                    color: Constants.darkGrey,
-                                  ),
-                                )
                               ],
                             )
                           ],
@@ -206,13 +198,6 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                         children: [
                                           Icon(Icons.location_on,color: Constants.primaryAppColor,),
                                           SizedBox(width: 5),
-                                          KText(
-                                            text:widget.careTaker.city,
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 13,
-                                              color: Constants.semiGrey,
-                                            ),
-                                          )
                                         ],
                                       ),
                                     ),
@@ -254,13 +239,6 @@ class _CustomProfileCardState extends State<CustomProfileCard> {
                                         children: [
                                           Icon(Icons.person,color: Constants.primaryAppColor,),
                                           SizedBox(width: 5),
-                                          KText(
-                                            text: widget.careTaker.age.toString() +" years old",
-                                            style: GoogleFonts.poppins(
-                                              fontSize: 13,
-                                              color: Constants.semiGrey,
-                                            ),
-                                          )
                                         ],
                                       ),
                                     ),

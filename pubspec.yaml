@@ -67,6 +67,7 @@ dependencies:
   visibility_detector: ^0.4.0+2
   animated_icon: ^0.0.5
   animated_widgets: ^1.1.0
+  choice: ^2.3.0
 
 
 dev_dependencies:

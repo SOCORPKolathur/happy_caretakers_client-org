@@ -291,14 +291,6 @@ class _CareTakerHomeViewState extends State<CareTakerHomeView> {
                               ),
                             ),
                             SizedBox(height: 5),
-                            Text(
-                              "${widget.caretaker.position}@${widget.caretaker.orgName}",
-                              style: GoogleFonts.poppins(
-                                color: Constants.primaryWhite,
-                                fontWeight: FontWeight.normal,
-                                fontSize: 14,
-                              ),
-                            )
                           ],
                         )
                       ],

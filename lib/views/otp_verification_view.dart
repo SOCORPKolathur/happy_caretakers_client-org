@@ -17,12 +17,12 @@ import 'user/main_view.dart';
 
 class OtpVerificationView extends StatefulWidget {
   String phone;
-  String firstName;
-  String lastName;
+  String name;
+  String aadharNumber;
   String lanCode;
   final bool isCareTaker;
 
-  OtpVerificationView({required this.lanCode,required this.firstName, required this.lastName, required this.phone, required this.isCareTaker});
+  OtpVerificationView({required this.lanCode,required this.name,required this.aadharNumber ,required this.phone, required this.isCareTaker});
 
   @override
   State<OtpVerificationView> createState() => _OtpVerificationViewState();
@@ -251,7 +251,7 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                                         FirebaseFirestore.instance.collection('CareTakers').doc(value.user!.uid).set(
                                             {
                                               "id": value.user!.uid,
-                                              "firstName" : "",
+                                              "name" : "",
                                               "fcmToken" : "",
                                               "lanCode" : widget.lanCode,
                                             }
@@ -271,32 +271,23 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                                           context,
                                           MaterialPageRoute(builder: (ctx)=> CareTakerRegisterFormView(
                                             careTaker: CareTakersModel(
-                                                name: widget.firstName,
+                                                name: widget.name,
                                                 id: value.user!.uid,
                                                 
                                                 fcmToken: "",
-                                                age: 0,
                                                 phone: widget.phone,
                                                
                                                 workExperience: "",
-                                                totalWorks: 0,
-                                                orgName: "",
                                                 isCurrentlyWorking: false,
                                                 category: "",
-                                                email: "",
                                                 location: Location(lat: 0.0,lng: 0.0),
-                                                address: "",
                                                 subCategory: "",
-                                                city: "",
-                                                gender: "",
                                                 yearsOfExperience: 0,
-                                                position: "",
-                                                workingAt: "",
                                                 imgUrl: "",
-                                                aadharNumber: widget.lastName,
+                                                aadharNumber: "",
                                                 lanCode: widget.lanCode,
                                                 timestamp: DateTime.now().millisecondsSinceEpoch,
-                                                workType: '', languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
+                                                workType: '', languagesKnow: [],  plansCount: 0, subscription: false, ifOutstation: false, createdDate: '',
                                             ),
                                           ),
                                           ),
@@ -313,8 +304,8 @@ class _OtpVerificationViewState extends State<OtpVerificationView> {
                                               "fcmToken" : fcmToken,
                                               "subscriptionCount": 0,
                                               "address" : "",
-                                              "firstName" : widget.firstName,
-                                              "lastName" : widget.lastName,
+                                              "firstName" : widget.name,
+
                                             }
                                         );
                                       }

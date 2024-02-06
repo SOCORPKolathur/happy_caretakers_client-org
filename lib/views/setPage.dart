@@ -32,9 +32,9 @@ class _SetPageState extends State<SetPage> {
     if(FirebaseAuth.instance.currentUser!=null){
       var doc1 = await FirebaseFirestore.instance.collection('CareTakers').doc(FirebaseAuth.instance.currentUser!.uid).get();
       if(doc1.exists){
-        if(doc1.get("firstName") == ""){
+        if(doc1.get("name") == ""){
           changeLocale(context, doc1.get("lanCode"));
-          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, firstName: '',lastName: '',lanCode: doc1.get("lanCode"))));
+          Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CaretakerRegisterView(id: FirebaseAuth.instance.currentUser!.uid, phone: FirebaseAuth.instance.currentUser!.phoneNumber!, name: '',lanCode: doc1.get("lanCode"))));
         }else{
           changeLocale(context, doc1.get("lanCode"));
           Navigator.pushReplacement(context, MaterialPageRoute(builder: (ctx)=> CareTakerMainView()));

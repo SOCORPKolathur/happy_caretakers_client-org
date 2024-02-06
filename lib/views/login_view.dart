@@ -365,7 +365,7 @@ class _LoginViewState extends State<LoginView> {
                               context,
                               MaterialPageRoute(
                                   builder: (ctx) =>
-                                      OtpVerificationView(firstName: firstNameController.text,lastName: lasNameController.text, phone: phoneController.text,isCareTaker: widget.isCareTaker,lanCode: widget.lanCode)));
+                                      OtpVerificationView(name: firstNameController.text, phone: phoneController.text,isCareTaker: widget.isCareTaker,lanCode: widget.lanCode, aadharNumber: '',)));
                         }
                       },
                       child: Padding(

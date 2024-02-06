@@ -6,16 +6,19 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:happy_caretakers_client/constants.dart';
 import 'package:happy_caretakers_client/models/care_takers_model.dart';
+import 'package:happy_caretakers_client/views/caretaker/widgets/selection_checkbox.dart';
 import 'package:lottie/lottie.dart';
 import 'package:material_dialogs/dialogs.dart';
 import 'package:material_dialogs/widgets/buttons/icon_button.dart';
+import 'package:toggle_switch/toggle_switch.dart';
 
 import '../../models/response.dart';
 import '../../services/care_takers_firecrud.dart';
 import '../../widgets/kText.dart';
 import 'caretaker_main_view.dart';
 
-enum workCategory { Doctor, Caretaker, Nurse, Physiotherapist  }
+enum workCategory { Doctor, Caretaker, Nurse, Physiotherapist }
+enum subCategory{AAA,BBB,CCC,DDD,FFF}
 
 class CareTakerRegisterFormView extends StatefulWidget {
   const CareTakerRegisterFormView({super.key,required this.careTaker});
@@ -26,9 +29,9 @@ class CareTakerRegisterFormView extends StatefulWidget {
 }
 
 class _CareTakerRegisterFormViewState extends State<CareTakerRegisterFormView> {
-
+  bool ifOutstation = false;
   int expIndex = 0;
-
+  String selectedWorkType = "";
   double latitude = 0.0;
   double longitude = 0.0;
 
@@ -39,11 +42,11 @@ class _CareTakerRegisterFormViewState extends State<CareTakerRegisterFormView> {
   ];
 
   workCategory workCategoryValue = workCategory.Doctor;
-
+  subCategory subCategoryValue = subCategory.AAA;
   CareTakersModel? careTaker;
 
   TextEditingController subCategoryController = TextEditingController();
-
+  TextEditingController workTypeController = TextEditingController();
   @override
   void initState() {
     getLocation();
@@ -67,28 +70,19 @@ class _CareTakerRegisterFormViewState extends State<CareTakerRegisterFormView> {
       careTaker = CareTakersModel(
           name: widget.careTaker.name,
           id: widget.careTaker.id,
-          gender: widget.careTaker.gender,
           lanCode: widget.careTaker.lanCode,
           fcmToken: widget.careTaker.fcmToken,
-          age: widget.careTaker.age,
           phone: widget.careTaker.phone,
           workExperience: widget.careTaker.workExperience,
-          totalWorks: widget.careTaker.totalWorks,
-          orgName: widget.careTaker.orgName,
           isCurrentlyWorking: widget.careTaker.isCurrentlyWorking,
           category: widget.careTaker.category,
-          email: widget.careTaker.email,
           location: widget.careTaker.location,
-          address: widget.careTaker.address,
          subCategory: widget.careTaker.subCategory,
-          city: widget.careTaker.city,
           yearsOfExperience: widget.careTaker.yearsOfExperience,
-          position: widget.careTaker.position,
-          workingAt: widget.careTaker.workingAt,
           imgUrl: widget.careTaker.imgUrl,
           aadharNumber: widget.careTaker.aadharNumber,
           timestamp: widget.careTaker.timestamp,
-          workType: widget.careTaker.workType, languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
+          workType: widget.careTaker.workType, languagesKnow: widget.careTaker.languagesKnow,  plansCount: widget.careTaker.plansCount, subscription: widget.careTaker.subscription, ifOutstation: widget.careTaker.ifOutstation, createdDate: '',
       );
     });
   }
@@ -261,56 +255,196 @@ class _CareTakerRegisterFormViewState extends State<CareTakerRegisterFormView> {
               ),
               SizedBox(height: 10),
               KText(
-                text: "About Yourself",
+                text: "SubCategory",
                 style: TextStyle(
                   color: Constants.primaryAppColor,
                   fontWeight: FontWeight.w900,
                   fontSize: 22,
                 ),
               ),
+
               SizedBox(height: 10),
-              Container(
-                height: 150,
-                width: width,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: TextFormField(
-                  controller: subCategoryController,
-                  autofocus: true,
-                  validator: (val){
-                    if(val!.isEmpty){
-                      return 'Field is required';
-                    }else{
-                      return '';
-                    }
-                  },
-                  keyboardType: TextInputType.name,
-                  onChanged: (val){
-                    //_keyFirstName.currentState!.validate();
-                  },
-                  decoration: InputDecoration(
-                    hintText: "About",
-                    counterText: "",
-                    contentPadding: EdgeInsets.only(top: 5,left: 5),
-                    border: InputBorder.none,
+              Column(
+                children: <Widget>[
+                  ListTile(
+                    title: KText(text: 'AAA',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.AAA,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
                   ),
-                  maxLines: null,
-                  inputFormatters: [
-                    FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
+                  ListTile(
+                    title: KText(text: 'BBB',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.BBB,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: KText(text: 'CCC',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.CCC,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: KText(text: 'DDD',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.DDD,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: 10),
+              SizedBox(
+                width: width,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    WorkTypeSelection(
+                      onWorkTypeSelected: (String selectedType) {
+                        setState(() {
+                          selectedWorkType = selectedType;
+                          workTypeController.text = selectedWorkType;
+                        });
+                      },
+                      workTypeController: workTypeController,
+                    ),
+
                   ],
-                  style: TextStyle(fontSize: 15),
+                ),
+              ),
+              KText(
+                text: "Languages Known",
+                style: TextStyle(
+                  color: Constants.primaryAppColor,
+                  fontWeight: FontWeight.w900,
+                  fontSize: 22,
+                ),
+              ),
+
+              SizedBox(height: 10),
+              Column(
+                children: <Widget>[
+                  ListTile(
+                    title: KText(text: 'AAA',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.AAA,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: KText(text: 'BBB',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.BBB,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: KText(text: 'CCC',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.CCC,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                  ListTile(
+                    title: KText(text: 'DDD',style: TextStyle()),
+                    leading: Radio(
+                      value: subCategory.DDD,
+                      groupValue: subCategoryValue,
+                      onChanged: (subCategory? value) {
+                        setState(() {
+                          subCategoryValue = value!;
+                        });
+                      },
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(
+                width: width,
+                child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      KText(
+                        text: "Are you willing to work out of stations ?",
+                        style: GoogleFonts.roboto(
+                          color: Constants.lightGrey,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      ToggleSwitch(
+                        minWidth: width,
+                        minHeight: 35.0,
+                        fontSize: 16.0,
+                        initialLabelIndex: 1,
+                        activeBgColor: [Constants.primaryAppColor],
+                        activeFgColor: Colors.white,
+                        inactiveBgColor: Colors.grey,
+                        inactiveFgColor: Colors.grey[900],
+                        totalSwitches: 2,
+                        labels: ['Yes', 'No'],
+                        onToggle: (index) {
+                          if(index == 0){
+                            // setState(() {
+                            ifOutstation = true;
+                            //});
+                          }else{
+                            // setState(() {
+                            ifOutstation = false;
+                            // });
+                          }
+                          print(ifOutstation);
+                        },
+                      ),
+                    ]
                 ),
               ),
               SizedBox(height: 20),
               InkWell(
                 onTap: () async {
                   bool isPaid = false;
-                  careTaker!.subCategory = subCategoryController.text;
+                  careTaker!.subCategory = subCategoryValue.name;
                   careTaker!.workExperience = expDataList[expIndex];
                   careTaker!.category = workCategoryValue.name;
-                  careTaker!.position = workCategoryValue.name;
                   careTaker!.location = Location(lat: latitude,lng: longitude);
                   print(careTaker!.toJson());
                   await showPaymentPopUp(context);
@@ -348,6 +482,7 @@ class _CareTakerRegisterFormViewState extends State<CareTakerRegisterFormView> {
                       ),
                     )
                 ),
+
               ),
               SizedBox(height: 20),
             ],

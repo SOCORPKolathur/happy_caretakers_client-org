@@ -798,11 +798,10 @@ import 'caretaker_main_view.dart';
 enum genderEnum { Male, Female, Others  }
 
 class CaretakerRegisterView extends StatefulWidget {
-  const CaretakerRegisterView({super.key,required this.id, required this.phone, required this.firstName, required this.lastName,required this.lanCode});
+  const CaretakerRegisterView({super.key,required this.id, required this.phone,  required this.name,required this.lanCode});
 
   final String phone;
-  final String firstName;
-  final String lastName;
+  final String name;
   final String lanCode;
   final String id;
   @override
@@ -822,7 +821,6 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
 
 
   TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ageController = TextEditingController();
@@ -832,7 +830,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
   TextEditingController totalWorksController = TextEditingController();
   TextEditingController positionController = TextEditingController();
   TextEditingController workingAtController = TextEditingController();
-  TextEditingController workPreparenceController = TextEditingController();
+  TextEditingController workTypeController = TextEditingController();
   TextEditingController subCategoryController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController yearOfExperienceController = TextEditingController();
@@ -846,7 +844,6 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
   clearAllControllers(){
     setState(() {
         firstNameController.clear();
-        lastNameController.clear();
         phoneController.clear();
         emailController.clear();
         ageController.clear();
@@ -855,7 +852,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
         totalWorksController.clear();
         positionController.clear();
         workingAtController.clear();
-        workPreparenceController.clear();
+        workTypeController.clear();
         subCategoryController.clear();
         aadhaarNumberController.clear();
         orgNameController.clear();
@@ -907,7 +904,6 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
   bool isEmail(String input) => EmailValidator.validate(input);
 
   final _keyFirstName = GlobalKey<FormFieldState>();
-  final _keyLastName = GlobalKey<FormFieldState>();
   final _keyPhone = GlobalKey<FormFieldState>();
   final _keyEmail = GlobalKey<FormFieldState>();
   final _keyAge = GlobalKey<FormFieldState>();
@@ -1021,7 +1017,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             KText(
-                              text: "Firstname *",
+                              text: "Name *",
                               style: GoogleFonts.roboto(
                                 color: Constants.lightGrey,
                                 fontSize: 16,
@@ -1064,54 +1060,7 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                         ),
                       ),
                       SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Lastname *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyLastName,
-                              //focusNode: firstNameFocusNode,
-                              autofocus: true,
-                              keyboardType: TextInputType.name,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                 //_keyLastName.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: lastNameController,
-                            )
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
                   SizedBox(height: 30),
@@ -1772,7 +1721,6 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                         isLoading = true;
                       });
                        _keyFirstName.currentState!.validate();
-                       _keyLastName.currentState!.validate();
                        _keyPhone.currentState!.validate();
                        //_keyEmail.currentState!.validate();
                        _keyAge.currentState!.validate();
@@ -1785,7 +1733,6 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                         // _keyOrgName.currentState!.validate();
                       if(
                        firstNameController.text != "" &&
-                        lastNameController.text != "" &&
                         phoneController.text != "" &&
                         aadhaarNumberController.text.length == 12 &&
                         //emailController.text != "" &&
@@ -1802,33 +1749,25 @@ class _CaretakerRegisterViewState extends State<CaretakerRegisterView> {
                           downloadUrl =  await uploadImageToStorage(profileImage!);
                         }
                         CareTakersModel careTaker = CareTakersModel(
-                          gender: genderController.name,
-                          orgName: orgNameController.text,
                           isCurrentlyWorking: isCurrentlyWorking,
                           name: firstNameController.text,
                           category : categoryController.text,
                           id: widget.id,
                           lanCode: widget.lanCode,
                           fcmToken: fcmToken!,
-                          age: int.parse(ageController.text.toString()),
                           phone: phoneController.text,
                           workExperience: workExperienceController.text,
-                          totalWorks: 0,//int.parse(totalWorksController.text.toString()),
-                          email: emailController.text,
+                          //int.parse(totalWorksController.text.toString()),
                           location: Location(
                             lat: latitude,
                             lng: longitude,
                           ),
-                          address: addressController.text,
                           subCategory: subCategoryController.text,
-                          city: cityController.text,
                           yearsOfExperience: 0,
-                          position: positionController.text,
-                          workingAt: workingAtController.text,
                           imgUrl: downloadUrl,
                           aadharNumber: aadhaarNumberController.text,
                           timestamp: DateTime.now().millisecondsSinceEpoch,
-                          workType: workPreparenceController.text, languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
+                          workType: workTypeController.text, languagesKnow: [], ifOutstation: false, plansCount: 0, subscription: false, createdDate: '',
                         );
                         Navigator.push(context, MaterialPageRoute(builder: (ctx)=> CareTakerRegisterFormView(careTaker: careTaker)));
                         //downloadUrl1 =  await uploadImageToStorage(aadharImage!);

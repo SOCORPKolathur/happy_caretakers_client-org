@@ -21,7 +21,6 @@ class _CaretakerLoginViewState extends State<CaretakerLoginView> {
   TextEditingController aadhaarController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController firstNameController = TextEditingController();
-  TextEditingController lasNameController = TextEditingController();
   User? user = FirebaseAuth.instance.currentUser;
 
   final _keyPhone = GlobalKey<FormFieldState>();
@@ -131,7 +130,7 @@ class _CaretakerLoginViewState extends State<CaretakerLoginView> {
                                     counterText: "",
                                     border: InputBorder.none,
                                     suffixIcon: const Icon(Icons.person_outline_rounded,color: Color(0xffC8E3FF)),
-                                    hintText: "Enter your firstname",
+                                    hintText: "Enter your name",
                                     hintStyle: GoogleFonts.poppins(
                                       color: Constants.lightGrey,
                                       fontSize: 18,
@@ -359,7 +358,7 @@ class _CaretakerLoginViewState extends State<CaretakerLoginView> {
                               context,
                               MaterialPageRoute(
                                   builder: (ctx) =>
-                                      OtpVerificationView(firstName: firstNameController.text,lastName: aadhaarController.text, phone: phoneController.text,isCareTaker: widget.isCareTaker,lanCode: widget.lanCode)));
+                                      OtpVerificationView(name: firstNameController.text,aadharNumber: aadhaarController.text, phone: phoneController.text,isCareTaker: widget.isCareTaker,lanCode: widget.lanCode)));
                         }
                       },
                       child: Padding(

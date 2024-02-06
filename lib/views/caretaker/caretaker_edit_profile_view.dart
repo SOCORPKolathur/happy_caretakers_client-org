@@ -15,11 +15,13 @@ import '../../models/care_takers_model.dart';
 import '../../models/response.dart';
 import '../../services/care_takers_firecrud.dart';
 import '../../widgets/kText.dart';
+import 'package:choice/choice.dart';
 
 class CaretakerEditProfileView extends StatefulWidget {
   const CaretakerEditProfileView({super.key, required this.careTaker});
 
   final CareTakersModel careTaker;
+
   @override
   State<CaretakerEditProfileView> createState() => _CaretakerEditProfileViewState();
 }
@@ -28,7 +30,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
 
   double latitude = 0.0;
   double longitude = 0.0;
-
+  String selectedWorkType = "";
   File? profileImage;
   XFile? imageForShow;
   List<String> subCategoriesList = ["AAA", "BBB", "CCC", "DDD", "FFF"];
@@ -37,23 +39,19 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
 
 
   TextEditingController firstNameController = TextEditingController();
-  TextEditingController lastNameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController ageController = TextEditingController();
   TextEditingController aadhaarNumberController = TextEditingController();
-  TextEditingController cityController = TextEditingController();
   TextEditingController workExperienceController = TextEditingController();
   TextEditingController totalWorksController = TextEditingController();
   TextEditingController positionController = TextEditingController();
-  TextEditingController workingAtController = TextEditingController();
-  TextEditingController workPreparenceController = TextEditingController();
+  TextEditingController workTypeController = TextEditingController();
   TextEditingController subCategoryController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController yearOfExperienceController = TextEditingController();
-  TextEditingController orgNameController = TextEditingController();
   TextEditingController categoryController = TextEditingController(text: "Select Category");
+  TextEditingController languageKnownController = TextEditingController();
   bool isCurrentlyWorking = false;
+  bool ifOutstation = false;
   ImagePicker picker = ImagePicker();
 
   bool isLoading = false;
@@ -61,22 +59,17 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   clearAllControllers(){
     setState(() {
       firstNameController.clear();
-      lastNameController.clear();
       phoneController.clear();
-      emailController.clear();
-      ageController.clear();
-      cityController.clear();
       workExperienceController.clear();
       totalWorksController.clear();
       positionController.clear();
-      workingAtController.clear();
-      workPreparenceController.clear();
+      workTypeController.clear();
       subCategoryController.clear();
       aadhaarNumberController.clear();
-      orgNameController.clear();
       addressController.clear();
       categoryController.text = "Select Category";
       isCurrentlyWorking = false;
+      ifOutstation = false;
     });
   }
 
@@ -92,18 +85,13 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
     setState(() {
       phoneController.text = widget.careTaker.phone;
       firstNameController.text = widget.careTaker.name;
-      emailController.text = widget.careTaker.email;
-      ageController.text = widget.careTaker.age.toString();
       aadhaarNumberController.text = widget.careTaker.aadharNumber;
       aadhaarNumberController.text = widget.careTaker.aadharNumber;
-      addressController.text = widget.careTaker.address;
       subCategoryController.text = widget.careTaker.subCategory;
-      orgNameController.text = widget.careTaker.orgName;
       categoryController.text = widget.careTaker.category;
-      cityController.text = widget.careTaker.city;
       yearOfExperienceController.text = widget.careTaker.yearsOfExperience.toString();
-      positionController.text = widget.careTaker.position;
       isCurrentlyWorking = widget.careTaker.isCurrentlyWorking;
+
     });
   }
 
@@ -135,18 +123,13 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
   bool isEmail(String input) => EmailValidator.validate(input);
 
   final _keyFirstName = GlobalKey<FormFieldState>();
-  final _keyLastName = GlobalKey<FormFieldState>();
   final _keyPhone = GlobalKey<FormFieldState>();
-  final _keyEmail = GlobalKey<FormFieldState>();
-  final _keyAge = GlobalKey<FormFieldState>();
   final _keyCity = GlobalKey<FormFieldState>();
   final _keyAadhar = GlobalKey<FormFieldState>();
   final _keyAddress = GlobalKey<FormFieldState>();
   final _keyCategory = GlobalKey<FormFieldState>();
   final _keyYearOfExp = GlobalKey<FormFieldState>();
   final _keyPosition = GlobalKey<FormFieldState>();
-  final _keyOrgName = GlobalKey<FormFieldState>();
-  final _keyAbout = GlobalKey<FormFieldState>();
   final _keyWorking = GlobalKey<FormFieldState>();
 
   @override
@@ -390,7 +373,6 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
                   // SizedBox(
                   //   width: width,
                   //   child: Column(
@@ -491,110 +473,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Age *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyAge,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.number,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                //_keyAge.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 3,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp(r'[0-9]')),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: ageController,
-                            )
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "City *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyCity,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.name,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                //_keyCity.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: cityController,
-                            )
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 30),
+
                   SizedBox(
                     width: width,
                     child: Column(
@@ -645,55 +524,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Address *",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          key: _keyAddress,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.streetAddress,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            //_keyAddress.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 200,
-                          inputFormatters: [
-                            //FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                          controller: addressController,
-                        )
-                      ],
-                    ),
-                  ),
+
                   SizedBox(height: 30),
                   KText(
                       text: "Professional Details",
@@ -800,54 +631,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                         ),
                       ),
                       SizedBox(width: width / 68.3),
-                      SizedBox(
-                        width: width / 2.4,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            KText(
-                              text: "Position *",
-                              style: GoogleFonts.roboto(
-                                color: Constants.lightGrey,
-                                fontSize: 16,
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                            TextFormField(
-                              key: _keyPosition,
-                              //focusNode: firstNameFocusNode,
-                              keyboardType: TextInputType.text,
-                              autofocus: true,
-                              // onEditingComplete: (){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              // onFieldSubmitted: (val){
-                              //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                              // },
-                              validator: (val){
-                                if(val!.isEmpty){
-                                  return 'Field is required';
-                                }else{
-                                  return '';
-                                }
-                              },
-                              onChanged: (val){
-                                //_keyPosition.currentState!.validate();
-                              },
-                              decoration: InputDecoration(
-                                counterText: "",
-                                contentPadding: EdgeInsets.only(top: 5,left: 5),
-                              ),
-                              maxLength: 40,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                              ],
-                              style: TextStyle(fontSize: 15),
-                              controller: positionController,
-                            )
-                          ],
-                        ),
-                      ),
+
                     ],
                   ),
                   SizedBox(height: 30),
@@ -893,55 +677,7 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                     ),
                   ),
                   SizedBox(height: 30),
-                  SizedBox(
-                    width: width,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        KText(
-                          text: "Organization Name",
-                          style: GoogleFonts.roboto(
-                            color: Constants.lightGrey,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                        TextFormField(
-                          key: _keyOrgName,
-                          controller: orgNameController,
-                          //focusNode: firstNameFocusNode,
-                          keyboardType: TextInputType.name,
-                          autofocus: true,
-                          // onEditingComplete: (){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          // onFieldSubmitted: (val){
-                          //   FocusScope.of(context).requestFocus(lastNameFocusNode);
-                          // },
-                          validator: (val){
-                            if(val!.isEmpty){
-                              return 'Field is required';
-                            }else{
-                              return '';
-                            }
-                          },
-                          onChanged: (val){
-                            //_keyOrgName.currentState!.validate();
-                          },
-                          decoration: InputDecoration(
-                            counterText: "",
-                            contentPadding: EdgeInsets.only(top: 5,left: 5),
-                          ),
-                          maxLength: 40,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(RegExp("[a-zA-Z ]")),
-                          ],
-                          style: TextStyle(fontSize: 15),
-                        )
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 30),
+
                   SizedBox(
                     width: width,
                     child: Column(
@@ -975,7 +711,8 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                               },
                             );
                           },
-                        ),  ],
+                        ),
+                      ],
 
                     ),
 
@@ -988,9 +725,17 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          WorkTypeSelection(),
+                          WorkTypeSelection(
+                            onWorkTypeSelected: (String selectedType) {
+                              setState(() {
+                                selectedWorkType = selectedType;
+                                workTypeController.text = selectedWorkType;
+                              });
+                            },
+                            workTypeController: workTypeController,
+                          ),
 
-                        ]
+                        ],
                     ),
                   ),
                   SizedBox(height: 30),
@@ -1060,14 +805,14 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                             onToggle: (index) {
                               if(index == 0){
                                 // setState(() {
-                                isCurrentlyWorking = true;
+                               ifOutstation = true;
                                 //});
                               }else{
                                 // setState(() {
-                                isCurrentlyWorking = false;
+                                ifOutstation = false;
                                 // });
                               }
-                              print(isCurrentlyWorking);
+                              print(ifOutstation);
                             },
                           ),
                         ]
@@ -1084,26 +829,15 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                         //_keyLastName.currentState!.validate();
                         _keyPhone.currentState!.validate();
                         //_keyEmail.currentState!.validate();
-                        _keyAge.currentState!.validate();
-                        _keyCity.currentState!.validate();
                         _keyAadhar.currentState!.validate();
-                        _keyAddress.currentState!.validate();
                         _keyYearOfExp.currentState!.validate();
                         //_keyOrgName.currentState!.validate();
-                        _keyPosition.currentState!.validate();
-                        _keyOrgName.currentState!.validate();
                         if(
                         firstNameController.text != "" &&
                             //lastNameController.text != "" &&
-                            phoneController.text != "" &&
-                            phoneController.text.length == 10 &&
                             aadhaarNumberController.text.length == 12 &&
                             //emailController.text != "" &&
-                            ageController.text != "" &&
-                            cityController.text != "" &&
-                            positionController.text != "" &&
-                            categoryController.text != "Select Category" &&
-                            addressController.text != ""
+                            categoryController.text != "Select Category"
                         ){
                           String downloadUrl = "";
                           String? fcmToken = await FirebaseMessaging.instance.getToken();
@@ -1113,33 +847,25 @@ class _CaretakerEditProfileViewState extends State<CaretakerEditProfileView> {
                           //downloadUrl1 =  await uploadImageToStorage(aadharImage!);
                           Response response = await CareTakersFireCrud.updateCareTaker(
                               CareTakersModel(
-                                gender: widget.careTaker.gender,
-                                orgName: orgNameController.text,
                                 lanCode: widget.careTaker.lanCode,
                                 isCurrentlyWorking: isCurrentlyWorking,
                                 name: firstNameController.text,
                                 category : categoryController.text,
                                 id: widget.careTaker.id,
                                 fcmToken: fcmToken!,
-                                age: int.parse(ageController.text.toString()),
                                 phone: phoneController.text,
                                 workExperience: workExperienceController.text,
-                                totalWorks: widget.careTaker.totalWorks,//int.parse(totalWorksController.text.toString()),
-                                email: emailController.text,
+                                //int.parse(totalWorksController.text.toString()),
                                 location: Location(
                                   lat: latitude,
                                   lng: longitude,
                                 ),
-                                address: addressController.text,
                                 subCategory: subCategoryController.text,
-                                city: cityController.text,
                                 yearsOfExperience: int.parse(yearOfExperienceController.text.toString()),
-                                position: positionController.text,
-                                workingAt: workingAtController.text,
                                 imgUrl: downloadUrl != "" ? downloadUrl : widget.careTaker.imgUrl,
                                 aadharNumber: aadhaarNumberController.text,
                                 timestamp: DateTime.now().millisecondsSinceEpoch,
-                                workType: workPreparenceController.text, languagesKnow: [], outstation: false, plansCount: 0, subscription: false,
+                                workType: workTypeController.text, languagesKnow: [],  plansCount: 0, subscription: false, ifOutstation: ifOutstation, createdDate: '',
                               )
                           );
                           if(response.code == 200){
